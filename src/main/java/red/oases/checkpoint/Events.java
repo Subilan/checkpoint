@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class Events implements Listener {
 
@@ -15,6 +16,7 @@ public class Events implements Listener {
         var actionId = player.getUniqueId().toString();
         var state = Selection.getState(actionId);
 
+        if (e.getHand() != EquipmentSlot.HAND) return;
         if (block == null) return;
         if (!player.hasPermission("checkpoint.admin")) return;
         if (player.getInventory()
