@@ -1,0 +1,4 @@
+name: CheckPoint
+version: '${version}'
+main: red.oases.checkpoint.CheckPoint
+api-version: '1.20'
