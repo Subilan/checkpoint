@@ -6,6 +6,7 @@ public final class CheckPoint extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.getLogger().info("[checkpoint] 已启用");
         saveDefaultConfig();
         LogUtil.setLogger(this.getLogger());
         Files.setDataFolder(this.getDataFolder());
@@ -15,6 +16,6 @@ public final class CheckPoint extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        this.getLogger().info("[checkpoint] 已停用");
     }
 }
