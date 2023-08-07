@@ -2,3 +2,14 @@ name: CheckPoint
 version: '${version}'
 main: red.oases.checkpoint.CheckPoint
 api-version: '1.20'
+commands:
+  checkpoint:
+    aliases: ['cpt']
+    description: Checkpoint main command.
+    permission: checkpoint.admin
+    permission-message: "你必须有 checkpoint.admin 权限才能访问该指令。"
+    usage: /cpt ...
+permissions:
+  checkpoint.admin:
+    default: op
+    description: 完全访问 Checkpoint 的权限
