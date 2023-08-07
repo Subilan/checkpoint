@@ -39,15 +39,15 @@ public class Tab implements TabCompleter {
 
                     var namespaceKeys = section.getKeys(false);
 
-                    namespaceKeys.forEach(key1 -> {
+                    for (String key1 : namespaceKeys) {
                         var selectionKeys = Objects
                                 .requireNonNull(section.getConfigurationSection(key1))
                                 .getKeys(false);
 
-                        selectionKeys.forEach(key2 -> {
+                        for (String key2 : selectionKeys) {
                             result.add(key1 + "." + key2);
-                        });
-                    });
+                        }
+                    }
 
                     return result;
                 }
@@ -57,7 +57,7 @@ public class Tab implements TabCompleter {
                     if (namespaces == null) {
                         return null;
                     }
-                    return new ArrayList<String>(namespaces.getKeys(false));
+                    return new ArrayList<>(namespaces.getKeys(false));
                 }
             }
         }
