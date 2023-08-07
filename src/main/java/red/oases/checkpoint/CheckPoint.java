@@ -2,6 +2,9 @@ package red.oases.checkpoint;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
+@SuppressWarnings("unused")
 public final class CheckPoint extends JavaPlugin {
 
     @Override
@@ -12,6 +15,8 @@ public final class CheckPoint extends JavaPlugin {
         Files.setDataFolder(this.getDataFolder());
         Files.init();
         getServer().getPluginManager().registerEvents(new Events(), this);
+        Objects.requireNonNull(getCommand("checkpoint")).setExecutor(new Commands());
+        Objects.requireNonNull(getCommand("checkpoint")).setTabCompleter(new Tab());
     }
 
     @Override
