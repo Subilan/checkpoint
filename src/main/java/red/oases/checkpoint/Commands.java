@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -55,6 +56,81 @@ public class Commands implements CommandExecutor {
             }
 
             switch (args[0]) {
+                case "about" -> {
+                    sendAbout(sender);
+                    return true;
+                }
+
+                case "list" -> {
+                    if (args.length < 2) {
+                        LogUtil.send("参数不足: /cpt list <namespace> [page]", sender);
+                        return true;
+                    }
+
+                    var namespace = args[1];
+                    var page = 1;
+                    var section = Files.selections.getConfigurationSection("data." + namespace);
+
+                    if (args.length == 3) {
+                        page = castNonNegative(args[2]);
+                        if (page == 0) {
+                            LogUtil.send("页码无效。", sender);
+                            return true;
+                        }
+                    }
+
+                    if (section == null) {
+                        LogUtil.send(String.format("找不到命名空间 %s", namespace), sender);
+                        return true;
+                    }
+
+                    var result = new StringBuilder("\n" + namespace + " 下的所有路径点\n\n");
+                    var keys = new ArrayList<>(section.getKeys(false));
+                    int iterationRangeStart;
+                    int iterationRangeEnd;
+                    var lastPage = (int) Math.ceil(keys.size() / 10d);
+
+                    if (page > lastPage) {
+                        LogUtil.send("页码过大。", sender);
+                        return true;
+                    }
+
+                    if (keys.size() <= 10) {
+                        iterationRangeStart = 0;
+                        iterationRangeEnd = keys.size() - 1;
+                    } else {
+                        // 第一页index是0-9，第二页index是10-19以此类推
+                        iterationRangeStart = 10 * (page - 1);
+                        iterationRangeEnd = Math.min(iterationRangeStart + 9, keys.size() - 1);
+                    }
+
+                    for (var i = iterationRangeStart; i <= iterationRangeEnd; i++) {
+                        var k = keys.get(i);
+                        var targetSection = Files.selections.getConfigurationSection(
+                                String.format("data.%s.%s", namespace, k)
+                        );
+                        if (targetSection == null) continue;
+                        var pos1 = targetSection.getStringList("pos1");
+                        var pos2 = targetSection.getStringList("pos2");
+                        var creator = targetSection.getString("creator");
+                        result.append(String.format("[%s] (%s, %s, %s) - (%s, %s, %s) %s\n",
+                                k,
+                                pos1.get(0), pos1.get(1), pos1.get(2),
+                                pos2.get(0), pos2.get(1), pos2.get(2),
+                                creator
+                        ));
+                    }
+
+                    result.append(String.format(
+                            "\n第 %s 页 - 共 %s 页",
+                            page,
+                            lastPage
+                    ));
+
+                    LogUtil.send(result.toString(), sender);
+                    return true;
+                }
+
                 case "info" -> {
                     if (args.length == 1) {
                         LogUtil.send("参数不足: /cpt info <alias> 或者 /cpt info <namespace.number>", sender);
@@ -81,7 +157,7 @@ public class Commands implements CommandExecutor {
 
                     var result = String.format(
                             """
-                                    
+                                                                        
                                     ---路径点 %s 的详细信息---
                                     顶点 1: (%s, %s, %s)
                                     顶点 2: (%s, %s, %s)
@@ -190,11 +266,11 @@ public class Commands implements CommandExecutor {
 
     public void sendAbout(CommandSender sender) {
         LogUtil.send("""
-                
+                                
                 checkpoint v1.0
                 设置路径点以监控玩家在拉力赛中的赛程数据
                 适用于类似于喵窝 World Wings Rally 的比赛
-                
+                                
                 https://github.com/oasis-mc/checkpoint""", sender);
     }
 
