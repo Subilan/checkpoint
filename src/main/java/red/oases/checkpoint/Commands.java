@@ -14,15 +14,32 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Commands implements CommandExecutor {
 
     public @Nullable String composeGetPath(String target, boolean isAlias) {
-        String path;
-
-        if (!isAlias) {
-            path = getPathByAlias(target);
+        if (isAlias) {
+            return getPathByAlias(target);
         } else {
-            path = String.format("data.%s", target);
+            return String.format("data.%s", target);
+        }
+    }
+
+    /**
+     * 获得指向指定 path 的别名
+     *
+     * @param path 指定 path，不带 data. 前缀
+     * @return 指定别名。如果不存在，返回 ""
+     */
+    public String getAliasByPath(String path) {
+        var result = new AtomicReference<>("");
+
+        var aliasSection = Files.selections.getConfigurationSection("aliases");
+
+        if (aliasSection != null) {
+            var map = aliasSection.getValues(false);
+            map.forEach((key, value) -> {
+                if (value.equals("data." + path)) result.set(key);
+            });
         }
 
-        return path;
+        return result.get();
     }
 
     @Override
@@ -49,7 +66,11 @@ public class Commands implements CommandExecutor {
                     var path = composeGetPath(target, isAlias);
 
                     if (path == null) {
-                        LogUtil.send(String.format("别名 %s 不存在。", target), sender);
+                        if (isAlias) {
+                            LogUtil.send(String.format("别名 %s 不存在。", target), sender);
+                        } else {
+                            LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
+                        }
                         return true;
                     }
 
@@ -60,6 +81,7 @@ public class Commands implements CommandExecutor {
 
                     var result = String.format(
                             """
+                                    
                                     ---路径点 %s 的详细信息---
                                     顶点 1: (%s, %s, %s)
                                     顶点 2: (%s, %s, %s)
@@ -70,22 +92,7 @@ public class Commands implements CommandExecutor {
                             creator, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(createdAt))
                     );
 
-                    var aTargetAlias = new AtomicReference<>("");
-
-                    if (isAlias) {
-                        aTargetAlias.set(target);
-                    } else {
-                        var aliasSection = Files.selections.getConfigurationSection("aliases");
-
-                        if (aliasSection != null) {
-                            var map = aliasSection.getValues(false);
-                            map.forEach((key, value) -> {
-                                if (value.equals(path)) aTargetAlias.set(key);
-                            });
-                        }
-                    }
-
-                    var targetAlias = aTargetAlias.get();
+                    var targetAlias = isAlias ? target : getAliasByPath(target);
 
                     if (!targetAlias.equalsIgnoreCase("")) {
                         result += String.format("\n别名: %s", targetAlias);
@@ -102,11 +109,15 @@ public class Commands implements CommandExecutor {
                     }
 
                     var target = args[1];
-                    var isAlias = target.contains(".");
+                    var isAlias = !target.contains(".");
                     var path = composeGetPath(target, isAlias);
 
                     if (path == null) {
-                        LogUtil.send(String.format("别名 %s 不存在。", target), sender);
+                        if (isAlias) {
+                            LogUtil.send(String.format("别名 %s 不存在。", target), sender);
+                        } else {
+                            LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
+                        }
                         return true;
                     }
 
@@ -163,7 +174,9 @@ public class Commands implements CommandExecutor {
                     Files.selections.set(path + ".pos2", pos2);
                     Files.selections.set(path + ".creator", p.getName());
                     Files.selections.set(path + ".created_at", new Date().getTime());
-                    Files.selections.set("aliases." + alias, path);
+                    if (!alias.isEmpty()) {
+                        Files.selections.set("aliases." + alias, path);
+                    }
                     Files.saveSelections();
                     Selection.clear(playerId);
 
@@ -176,10 +189,13 @@ public class Commands implements CommandExecutor {
     }
 
     public void sendAbout(CommandSender sender) {
-        LogUtil.send("checkpoint - v1.0", sender);
-        LogUtil.send("设置路径点以监控玩家在拉力赛中的赛程数据", sender);
-        LogUtil.send("适用于类似于喵窝 World Wings Rally 的比赛", sender);
-        LogUtil.send("https://github.com/oasis-mc/checkpoint", sender);
+        LogUtil.send("""
+                
+                checkpoint v1.0
+                设置路径点以监控玩家在拉力赛中的赛程数据
+                适用于类似于喵窝 World Wings Rally 的比赛
+                
+                https://github.com/oasis-mc/checkpoint""", sender);
     }
 
     /**
