@@ -120,7 +120,8 @@ public class Commands implements CommandExecutor {
 
                     var section = Files.selections.getConfigurationSection("data");
                     assert section != null;
-                    assert Files.selections.getConfigurationSection("data." + toTrack) == null;
+                    assert section.getConfigurationSection(fromTrack) != null;
+                    assert section.getConfigurationSection(toTrack) == null;
                     var index = 1;
 
                     for (var number : targetNumbers) {
@@ -129,6 +130,8 @@ public class Commands implements CommandExecutor {
                         section.set(fromTrack + "." + number, null);
                         index++;
                     }
+
+                    Files.saveSelections();
 
                     LogUtil.send("成功移动 " + index + " 个检查点。", sender);
                     return true;
