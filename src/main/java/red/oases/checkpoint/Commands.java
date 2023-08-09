@@ -12,17 +12,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Commands implements CommandExecutor {
-
-    public Set<String> getTracks() {
-        var section = Files.selections.getConfigurationSection("data");
-
-        if (section == null) {
-            return new HashSet<>();
-        } else {
-            return section.getKeys(false);
-        }
-    }
-
     public @Nullable String composeGetPath(String target, boolean isAlias) {
         if (isAlias) {
             return getPathByAlias(target);
@@ -119,7 +108,7 @@ public class Commands implements CommandExecutor {
                         return true;
                     }
 
-                    var tracks = getTracks();
+                    var tracks = Utils.getTracks();
                     var fromTrack = args[1];
                     var toTrack = args[2];
                     var numbers = args[3].split(",");
