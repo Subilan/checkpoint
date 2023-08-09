@@ -13,13 +13,13 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Commands implements CommandExecutor {
 
-    public List<String> getTracks() {
+    public Set<String> getTracks() {
         var section = Files.selections.getConfigurationSection("data");
 
         if (section == null) {
-            return List.of();
+            return new HashSet<>();
         } else {
-            return new ArrayList<>(section.getKeys(false));
+            return section.getKeys(false);
         }
     }
 
