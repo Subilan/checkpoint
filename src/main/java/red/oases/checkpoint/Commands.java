@@ -8,11 +8,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Commands implements CommandExecutor {
+
+    public List<String> getTracks() {
+        var section = Files.selections.getConfigurationSection("data");
+
+        if (section == null) {
+            return List.of();
+        } else {
+            return new ArrayList<>(section.getKeys(false));
+        }
+    }
 
     public @Nullable String composeGetPath(String target, boolean isAlias) {
         if (isAlias) {
@@ -56,6 +65,75 @@ public class Commands implements CommandExecutor {
             }
 
             switch (args[0]) {
+                case "move" -> {
+                    if (args.length < 4) {
+                        LogUtil.send("参数不足：/cpt move <from-track> <to-track> <numbers>", sender);
+                        return true;
+                    }
+
+                    var tracks = getTracks();
+                    var fromTrack = args[1];
+                    var toTrack = args[2];
+                    var numbers = args[3].split(",");
+
+                    if (!tracks.contains(fromTrack)) {
+                        LogUtil.send("赛道不存在：" + fromTrack + "。", sender);
+                        return true;
+                    }
+
+                    if (tracks.contains(toTrack)) {
+                        LogUtil.send("赛道 " + toTrack + " 不为空。", sender);
+                        return true;
+                    }
+
+                    var targetNumbers = new HashSet<Integer>();
+
+                    for (var n : numbers) {
+                        if (n.contains("-")) {
+                            var numberRange = n.split("-");
+
+                            if (numberRange.length != 2) {
+                                LogUtil.send("数字范围不合法：" + n, sender);
+                                return true;
+                            }
+
+                            var numberRangeStart = positive(numberRange[0]);
+                            var numberRangeEnd = positive(numberRange[1]);
+
+                            if (numberRangeStart == 0 || numberRangeEnd == 0) {
+                                LogUtil.send("数字范围不合法：" + n, sender);
+                                return true;
+                            }
+
+                            for (var nn = numberRangeStart; nn <= numberRangeEnd; nn++) {
+                                targetNumbers.add(nn);
+                            }
+                        } else {
+                            var nn = positive(n);
+                            if (nn == 0) {
+                                LogUtil.send("序号不合法：" + n, sender);
+                                return true;
+                            }
+                            targetNumbers.add(nn);
+                        }
+                    }
+
+                    var section = Files.selections.getConfigurationSection("data");
+                    assert section != null;
+                    assert Files.selections.getConfigurationSection("data." + toTrack) == null;
+                    var index = 1;
+
+                    for (var number : targetNumbers) {
+                        var tg = section.getStringList(fromTrack + "." + number);
+                        section.set(toTrack + "." + index, tg);
+                        section.set(fromTrack + "." + number, null);
+                        index++;
+                    }
+
+                    LogUtil.send("成功移动 " + index + " 个检查点。", sender);
+                    return true;
+                }
+
                 case "about" -> {
                     sendAbout(sender);
                     return true;
@@ -63,16 +141,16 @@ public class Commands implements CommandExecutor {
 
                 case "list" -> {
                     if (args.length < 2) {
-                        LogUtil.send("参数不足: /cpt list <namespace> [page]", sender);
+                        LogUtil.send("参数不足: /cpt list <track> [page]", sender);
                         return true;
                     }
 
-                    var namespace = args[1];
+                    var track = args[1];
                     var page = 1;
-                    var section = Files.selections.getConfigurationSection("data." + namespace);
+                    var section = Files.selections.getConfigurationSection("data." + track);
 
                     if (args.length == 3) {
-                        page = castNonNegative(args[2]);
+                        page = positive(args[2]);
                         if (page == 0) {
                             LogUtil.send("页码无效。", sender);
                             return true;
@@ -80,11 +158,11 @@ public class Commands implements CommandExecutor {
                     }
 
                     if (section == null) {
-                        LogUtil.send(String.format("找不到命名空间 %s", namespace), sender);
+                        LogUtil.send(String.format("找不到命名空间 %s", track), sender);
                         return true;
                     }
 
-                    var result = new StringBuilder("\n" + namespace + " 下的所有路径点\n\n");
+                    var result = new StringBuilder("\n" + track + " 下的所有路径点\n\n");
                     var keys = new ArrayList<>(section.getKeys(false));
                     int iterationRangeStart;
                     int iterationRangeEnd;
@@ -107,7 +185,7 @@ public class Commands implements CommandExecutor {
                     for (var i = iterationRangeStart; i <= iterationRangeEnd; i++) {
                         var k = keys.get(i);
                         var targetSection = Files.selections.getConfigurationSection(
-                                String.format("data.%s.%s", namespace, k)
+                                String.format("data.%s.%s", track, k)
                         );
                         if (targetSection == null) continue;
                         var pos1 = targetSection.getStringList("pos1");
@@ -133,7 +211,7 @@ public class Commands implements CommandExecutor {
 
                 case "info" -> {
                     if (args.length == 1) {
-                        LogUtil.send("参数不足: /cpt info <alias> 或者 /cpt info <namespace.number>", sender);
+                        LogUtil.send("参数不足: /cpt info <alias> 或者 /cpt info <track.number>", sender);
                         return true;
                     }
 
@@ -180,7 +258,7 @@ public class Commands implements CommandExecutor {
 
                 case "remove" -> {
                     if (args.length == 1) {
-                        LogUtil.send("参数不足: /cpt remove <alias> 或者 /cpt remove <namespace.number>", sender);
+                        LogUtil.send("参数不足: /cpt remove <alias> 或者 /cpt remove <track.number>", sender);
                         return true;
                     }
 
@@ -214,7 +292,7 @@ public class Commands implements CommandExecutor {
                     }
 
                     if (args.length < 3) {
-                        LogUtil.send("参数不足: /cpt build <namespace> <number> [alias]", sender);
+                        LogUtil.send("参数不足: /cpt build <track> <number> [alias]", sender);
                         return true;
                     }
 
@@ -223,8 +301,8 @@ public class Commands implements CommandExecutor {
                         return true;
                     }
 
-                    var namespace = args[1];
-                    var number = castNonNegative(args[2]);
+                    var track = args[1];
+                    var number = positive(args[2]);
                     String alias = "";
 
                     if (number <= 0) {
@@ -245,7 +323,7 @@ public class Commands implements CommandExecutor {
 
                     var pos1 = Selection.getData(playerId, 1);
                     var pos2 = Selection.getData(playerId, 2);
-                    var path = String.format("data.%s.%s", namespace, number);
+                    var path = String.format("data.%s.%s", track, number);
                     Files.selections.set(path + ".pos1", pos1);
                     Files.selections.set(path + ".pos2", pos2);
                     Files.selections.set(path + ".creator", p.getName());
@@ -280,7 +358,7 @@ public class Commands implements CommandExecutor {
      * @param target 待转换的字符串
      * @return 成功为对应整数，不成功为 0
      */
-    public int castNonNegative(String target) {
+    public int positive(String target) {
         int result;
         try {
             result = Integer.parseInt(target);
