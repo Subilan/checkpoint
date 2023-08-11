@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Campaign {
     public ConfigurationSection section;
-    private final String name;
+    public final String name;
     public String targetTrack;
     public long createdAt;
     public String createdBy;

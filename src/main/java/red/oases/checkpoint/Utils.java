@@ -68,4 +68,13 @@ public class Utils {
         }
         return result;
     }
+
+    public static @Nullable Campaign getCampaignOfPlayer(String playername) {
+        for (var cam : getCampaignNames()) {
+            var players = Files.campaigns.getStringList(cam + ".players");
+            if (players.contains(playername)) return new Campaign(cam);
+        }
+
+        return null;
+    }
 }

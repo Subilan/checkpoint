@@ -21,10 +21,18 @@ public class CommandJoin extends Command {
         }
 
         var cam = args[1];
+
         var campaigns = Utils.getCampaignNames();
 
         if (!campaigns.contains(cam)) {
             LogUtil.send("竞赛 " + cam + " 不存在。", sender);
+            return true;
+        }
+
+        var existingCampaign = Utils.getCampaignOfPlayer(sender.getName());
+
+        if (existingCampaign != null) {
+            LogUtil.send("你已经加入了竞赛 " + existingCampaign.name + "。若要加入 " + cam + "，请先退出先前的竞赛。", sender);
             return true;
         }
 
