@@ -3,7 +3,6 @@ package red.oases.checkpoint;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.logging.Logger;
 
@@ -18,7 +17,7 @@ public final class LogUtil {
         p.sendMessage(Component
                 .text("[")
                 .append(Component
-                        .text("checkpoint")
+                        .text("cpt")
                         .color(NamedTextColor.YELLOW))
                 .append(Component.text("] "))
                 .append(Component.text(text)));
