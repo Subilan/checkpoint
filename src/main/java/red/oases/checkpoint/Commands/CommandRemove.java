@@ -19,21 +19,20 @@ public class CommandRemove extends Command {
 
         var target = args[1];
         var isAlias = !target.contains(".");
-        var path = "";
+        String path;
 
         if (isAlias) {
             path = Utils.getPathByAlias(target);
+            if (path == null) {
+                LogUtil.send(String.format("别名 %s 不存在。", target), sender);
+                return true;
+            }
         } else {
             path = String.format("data.%s", target);
-        }
-
-        if (path.isEmpty()) {
-            if (isAlias) {
-                LogUtil.send(String.format("别名 %s 不存在。", target), sender);
-            } else {
+            if (Files.selections.getConfigurationSection(path) == null) {
                 LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
+                return true;
             }
-            return true;
         }
 
         Files.selections.set(path, null);

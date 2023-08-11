@@ -21,15 +21,20 @@ public class CommandInfo extends Command {
 
         var target = args[1];
         var isAlias = !target.contains(".");
-        var path = composeGetPath(target, isAlias);
+        String path;
 
-        if (path == null) {
-            if (isAlias) {
+        if (isAlias) {
+            path = Utils.getPathByAlias(target);
+            if (path == null) {
                 LogUtil.send(String.format("别名 %s 不存在。", target), sender);
-            } else {
-                LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
+                return true;
             }
-            return true;
+        } else {
+            path = String.format("data.%s", target);
+            if (Files.selections.getConfigurationSection(path) == null) {
+                LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
+                return true;
+            }
         }
 
         var pos1 = Files.selections.getIntegerList(path + ".pos1");

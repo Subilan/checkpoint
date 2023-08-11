@@ -1,5 +1,7 @@
 package red.oases.checkpoint;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,7 +39,7 @@ public class Utils {
         return result.get();
     }
 
-    public static String getPathByAlias(String alias) {
+    public static @Nullable String getPathByAlias(String alias) {
         return Files.selections.getString(String.format("aliases.%s", alias));
     }
 
