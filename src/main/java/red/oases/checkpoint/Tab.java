@@ -45,7 +45,9 @@ public class Tab implements TabCompleter {
                     "about",
                     "copy",
                     "cp",
-                    "move"
+                    "move",
+                    "xcopy",
+                    "xcp"
             );
         }
 
@@ -58,6 +60,10 @@ public class Tab implements TabCompleter {
                 case "list", "move" -> {
                     return new ArrayList<>(Utils.getTrackNames());
                 }
+
+                case "xcp", "xcopy" -> {
+                    return List.of("<T1.N1,T2.N2,...>");
+                }
             }
         }
 
@@ -65,6 +71,10 @@ public class Tab implements TabCompleter {
             switch (args[0]) {
                 case "copy", "cp" -> {
                     return List.of("<track.number>");
+                }
+
+                case "xcopy", "xcp" -> {
+                    return List.of("<t1.n1,t2.n2,...>");
                 }
 
                 case "move" -> {

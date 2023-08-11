@@ -14,7 +14,7 @@ public class CommandMove extends Command{
 
     public boolean collect() {
         if (args.length < 4) {
-            LogUtil.send("参数不足：/cpt move <from-track> <to-track> <numbers>", sender);
+            LogUtil.send("参数不足：/cpt move <from-track> <to-track> <n1,n2,n3,...>", sender);
             return true;
         }
 
@@ -36,6 +36,7 @@ public class CommandMove extends Command{
         var targetNumbers = new HashSet<Integer>();
 
         for (var n : numbers) {
+            n = n.trim();
             if (n.contains("-")) {
                 var numberRange = n.split("-");
 
