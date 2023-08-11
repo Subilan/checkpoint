@@ -59,6 +59,18 @@ public class Executor implements CommandExecutor {
                 case "build" -> {
                     return new CommandBuild(args, sender).collect();
                 }
+
+                case "join" -> {
+                    return new CommandJoin(args, sender).collect();
+                }
+
+                case "quit" -> {
+                    return new CommandQuit(args, sender).collect();
+                }
+
+                case "campaign" -> {
+                    return new CommandCampaign(args, sender).collect();
+                }
             }
         }
 

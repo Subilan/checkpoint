@@ -1,9 +1,8 @@
-package red.oases.checkpoint.Commands.SubCommands;
+package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Annotations.DisableConsole;
 import red.oases.checkpoint.Annotations.PermissionLevel;
-import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.LogUtil;
 import red.oases.checkpoint.Utils;
 
