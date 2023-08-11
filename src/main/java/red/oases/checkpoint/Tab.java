@@ -18,7 +18,7 @@ public class Tab implements TabCompleter {
             return List.of();
         }
 
-        for (String key1 : Utils.getTracks()) {
+        for (String key1 : Utils.getTrackNames()) {
             var selectionKeys = Objects
                     .requireNonNull(section.getConfigurationSection(key1))
                     .getKeys(false);
@@ -56,7 +56,7 @@ public class Tab implements TabCompleter {
                 }
 
                 case "list", "move" -> {
-                    return new ArrayList<>(Utils.getTracks());
+                    return new ArrayList<>(Utils.getTrackNames());
                 }
             }
         }

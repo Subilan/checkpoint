@@ -1,6 +1,7 @@
 package red.oases.checkpoint;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import red.oases.checkpoint.Commands.Executor;
 
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public final class CheckPoint extends JavaPlugin {
         Files.setDataFolder(this.getDataFolder());
         Files.init();
         getServer().getPluginManager().registerEvents(new Events(), this);
-        Objects.requireNonNull(getCommand("checkpoint")).setExecutor(new Commands());
+        Objects.requireNonNull(getCommand("checkpoint")).setExecutor(new Executor());
         Objects.requireNonNull(getCommand("checkpoint")).setTabCompleter(new Tab());
     }
 
