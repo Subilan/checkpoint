@@ -4,15 +4,13 @@ import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
 
-import java.util.Date;
-
 public class CommandCopy extends Command {
 
     public CommandCopy(String[] args, CommandSender sender) {
         super(args, sender);
     }
 
-    public boolean collect() {
+    protected boolean execute() {
         if (args.length < 3) {
             LogUtil.send("参数不足：/cpt copy <from-track.number> <to-track.number> [force?]", sender);
             return true;

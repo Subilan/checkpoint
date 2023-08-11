@@ -5,7 +5,6 @@ import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
 import red.oases.checkpoint.Utils;
 
-import java.util.Date;
 import java.util.HashSet;
 
 public class CommandMove extends Command{
@@ -13,7 +12,7 @@ public class CommandMove extends Command{
         super(args, sender);
     }
 
-    public boolean collect() {
+    protected boolean execute() {
         if (args.length < 4) {
             LogUtil.send("参数不足：/cpt move <from-track> <to-track> <n1,n2,n3,...>", sender);
             return true;

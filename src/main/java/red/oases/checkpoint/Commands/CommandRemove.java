@@ -11,7 +11,7 @@ public class CommandRemove extends Command {
         super(args, sender);
     }
 
-    public boolean collect() {
+    protected boolean execute() {
         if (args.length == 1) {
             LogUtil.send("参数不足: /cpt remove <alias> 或者 /cpt remove <track.number>", sender);
             return true;

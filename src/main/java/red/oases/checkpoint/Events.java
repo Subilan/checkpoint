@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 public class Events implements Listener {
@@ -52,5 +53,10 @@ public class Events implements Listener {
                     location.getBlockZ()
             ), player);
         }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e) {
+
     }
 }

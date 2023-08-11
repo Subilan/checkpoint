@@ -4,15 +4,13 @@ import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
 
-import java.util.Date;
-
 public class CommandXCopy extends Command {
 
     public CommandXCopy(String[] args, CommandSender sender) {
         super(args, sender);
     }
 
-    public boolean collect() {
+    protected boolean execute() {
         if (args.length < 3) {
             LogUtil.send("参数不足：/cpt xcopy <T1.N1,T2.N2,...> <t1.n1,t2.n2,...> [force?]", sender);
             return true;

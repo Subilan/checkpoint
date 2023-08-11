@@ -2,21 +2,20 @@ package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import red.oases.checkpoint.Annotations.DisableConsole;
 import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
 import red.oases.checkpoint.Selection;
 import red.oases.checkpoint.Utils;
 
+@DisableConsole
 public class CommandBuild extends Command {
     public CommandBuild(String[] args, CommandSender sender) {
         super(args, sender);
     }
 
-    public boolean collect() {
-        if (!(sender instanceof Player p)) {
-            LogUtil.send("此指令只能由玩家执行。", sender);
-            return true;
-        }
+    protected boolean execute() {
+
 
         if (args.length < 3) {
             LogUtil.send("参数不足: /cpt build <track> <number> [alias]", sender);
@@ -41,7 +40,8 @@ public class CommandBuild extends Command {
             alias = args[3];
         }
 
-        var playerId = p.getUniqueId().toString();
+        assert sender instanceof Player;
+        var playerId = ((Player) sender).getUniqueId().toString();
 
         if (Selection.getState(playerId) != 2) {
             LogUtil.send("错误: 必须在已选择两对角线顶点的情况下执行该指令。", sender);
@@ -49,7 +49,7 @@ public class CommandBuild extends Command {
         }
 
         var path = String.format("data.%s.%s", track, number);
-        Selection.build(p.getName(), playerId, path);
+        Selection.build(sender.getName(), playerId, path);
         if (!alias.isEmpty()) {
             Files.selections.set("aliases." + alias, path);
         }

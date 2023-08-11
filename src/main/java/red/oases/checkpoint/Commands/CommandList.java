@@ -12,7 +12,7 @@ public class CommandList extends Command {
         super(args, sender);
     }
 
-    public boolean collect() {
+    protected boolean execute() {
         if (args.length < 2) {
             LogUtil.send("参数不足: /cpt list <track> [page]", sender);
             return true;

@@ -13,7 +13,7 @@ public class CommandInfo extends Command {
         super(args, sender);
     }
 
-    public boolean collect() {
+    protected boolean execute() {
         if (args.length == 1) {
             LogUtil.send("参数不足: /cpt info <alias> 或者 /cpt info <track.number>", sender);
             return true;

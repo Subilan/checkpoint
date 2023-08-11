@@ -20,10 +20,6 @@ public class Executor implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("checkpoint.admin")) {
-            LogUtil.send("你需要拥有 checkpoint.admin 权限才可使用指令。", sender);
-        }
-
         if (label.equalsIgnoreCase("checkpoint") || label.equalsIgnoreCase("cpt")) {
             if (args.length == 0) {
                 sendAbout(sender);
