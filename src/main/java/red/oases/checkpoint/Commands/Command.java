@@ -27,7 +27,7 @@ public abstract class Command {
             return true;
         }
 
-        if (disableConsole && !(sender instanceof Player p)) {
+        if (disableConsole && !(sender instanceof Player)) {
             LogUtil.send("此指令只能由玩家执行。", sender);
             return true;
         }
