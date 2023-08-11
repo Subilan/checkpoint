@@ -31,7 +31,7 @@ public class CommandList extends Command {
         }
 
         if (section == null) {
-            LogUtil.send(String.format("找不到命名空间 %s", track), sender);
+            LogUtil.send(String.format("找不到赛道 %s", track), sender);
             return true;
         }
 
@@ -42,7 +42,11 @@ public class CommandList extends Command {
         var lastPage = (int) Math.ceil(keys.size() / 10d);
 
         if (page > lastPage) {
-            LogUtil.send("页码过大。", sender);
+            if (page == 1) {
+                LogUtil.send("此赛道下无数据。", sender);
+            } else {
+                LogUtil.send("页码过大。", sender);
+            }
             return true;
         }
 
