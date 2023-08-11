@@ -38,7 +38,8 @@ public class Tab implements TabCompleter {
         if (args.length == 0) return null;
 
         if (args.length == 1) {
-            return List.of(
+
+            if (sender.hasPermission("checkpoint.admin")) return List.of(
                     "remove",
                     "build",
                     "list",
@@ -47,8 +48,11 @@ public class Tab implements TabCompleter {
                     "cp",
                     "move",
                     "xcopy",
-                    "xcp"
+                    "xcp",
+                    "campaign",
+                    "join"
             );
+            else return List.of("join");
         }
 
         if (args.length == 2) {
@@ -63,6 +67,14 @@ public class Tab implements TabCompleter {
 
                 case "xcp", "xcopy" -> {
                     return List.of("<T1.N1,T2.N2,...>");
+                }
+
+                case "join" -> {
+                    return new ArrayList<>(Utils.getCampaignNames());
+                }
+
+                case "campaign" -> {
+                    return List.of("setstaus", "new", "delete");
                 }
             }
         }
@@ -80,6 +92,18 @@ public class Tab implements TabCompleter {
                 case "move" -> {
                     return List.of("<any-empty-track-name>");
                 }
+
+                case "campaign" -> {
+                    switch (args[1]) {
+                        case "setstatus", "delete" -> {
+                            return new ArrayList<>(Utils.getCampaignNames());
+                        }
+
+                        case "new" -> {
+                            return List.of("<name>");
+                        }
+                    }
+                }
             }
         }
 
@@ -91,6 +115,14 @@ public class Tab implements TabCompleter {
 
                 case "move" -> {
                     return List.of("<n1,n2,n3,...>");
+                }
+
+                case "campaign" -> {
+                    switch (args[1]) {
+                        case "setstatus" -> {
+                            return List.of("open", "close");
+                        }
+                    }
                 }
             }
         }
