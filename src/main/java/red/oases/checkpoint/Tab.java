@@ -85,7 +85,7 @@ public class Tab implements TabCompleter {
 
         if (args.length == 4) {
             switch (args[0]) {
-                case "copy", "cp" -> {
+                case "copy", "cp", "xcopy", "xcp" -> {
                     return List.of("true", "false");
                 }
 

@@ -4,6 +4,8 @@ import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
 
+import java.util.Date;
+
 public class CommandCopy extends Command {
 
     public CommandCopy(String[] args, CommandSender sender) {
@@ -52,6 +54,8 @@ public class CommandCopy extends Command {
         }
 
         section.set(to, fromSection);
+        section.set(to + ".copy_at", new Date().getTime());
+        section.set(to + ".copy_by", sender.getName());
         Files.saveSelections();
 
         LogUtil.send("成功将 " + from + " 复制到 " + to + "。", sender);
