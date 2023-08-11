@@ -3,6 +3,7 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Commands.SubCommands.CommandCampaignDelete;
 import red.oases.checkpoint.Commands.SubCommands.CommandCampaignNew;
+import red.oases.checkpoint.Commands.SubCommands.CommandCampaignSetstatus;
 import red.oases.checkpoint.LogUtil;
 
 public class CommandCampaign extends Command {
@@ -19,8 +20,15 @@ public class CommandCampaign extends Command {
         var action = args[1];
 
         switch (action) {
-            case "new" -> new CommandCampaignNew(args, sender).collect();
-            case "delete" -> new CommandCampaignDelete(args, sender).collect();
+            case "new" -> {
+                return new CommandCampaignNew(args, sender).collect();
+            }
+            case "delete" -> {
+                return new CommandCampaignDelete(args, sender).collect();
+            }
+            case "setstatus" -> {
+                return new CommandCampaignSetstatus(args, sender).collect();
+            }
         }
 
         return true;
