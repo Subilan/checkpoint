@@ -1,8 +1,8 @@
 package red.oases.checkpoint;
 
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Player;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,21 +33,18 @@ public class Selection {
 
     public static void create(String actionIdentifier, int x, int y, int z) {
         switch (getState(actionIdentifier)) {
-            case 0 -> {
-                memory.set(actionIdentifier + ".value1", List.of(x, y, z));
-            }
-            case 1, 2 -> {
-                memory.set(actionIdentifier + ".value2", List.of(x, y, z));
-            }
+            case 0 -> memory.set(actionIdentifier + ".value1", List.of(x, y, z));
+            case 1, 2 -> memory.set(actionIdentifier + ".value2", List.of(x, y, z));
         }
     }
 
-    public static void build(String actionIdentifier) {
+    public static void build(String playername, String actionIdentifier, String path) {
         var list1 = memory.getIntegerList(actionIdentifier + ".value1");
         var list2 = memory.getIntegerList(actionIdentifier + ".value2");
-        var id = UUID.randomUUID().toString();
-        Files.selections.set(id + ".pos1", list1);
-        Files.selections.set(id + ".pos2", list2);
+        Files.selections.set(path + ".pos1", list1);
+        Files.selections.set(path + ".pos2", list2);
+        Files.selections.set(path + ".creator", playername);
+        Files.selections.set(path + ".created_at", new Date().getTime());
         Files.saveSelections();
         clear(actionIdentifier);
     }

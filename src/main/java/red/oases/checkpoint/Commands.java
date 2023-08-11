@@ -361,13 +361,8 @@ public class Commands implements CommandExecutor {
                         return true;
                     }
 
-                    var pos1 = Selection.getData(playerId, 1);
-                    var pos2 = Selection.getData(playerId, 2);
                     var path = String.format("data.%s.%s", track, number);
-                    Files.selections.set(path + ".pos1", pos1);
-                    Files.selections.set(path + ".pos2", pos2);
-                    Files.selections.set(path + ".creator", p.getName());
-                    Files.selections.set(path + ".created_at", new Date().getTime());
+                    Selection.build(p.getName(), playerId, path);
                     if (!alias.isEmpty()) {
                         Files.selections.set("aliases." + alias, path);
                     }
