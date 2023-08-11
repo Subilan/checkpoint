@@ -62,8 +62,6 @@ public class CommandXCopy extends Command {
             if (toSection == null) LogUtil.send("成功复制 " + f + " 到 " + t + "。", sender);
             else LogUtil.send("成功将 " + f + " 覆盖到 " + t, sender);
             section.set(t, fromSection);
-            section.set(t + ".xcopy_by", sender.getName());
-            section.set(t + ".xcopy_at", new Date().getTime());
         }
 
         Files.saveSelections();

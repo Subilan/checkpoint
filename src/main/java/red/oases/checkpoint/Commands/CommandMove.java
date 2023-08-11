@@ -78,8 +78,6 @@ public class CommandMove extends Command{
             var tg = section.getConfigurationSection(fromTrack + "." + number);
             section.set(toTrack + "." + index, tg);
             section.set(fromTrack + "." + number, null);
-            section.set(toTrack + "." + index + ".move_at", new Date().getTime());
-            section.set(toTrack + "." + index + ".move_by", sender.getName());
         }
 
         Files.saveSelections();
