@@ -3,16 +3,8 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
-import red.oases.checkpoint.Selection;
-import red.oases.checkpoint.Utils;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class Executor implements CommandExecutor {
 
@@ -43,6 +35,10 @@ public class Executor implements CommandExecutor {
                     return new CommandCopy(args, sender).collect();
                 }
 
+                case "xcopy", "xcp" -> {
+                    return new CommandXCopy(args, sender).collect();
+                }
+
                 case "move" -> {
                     return new CommandMove(args, sender).collect();
                 }
@@ -69,6 +65,7 @@ public class Executor implements CommandExecutor {
                 }
             }
         }
+
         return false;
     }
 }
