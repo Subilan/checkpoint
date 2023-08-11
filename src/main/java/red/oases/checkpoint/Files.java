@@ -10,8 +10,10 @@ public class Files {
     public static File datafolder;
     public static FileConfiguration config;
     public static FileConfiguration selections;
+    public static FileConfiguration campaigns;
     public static File configFile;
     public static File selectionsFile;
+    public static File campaignFile;
 
     public static void init() {
         configFile = new File(
@@ -20,12 +22,17 @@ public class Files {
         selectionsFile = new File(
                 datafolder.getAbsoluteFile() + "/selections.yml"
         );
+        campaignFile = new File(
+                datafolder.getAbsoluteFile() + "/campaign.yml"
+        );
+
         reload();
     }
 
     public static void reload() {
         config = YamlConfiguration.loadConfiguration(configFile);
         selections = YamlConfiguration.loadConfiguration(selectionsFile);
+        campaigns = YamlConfiguration.loadConfiguration(campaignFile);
     }
 
     public static void saveConfig() {
@@ -39,6 +46,14 @@ public class Files {
     public static void saveSelections() {
         try {
             selections.save(selectionsFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveCampaigns() {
+        try {
+            campaigns.save(campaignFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,16 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Utils {
+    public static Set<String> getCampaignNames() {
+        var section = Files.campaigns;
+
+        if (section == null) {
+            return new HashSet<>();
+        } else {
+            return section.getKeys(false);
+        }
+    }
+
     public static Set<String> getTrackNames() {
         var section = Files.selections.getConfigurationSection("data");
 
