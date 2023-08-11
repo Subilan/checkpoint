@@ -82,20 +82,20 @@ public class Commands implements CommandExecutor {
                         return true;
                     }
 
-                    var fromList = section.getStringList(from);
-                    if (fromList.isEmpty()) {
+                    var fromSection = section.getConfigurationSection(from);
+                    if (fromSection == null) {
                         LogUtil.send(from + " 对应的路径点不存在。", sender);
                         return true;
                     }
 
-                    var toList = section.getStringList(to);
+                    var toSection = section.getConfigurationSection(to);
 
-                    if (!force && !toList.isEmpty()) {
+                    if (!force && toSection != null) {
                         LogUtil.send(to + " 对应的路径点已经有值。如果需要覆盖，请在指令末尾加上 true。", sender);
                         return true;
                     }
 
-                    section.set(to, fromList);
+                    section.set(to, fromSection);
                     Files.saveSelections();
 
                     LogUtil.send("成功将 " + from + " 复制到 " + to + "。", sender);
@@ -159,13 +159,13 @@ public class Commands implements CommandExecutor {
                     assert section != null;
                     assert section.getConfigurationSection(fromTrack) != null;
                     assert section.getConfigurationSection(toTrack) == null;
-                    var index = 1;
+                    var index = 0;
 
                     for (var number : targetNumbers) {
-                        var tg = section.getStringList(fromTrack + "." + number);
+                        index++;
+                        var tg = section.getConfigurationSection(fromTrack + "." + number);
                         section.set(toTrack + "." + index, tg);
                         section.set(fromTrack + "." + number, null);
-                        index++;
                     }
 
                     Files.saveSelections();
@@ -228,8 +228,8 @@ public class Commands implements CommandExecutor {
                                 String.format("data.%s.%s", track, k)
                         );
                         if (targetSection == null) continue;
-                        var pos1 = targetSection.getStringList("pos1");
-                        var pos2 = targetSection.getStringList("pos2");
+                        var pos1 = targetSection.getIntegerList("pos1");
+                        var pos2 = targetSection.getIntegerList("pos2");
                         var creator = targetSection.getString("creator");
                         result.append(String.format("[%s] (%s, %s, %s) - (%s, %s, %s) %s\n",
                                 k,
@@ -268,8 +268,8 @@ public class Commands implements CommandExecutor {
                         return true;
                     }
 
-                    var pos1 = Files.selections.getStringList(path + ".pos1");
-                    var pos2 = Files.selections.getStringList(path + ".pos2");
+                    var pos1 = Files.selections.getIntegerList(path + ".pos1");
+                    var pos2 = Files.selections.getIntegerList(path + ".pos2");
                     var creator = Files.selections.getString(path + ".creator");
                     var createdAt = Files.selections.getLong(path + ".created_at");
 
