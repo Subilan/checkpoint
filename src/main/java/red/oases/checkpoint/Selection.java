@@ -37,15 +37,4 @@ public class Selection {
             case 1, 2 -> memory.set(actionIdentifier + ".value2", List.of(x, y, z));
         }
     }
-
-    public static void build(String playername, String actionIdentifier, String path) {
-        var list1 = memory.getIntegerList(actionIdentifier + ".value1");
-        var list2 = memory.getIntegerList(actionIdentifier + ".value2");
-        Files.selections.set(path + ".pos1", list1);
-        Files.selections.set(path + ".pos2", list2);
-        Files.selections.set(path + ".creator", playername);
-        Files.selections.set(path + ".created_at", new Date().getTime());
-        Files.saveSelections();
-        clear(actionIdentifier);
-    }
 }
