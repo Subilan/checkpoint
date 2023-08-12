@@ -1,8 +1,8 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.Files;
 import red.oases.checkpoint.LogUtil;
+import red.oases.checkpoint.Point;
 import red.oases.checkpoint.Utils;
 
 public class CommandRemove extends Command {
@@ -12,35 +12,27 @@ public class CommandRemove extends Command {
     }
 
     protected boolean execute() {
-        if (args.length == 1) {
-            LogUtil.send("参数不足: /cpt remove <alias> 或者 /cpt remove <track.number>", sender);
+        if (args.length < 3) {
+            LogUtil.send("参数不足：/cpt remove <track> <number>", sender);
             return true;
         }
 
-        var target = args[1];
-        var isAlias = !target.contains(".");
-        String path;
+        var track = args[1];
+        var number = Utils.mustPositive(args[2]);
+        var path = String.format("%s.%s", track, number);
 
-        if (isAlias) {
-            path = Utils.getPathByAlias(target);
-            if (path == null) {
-                LogUtil.send(String.format("别名 %s 不存在。", target), sender);
-                return true;
-            }
-        } else {
-            path = String.format("data.%s", target);
-            if (Files.selections.getConfigurationSection(path) == null) {
-                LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
-                return true;
-            }
+        if (number == 0) {
+            LogUtil.send("数字不合法：" + number+"。", sender);
+            return true;
         }
 
-        Files.selections.set(path, null);
-        Files.saveSelections();
+        if (!Point.isPresent(track, number)) {
+            LogUtil.send("路径点 " + path + " 不存在。", sender);
+            return true;
+        }
 
-        LogUtil.send(isAlias
-                ? String.format("成功删除别名 %s 对应的路径点 %s", target, path)
-                : String.format("成功删除路径点 %s", path), sender);
+        Point.delete(track, number);
+        LogUtil.send("成功删除路径点 " + path + "。", sender);
 
         return true;
     }
