@@ -1,4 +1,4 @@
-package red.oases.checkpoint.Annotations;
+package red.oases.checkpoint.Extra.Annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface PermissionLevel {
-    int value() default 1;
+public @interface DisableConsole {
 }
