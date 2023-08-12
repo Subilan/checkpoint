@@ -75,7 +75,7 @@ public class Events implements Listener {
 
         var points = campaign.getTrack().getPoints();
         for (var pt : points) {
-            if (pt.isEntering(x, y, z)) {
+            if (pt.covers(x, y, z)) {
                 if (pt.isLast()) {
                     assert pt.getPrevious() != null;
                     PlayerTimer.getDedicated(p).stopTimerFor(p, pt.getPrevious());

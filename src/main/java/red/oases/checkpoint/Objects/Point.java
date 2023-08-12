@@ -6,7 +6,10 @@ import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.Date;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Point {
 
@@ -93,11 +96,20 @@ public class Point {
         return this.number == this.getSection().getKeys(false).size();
     }
 
-    public boolean isEntering(int x, int y, int z) {
-        return false;
+    private static IntSummaryStatistics getStats(List<Integer> input1, List<Integer> input2, int index) {
+        return Stream.of(input1.get(index), input2.get(index))
+                .collect(Collectors.summarizingInt(Integer::intValue));
     }
 
-    public boolean isLeaving(int x, int y, int z) {
-        return false;
+    public boolean covers(int x, int y, int z) {
+        var pos1 = getFirstPosition();
+        var pos2 = getSecondPosition();
+        var X = getStats(pos1, pos2, 0);
+        var Y = getStats(pos1, pos2, 1);
+        var Z = getStats(pos1, pos2, 2);
+
+        return (x >= X.getMin() && x <= X.getMax())
+                && (y >= Y.getMin() && y <= Y.getMax())
+                && (z >= Z.getMin() && z <= Z.getMax());
     }
 }
