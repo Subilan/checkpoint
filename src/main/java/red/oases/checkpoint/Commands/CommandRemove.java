@@ -1,9 +1,9 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.LogUtil;
-import red.oases.checkpoint.Point;
-import red.oases.checkpoint.Utils;
+import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Objects.Point;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 public class CommandRemove extends Command {
 
@@ -13,26 +13,26 @@ public class CommandRemove extends Command {
 
     protected boolean execute() {
         if (args.length < 3) {
-            LogUtil.send("参数不足：/cpt remove <track> <number>", sender);
+            LogUtils.send("参数不足：/cpt remove <track> <number>", sender);
             return true;
         }
 
         var track = args[1];
-        var number = Utils.mustPositive(args[2]);
+        var number = CommonUtils.mustPositive(args[2]);
         var path = String.format("%s.%s", track, number);
 
         if (number == 0) {
-            LogUtil.send("数字不合法：" + number+"。", sender);
+            LogUtils.send("数字不合法：" + number+"。", sender);
             return true;
         }
 
         if (!Point.isPresent(track, number)) {
-            LogUtil.send("路径点 " + path + " 不存在。", sender);
+            LogUtils.send("路径点 " + path + " 不存在。", sender);
             return true;
         }
 
         Point.delete(track, number);
-        LogUtil.send("成功删除路径点 " + path + "。", sender);
+        LogUtils.send("成功删除路径点 " + path + "。", sender);
 
         return true;
     }

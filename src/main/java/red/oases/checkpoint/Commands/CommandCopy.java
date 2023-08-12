@@ -1,8 +1,8 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.Files;
-import red.oases.checkpoint.LogUtil;
+import red.oases.checkpoint.Utils.FileUtils;
+import red.oases.checkpoint.Utils.LogUtils;
 
 public class CommandCopy extends Command {
 
@@ -12,7 +12,7 @@ public class CommandCopy extends Command {
 
     protected boolean execute() {
         if (args.length < 3) {
-            LogUtil.send("参数不足：/cpt copy <from-track.number> <to-track.number> [force?]", sender);
+            LogUtils.send("参数不足：/cpt copy <from-track.number> <to-track.number> [force?]", sender);
             return true;
         }
 
@@ -26,35 +26,35 @@ public class CommandCopy extends Command {
             }
 
             if (!args[3].equals("true") && !args[3].equals("false")) {
-                LogUtil.send("参数 force? 只能为 true 或者 false。", sender);
+                LogUtils.send("参数 force? 只能为 true 或者 false。", sender);
                 return true;
             }
         }
 
-        var section = Files.selections.getConfigurationSection("data");
+        var section = FileUtils.selections.getConfigurationSection("data");
 
         if (section == null) {
-            LogUtil.send("目前还没有任何检查点。", sender);
+            LogUtils.send("目前还没有任何检查点。", sender);
             return true;
         }
 
         var fromSection = section.getConfigurationSection(from);
         if (fromSection == null) {
-            LogUtil.send(from + " 对应的路径点不存在。", sender);
+            LogUtils.send(from + " 对应的路径点不存在。", sender);
             return true;
         }
 
         var toSection = section.getConfigurationSection(to);
 
         if (!force && toSection != null) {
-            LogUtil.send(to + " 对应的路径点已经有值。如果需要覆盖，请在指令末尾加上 true。", sender);
+            LogUtils.send(to + " 对应的路径点已经有值。如果需要覆盖，请在指令末尾加上 true。", sender);
             return true;
         }
 
         section.set(to, fromSection);
-        Files.saveSelections();
+        FileUtils.saveSelections();
 
-        LogUtil.send("成功将 " + from + " 复制到 " + to + "。", sender);
+        LogUtils.send("成功将 " + from + " 复制到 " + to + "。", sender);
         return true;
     }
 }

@@ -2,9 +2,7 @@ package red.oases.checkpoint;
 
 import org.bukkit.configuration.MemoryConfiguration;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class Selection {
     public static MemoryConfiguration memory = new MemoryConfiguration();

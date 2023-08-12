@@ -1,10 +1,10 @@
 package red.oases.checkpoint.Commands.SubCommands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.Campaign;
+import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Commands.Command;
-import red.oases.checkpoint.LogUtil;
-import red.oases.checkpoint.Utils;
+import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 public class CommandCampaignDelete extends Command {
     public CommandCampaignDelete(String[] args, CommandSender sender) {
@@ -14,16 +14,16 @@ public class CommandCampaignDelete extends Command {
     protected boolean execute() {
 
         var name = args[2];
-        var campaigns = Utils.getCampaignNames();
+        var campaigns = CommonUtils.getCampaignNames();
 
         if (!campaigns.contains(name)) {
-            LogUtil.send("竞赛 " + name + " 不存在。", sender);
+            LogUtils.send("竞赛 " + name + " 不存在。", sender);
             return true;
         }
 
         new Campaign(name).delete();
 
-        LogUtil.send("已删除竞赛 " + name + "。", sender);
+        LogUtils.send("已删除竞赛 " + name + "。", sender);
 
         return true;
     }

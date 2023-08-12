@@ -4,12 +4,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import red.oases.checkpoint.LogUtil;
+import red.oases.checkpoint.Utils.LogUtils;
 
 public class Executor implements CommandExecutor {
 
     public static void sendAbout(CommandSender sender) {
-        LogUtil.send("""
+        LogUtils.send("""
                                 
                 checkpoint v1.0
                 设置路径点以监控玩家在拉力赛中的赛程数据

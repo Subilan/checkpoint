@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
-import red.oases.checkpoint.LogUtil;
+import red.oases.checkpoint.Utils.LogUtils;
 
 public abstract class Command {
     public String[] args;
@@ -26,12 +26,12 @@ public abstract class Command {
     public boolean collect() {
 
         if (permissionLevel > 0 && !sender.hasPermission("checkpoint.admin")) {
-            LogUtil.send("你没有足够的权限执行此指令。", sender);
+            LogUtils.send("你没有足够的权限执行此指令。", sender);
             return true;
         }
 
         if (disableConsole && !(sender instanceof Player)) {
-            LogUtil.send("此指令只能由玩家执行。", sender);
+            LogUtils.send("此指令只能由玩家执行。", sender);
             return true;
         }
 

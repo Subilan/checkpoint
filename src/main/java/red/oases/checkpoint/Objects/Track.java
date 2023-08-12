@@ -1,6 +1,8 @@
-package red.oases.checkpoint;
+package red.oases.checkpoint.Objects;
 
 import org.bukkit.configuration.ConfigurationSection;
+import red.oases.checkpoint.Utils.FileUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +16,11 @@ public class Track {
     }
 
     public boolean isPresent() {
-        return Files.selections.getConfigurationSection("data." + this.name) != null;
+        return FileUtils.selections.getConfigurationSection("data." + this.name) != null;
     }
 
     public ConfigurationSection getSection() {
-        return Files.selections.getConfigurationSection("data." + this.name);
+        return FileUtils.selections.getConfigurationSection("data." + this.name);
     }
 
     public List<Point> getPoints() {
@@ -28,7 +30,7 @@ public class Track {
                 .sorted()
                 .toList();
         for (var k : keys) {
-            var i = Utils.mustPositive(k);
+            var i = CommonUtils.mustPositive(k);
             if (i == 0) continue;
             result.add(new Point(this.name, i));
         }

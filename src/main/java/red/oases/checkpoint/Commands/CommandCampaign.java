@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Commands.SubCommands.CommandCampaignDelete;
 import red.oases.checkpoint.Commands.SubCommands.CommandCampaignNew;
 import red.oases.checkpoint.Commands.SubCommands.CommandCampaignSetstatus;
-import red.oases.checkpoint.LogUtil;
+import red.oases.checkpoint.Utils.LogUtils;
 
 public class CommandCampaign extends Command {
     public CommandCampaign(String[] args, CommandSender sender) {
@@ -13,7 +13,7 @@ public class CommandCampaign extends Command {
 
     protected boolean execute() {
         if (args.length < 2) {
-            LogUtil.send("参数不足：/cpt campaign <action> [args...]", sender);
+            LogUtils.send("参数不足：/cpt campaign <action> [args...]", sender);
             return true;
         }
 

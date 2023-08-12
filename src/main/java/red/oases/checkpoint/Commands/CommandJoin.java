@@ -3,9 +3,9 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
-import red.oases.checkpoint.Campaign;
-import red.oases.checkpoint.LogUtil;
-import red.oases.checkpoint.Utils;
+import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 @PermissionLevel(0)
 @DisableConsole
@@ -16,23 +16,23 @@ public class CommandJoin extends Command {
 
     protected boolean execute() {
         if (args.length < 2) {
-            LogUtil.send("参数不足：/cpt join <竞赛名称>", sender);
+            LogUtils.send("参数不足：/cpt join <竞赛名称>", sender);
             return true;
         }
 
         var cam = args[1];
 
-        var campaigns = Utils.getCampaignNames();
+        var campaigns = CommonUtils.getCampaignNames();
 
         if (!campaigns.contains(cam)) {
-            LogUtil.send("竞赛 " + cam + " 不存在。", sender);
+            LogUtils.send("竞赛 " + cam + " 不存在。", sender);
             return true;
         }
 
-        var existingCampaign = Utils.getCampaignOfPlayer(sender.getName());
+        var existingCampaign = CommonUtils.getCampaignOfPlayer(sender.getName());
 
         if (existingCampaign != null) {
-            LogUtil.send("你已经加入了竞赛 " + existingCampaign.getName() + "。若要加入 " + cam + "，请先退出先前的竞赛。", sender);
+            LogUtils.send("你已经加入了竞赛 " + existingCampaign.getName() + "。若要加入 " + cam + "，请先退出先前的竞赛。", sender);
             return true;
         }
 
@@ -40,7 +40,7 @@ public class CommandJoin extends Command {
 
         campaign.addPlayer(sender.getName());
 
-        LogUtil.send("你已成功加入竞赛 " + cam + "！", sender);
+        LogUtils.send("你已成功加入竞赛 " + cam + "！", sender);
 
         return true;
     }

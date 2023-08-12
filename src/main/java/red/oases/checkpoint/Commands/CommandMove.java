@@ -1,9 +1,9 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.Files;
-import red.oases.checkpoint.LogUtil;
-import red.oases.checkpoint.Utils;
+import red.oases.checkpoint.Utils.FileUtils;
+import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 import java.util.HashSet;
 
@@ -14,22 +14,22 @@ public class CommandMove extends Command{
 
     protected boolean execute() {
         if (args.length < 4) {
-            LogUtil.send("参数不足：/cpt move <from-track> <to-track> <n1,n2,n3,...>", sender);
+            LogUtils.send("参数不足：/cpt move <from-track> <to-track> <n1,n2,n3,...>", sender);
             return true;
         }
 
-        var tracks = Utils.getTrackNames();
+        var tracks = CommonUtils.getTrackNames();
         var fromTrack = args[1];
         var toTrack = args[2];
         var numbers = args[3].split(",");
 
         if (!tracks.contains(fromTrack)) {
-            LogUtil.send("赛道不存在：" + fromTrack + "。", sender);
+            LogUtils.send("赛道不存在：" + fromTrack + "。", sender);
             return true;
         }
 
         if (tracks.contains(toTrack)) {
-            LogUtil.send("赛道 " + toTrack + " 不为空。", sender);
+            LogUtils.send("赛道 " + toTrack + " 不为空。", sender);
             return true;
         }
 
@@ -41,15 +41,15 @@ public class CommandMove extends Command{
                 var numberRange = n.split("-");
 
                 if (numberRange.length != 2) {
-                    LogUtil.send("数字范围不合法：" + n, sender);
+                    LogUtils.send("数字范围不合法：" + n, sender);
                     return true;
                 }
 
-                var numberRangeStart = Utils.mustPositive(numberRange[0]);
-                var numberRangeEnd = Utils.mustPositive(numberRange[1]);
+                var numberRangeStart = CommonUtils.mustPositive(numberRange[0]);
+                var numberRangeEnd = CommonUtils.mustPositive(numberRange[1]);
 
                 if (numberRangeStart == 0 || numberRangeEnd == 0) {
-                    LogUtil.send("数字范围不合法：" + n, sender);
+                    LogUtils.send("数字范围不合法：" + n, sender);
                     return true;
                 }
 
@@ -57,16 +57,16 @@ public class CommandMove extends Command{
                     targetNumbers.add(nn);
                 }
             } else {
-                var nn = Utils.mustPositive(n);
+                var nn = CommonUtils.mustPositive(n);
                 if (nn == 0) {
-                    LogUtil.send("序号不合法：" + n, sender);
+                    LogUtils.send("序号不合法：" + n, sender);
                     return true;
                 }
                 targetNumbers.add(nn);
             }
         }
 
-        var section = Files.selections.getConfigurationSection("data");
+        var section = FileUtils.selections.getConfigurationSection("data");
         assert section != null;
         assert section.getConfigurationSection(fromTrack) != null;
         assert section.getConfigurationSection(toTrack) == null;
@@ -79,9 +79,9 @@ public class CommandMove extends Command{
             section.set(fromTrack + "." + number, null);
         }
 
-        Files.saveSelections();
+        FileUtils.saveSelections();
 
-        LogUtil.send("成功移动 " + index + " 个检查点。", sender);
+        LogUtils.send("成功移动 " + index + " 个检查点。", sender);
         return true;
     }
 }

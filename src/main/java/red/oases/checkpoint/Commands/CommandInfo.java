@@ -1,9 +1,9 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.Files;
-import red.oases.checkpoint.LogUtil;
-import red.oases.checkpoint.Utils;
+import red.oases.checkpoint.Utils.FileUtils;
+import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class CommandInfo extends Command {
 
     protected boolean execute() {
         if (args.length == 1) {
-            LogUtil.send("参数不足: /cpt info <alias> 或者 /cpt info <track.number>", sender);
+            LogUtils.send("参数不足: /cpt info <alias> 或者 /cpt info <track.number>", sender);
             return true;
         }
 
@@ -24,23 +24,23 @@ public class CommandInfo extends Command {
         String path;
 
         if (isAlias) {
-            path = Utils.getPathByAlias(target);
+            path = CommonUtils.getPathByAlias(target);
             if (path == null) {
-                LogUtil.send(String.format("别名 %s 不存在。", target), sender);
+                LogUtils.send(String.format("别名 %s 不存在。", target), sender);
                 return true;
             }
         } else {
             path = String.format("data.%s", target);
-            if (Files.selections.getConfigurationSection(path) == null) {
-                LogUtil.send(String.format("路径点 %s 不存在。", target), sender);
+            if (FileUtils.selections.getConfigurationSection(path) == null) {
+                LogUtils.send(String.format("路径点 %s 不存在。", target), sender);
                 return true;
             }
         }
 
-        var pos1 = Files.selections.getIntegerList(path + ".pos1");
-        var pos2 = Files.selections.getIntegerList(path + ".pos2");
-        var creator = Files.selections.getString(path + ".creator");
-        var createdAt = Files.selections.getLong(path + ".created_at");
+        var pos1 = FileUtils.selections.getIntegerList(path + ".pos1");
+        var pos2 = FileUtils.selections.getIntegerList(path + ".pos2");
+        var creator = FileUtils.selections.getString(path + ".creator");
+        var createdAt = FileUtils.selections.getLong(path + ".created_at");
 
         var result = String.format(
                 """
@@ -55,13 +55,13 @@ public class CommandInfo extends Command {
                 creator, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(createdAt))
         );
 
-        var targetAlias = isAlias ? target : Utils.getAliasByPath(target);
+        var targetAlias = isAlias ? target : CommonUtils.getAliasByPath(target);
 
         if (!targetAlias.equalsIgnoreCase("")) {
             result += String.format("\n别名: %s", targetAlias);
         }
 
-        LogUtil.send(result, sender);
+        LogUtils.send(result, sender);
         return true;
     }
 }

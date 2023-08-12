@@ -1,4 +1,4 @@
-package red.oases.checkpoint;
+package red.oases.checkpoint.Utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class Files {
+public class FileUtils {
     public static File datafolder;
     public static FileConfiguration config;
     public static FileConfiguration selections;

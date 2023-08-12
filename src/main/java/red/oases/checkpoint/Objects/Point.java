@@ -1,7 +1,8 @@
-package red.oases.checkpoint;
+package red.oases.checkpoint.Objects;
 
 import org.bukkit.configuration.ConfigurationSection;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
+import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Point {
 
     public void delete() {
         this.track.getSection().set(this.number.toString(), null);
-        Files.saveSelections();
+        FileUtils.saveSelections();
     }
 
     public static boolean isPresent(String trackname, Integer number) {
@@ -24,16 +25,16 @@ public class Point {
     public static void delete(String trackname, Integer number) {
         var track = new Track(trackname);
         track.getSection().set(number.toString(), null);
-        Files.saveSelections();
+        FileUtils.saveSelections();
     }
 
     public static void build(String trackname, Integer number, List<Integer> pos1, List<Integer> pos2, String creator) {
-        var section = Files.selections.createSection("data." + trackname + "." + number);
+        var section = FileUtils.selections.createSection("data." + trackname + "." + number);
         section.set("pos1", pos1);
         section.set("pos2", pos2);
         section.set("creator", creator);
         section.set("created_at", new Date().getTime());
-        Files.saveSelections();
+        FileUtils.saveSelections();
     }
 
 
@@ -56,7 +57,7 @@ public class Point {
     public void setNumber(Integer number) {
         track.getSection().set(number.toString(), this.getSection());
         track.getSection().set(this.number.toString(), null);
-        Files.saveSelections();
+        FileUtils.saveSelections();
     }
 
     public List<Integer> getFirstPosition() {

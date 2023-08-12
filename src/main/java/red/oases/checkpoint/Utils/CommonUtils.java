@@ -1,14 +1,15 @@
-package red.oases.checkpoint;
+package red.oases.checkpoint.Utils;
 
 import org.jetbrains.annotations.Nullable;
+import red.oases.checkpoint.Objects.Campaign;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Utils {
+public class CommonUtils {
     public static Set<String> getCampaignNames() {
-        var section = Files.campaigns;
+        var section = FileUtils.campaigns;
 
         if (section == null) {
             return new HashSet<>();
@@ -18,7 +19,7 @@ public class Utils {
     }
 
     public static Set<String> getTrackNames() {
-        var section = Files.selections.getConfigurationSection("data");
+        var section = FileUtils.selections.getConfigurationSection("data");
 
         if (section == null) {
             return new HashSet<>();
@@ -37,7 +38,7 @@ public class Utils {
     public static String getAliasByPath(String path) {
         var result = new AtomicReference<>("");
 
-        var aliasSection = Files.selections.getConfigurationSection("aliases");
+        var aliasSection = FileUtils.selections.getConfigurationSection("aliases");
 
         if (aliasSection != null) {
             var map = aliasSection.getValues(false);
@@ -50,7 +51,7 @@ public class Utils {
     }
 
     public static @Nullable String getPathByAlias(String alias) {
-        return Files.selections.getString(String.format("aliases.%s", alias));
+        return FileUtils.selections.getString(String.format("aliases.%s", alias));
     }
 
     /**
@@ -71,7 +72,7 @@ public class Utils {
 
     public static @Nullable Campaign getCampaignOfPlayer(String playername) {
         for (var cam : getCampaignNames()) {
-            var players = Files.campaigns.getStringList(cam + ".players");
+            var players = FileUtils.campaigns.getStringList(cam + ".players");
             if (players.contains(playername)) return new Campaign(cam);
         }
 

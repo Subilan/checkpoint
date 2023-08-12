@@ -1,8 +1,9 @@
-package red.oases.checkpoint;
+package red.oases.checkpoint.Objects;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
+import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Campaign {
 
     public Campaign(String cam) {
         this.name = cam;
-        this.section = Files.campaigns.getConfigurationSection(cam);
+        this.section = FileUtils.campaigns.getConfigurationSection(cam);
         if (section == null) throw new ObjectNotFoundException("campaign");
     }
 
@@ -42,36 +43,36 @@ public class Campaign {
         this.section.set("created_at", new Date().getTime());
         this.section.set("created_by", sender);
         this.section.set("is_open", false);
-        Files.saveCampaigns();
+        FileUtils.saveCampaigns();
         return this;
     }
 
     public void delete() {
-        Files.campaigns.set(name, null);
-        Files.saveCampaigns();
+        FileUtils.campaigns.set(name, null);
+        FileUtils.saveCampaigns();
     }
 
     public void setStatus(String status) {
         this.section.set("is_open", status.equals("open"));
-        Files.saveCampaigns();
+        FileUtils.saveCampaigns();
     }
 
     public void addPlayer(String playername) {
         var list = this.section.getStringList("players");
         list.add(playername);
         this.section.set("players", list);
-        Files.saveCampaigns();
+        FileUtils.saveCampaigns();
     }
 
     public void removePlayer(String playername) {
         var list = this.section.getStringList("players");
         list.remove(playername);
         this.section.set("players", list);
-        Files.saveCampaigns();
+        FileUtils.saveCampaigns();
     }
 
     public static List<String> getPlayers(String cam) {
-        var section = Files.campaigns.getConfigurationSection(cam);
+        var section = FileUtils.campaigns.getConfigurationSection(cam);
 
         if (section == null) return List.of();
 
