@@ -3,7 +3,7 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.*;
-import red.oases.checkpoint.Annotations.DisableConsole;
+import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 
 @DisableConsole
 public class CommandBuild extends Command {
