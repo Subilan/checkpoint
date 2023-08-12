@@ -39,7 +39,7 @@ public class CommandCampaignNew extends Command {
         var campaign = new Campaign(name).create(track, sender);
 
         LogUtils.send("已创建竞赛 " + name + "。", sender);
-        LogUtils.send("竞赛现在处于 " + (campaign.isOpen ? "开启" : "关闭") + " 状态。", sender);
+        LogUtils.send("竞赛现在处于 " + (campaign.isOpen() ? "开启" : "关闭") + " 状态。", sender);
         return true;
     }
 }
