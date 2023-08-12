@@ -1,6 +1,7 @@
 package red.oases.checkpoint.Objects;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 import red.oases.checkpoint.Utils.FileUtils;
 
@@ -61,18 +62,42 @@ public class Point {
     }
 
     public List<Integer> getFirstPosition() {
-        return track.getSection().getIntegerList("pos1");
+        return getSection().getIntegerList("pos1");
     }
 
     public List<Integer> getSecondPosition() {
-        return track.getSection().getIntegerList("pos2");
+        return getSection().getIntegerList("pos2");
     }
 
     public Date getCreatedAt() {
-        return new Date(track.getSection().getLong("created_at"));
+        return new Date(getSection().getLong("created_at"));
     }
 
     public String getCreator() {
-        return track.getSection().getString("creator");
+        return getSection().getString("creator");
+    }
+
+    public boolean hasPrevious() {
+        return track.getSection().getConfigurationSection(String.valueOf(this.number - 1)) != null;
+    }
+
+    public @Nullable Point getPrevious() {
+        try {
+            return new Point(this.track, this.number - 1);
+        } catch (ObjectNotFoundException e) {
+            return null;
+        }
+    }
+
+    public boolean isLast() {
+        return this.number == this.getSection().getKeys(false).size();
+    }
+
+    public boolean isEntering(int x, int y, int z) {
+        return false;
+    }
+
+    public boolean isLeaving(int x, int y, int z) {
+        return false;
     }
 }

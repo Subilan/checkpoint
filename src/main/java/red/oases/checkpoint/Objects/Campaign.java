@@ -11,6 +11,8 @@ import java.util.List;
 public class Campaign {
     public ConfigurationSection section;
     private final String name;
+    public boolean isFinished = false;
+
     public String getName() {
         return this.name;
     }
@@ -81,5 +83,13 @@ public class Campaign {
 
     public Track getTrack() {
         return new Track(getTrackName());
+    }
+
+    public boolean isFinished() {
+        return this.isFinished;
+    }
+
+    public void setFinished(DedicatedPlayerTimer timer) {
+        this.isFinished = true;
     }
 }

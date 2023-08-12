@@ -6,6 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import red.oases.checkpoint.Objects.PlayerTimer;
+import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 
 public class Events implements Listener {
 
@@ -29,7 +32,7 @@ public class Events implements Listener {
         if (action.isLeftClick()) {
             if (state == 0) return;
             Selection.clear(actionId);
-            LogUtil.send("已清除选择的顶点。", player);
+            LogUtils.send("已清除选择的顶点。", player);
             return;
         }
 
@@ -45,7 +48,7 @@ public class Events implements Listener {
         var afterState = Selection.getState(actionId);
 
         if (afterState > 0) {
-            LogUtil.send(String.format(
+            LogUtils.send(String.format(
                     "已选择顶点 %s (%s, %s, %s)",
                     afterState,
                     location.getBlockX(),
@@ -57,6 +60,35 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
+        var p = e.getPlayer();
 
+        if (!p.isGliding()) return;
+
+        var campaign = CommonUtils.getCampaignOfPlayer(p.getName());
+
+        if (campaign == null) return;
+
+        var loc = p.getLocation();
+        var x = loc.getBlockX();
+        var y = loc.getBlockY();
+        var z = loc.getBlockZ();
+
+        var points = campaign.getTrack().getPoints();
+        for (var pt : points) {
+            if (pt.isEntering(x, y, z)) {
+                if (pt.isLast()) {
+                    assert pt.getPrevious() != null;
+                    PlayerTimer.getDedicated(p).stopTimerFor(p, pt.getPrevious());
+                    campaign.setFinished(PlayerTimer.getDedicated(p));
+                    break;
+                } else {
+                    if (pt.hasPrevious()) {
+                        assert pt.getPrevious() != null;
+                        PlayerTimer.getDedicated(p).stopTimerFor(p, pt.getPrevious());
+                    }
+                    PlayerTimer.getDedicated(p).startTimerFor(p, pt);
+                }
+            }
+        }
     }
 }
