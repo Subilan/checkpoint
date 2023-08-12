@@ -1,6 +1,7 @@
 package red.oases.checkpoint;
 
 import org.bukkit.configuration.ConfigurationSection;
+import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 
 import java.util.Date;
 import java.util.List;
@@ -39,11 +40,13 @@ public class Point {
     public Point(Track track, int number) {
         this.track = track;
         this.number = number;
+        if (getSection() == null) throw new ObjectNotFoundException("point " + track + "." + number);
     }
 
     public Point(String trackname, int number) {
         this.track = new Track(trackname);
         this.number = number;
+        if (getSection() == null) throw new ObjectNotFoundException("point " + track + "." + number);
     }
 
     public ConfigurationSection getSection() {
