@@ -14,7 +14,7 @@ public class Campaign {
         return this.name;
     }
 
-    public String getTargetTrack() {
+    public String getTrackName() {
         return section.getString("target_track");
     }
 
@@ -79,6 +79,6 @@ public class Campaign {
     }
 
     public Track getTrack() {
-        return new Track(getTargetTrack());
+        return new Track(getTrackName());
     }
 }

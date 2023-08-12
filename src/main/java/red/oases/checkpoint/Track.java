@@ -23,7 +23,11 @@ public class Track {
 
     public List<Point> getPoints() {
         var result = new ArrayList<Point>();
-        for (var k : this.getSection().getKeys(false)) {
+        var keys = this.getSection().getKeys(false)
+                .stream()
+                .sorted()
+                .toList();
+        for (var k : keys) {
             var i = Utils.mustPositive(k);
             if (i == 0) continue;
             result.add(new Point(this.name, i));
