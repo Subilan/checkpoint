@@ -2,30 +2,39 @@ package red.oases.checkpoint;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 
 import java.util.Date;
 import java.util.List;
 
 public class Campaign {
     public ConfigurationSection section;
-    public final String name;
-    public String targetTrack;
-    public long createdAt;
-    public String createdBy;
-    public boolean isOpen;
+    private final String name;
+    public String getName() {
+        return this.name;
+    }
+
+    public String getTargetTrack() {
+        return section.getString("target_track");
+    }
+
+    public Date getCreatedAt() {
+        return new Date(section.getLong("created_at"));
+    }
+
+    public String getCreatedBy() {
+        return section.getString("created_by");
+    }
+
+    public boolean isOpen() {
+        return section.getBoolean("is_open");
+    }
+
 
     public Campaign(String cam) {
         this.name = cam;
         this.section = Files.campaigns.getConfigurationSection(cam);
-        this.fields();
-    }
-
-    private void fields() {
-        if (section == null) return;
-        this.targetTrack = section.getString("target_track");
-        this.createdAt = section.getLong("created_at");
-        this.createdBy = section.getString("created_by");
-        this.isOpen = section.getBoolean("is_open");
+        if (section == null) throw new ObjectNotFoundException("campaign");
     }
 
     public Campaign create(String track, CommandSender sender) {
@@ -34,20 +43,17 @@ public class Campaign {
         this.section.set("created_by", sender);
         this.section.set("is_open", false);
         Files.saveCampaigns();
-        this.fields();
         return this;
     }
 
     public void delete() {
         Files.campaigns.set(name, null);
         Files.saveCampaigns();
-        this.fields();
     }
 
     public void setStatus(String status) {
         this.section.set("is_open", status.equals("open"));
         Files.saveCampaigns();
-        this.fields();
     }
 
     public void addPlayer(String playername) {
@@ -64,7 +70,15 @@ public class Campaign {
         Files.saveCampaigns();
     }
 
-    public List<String> getPlayers() {
-        return this.section.getStringList("players");
+    public static List<String> getPlayers(String cam) {
+        var section = Files.campaigns.getConfigurationSection(cam);
+
+        if (section == null) return List.of();
+
+        return section.getStringList("players");
+    }
+
+    public Track getTrack() {
+        return new Track(getTargetTrack());
     }
 }
