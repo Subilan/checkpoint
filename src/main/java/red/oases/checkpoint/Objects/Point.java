@@ -93,7 +93,7 @@ public class Point {
     }
 
     public boolean isLast() {
-        return this.number == this.getSection().getKeys(false).size();
+        return this.number == this.track.getSection().getKeys(false).size();
     }
 
     private static IntSummaryStatistics getStats(List<Integer> input1, List<Integer> input2, int index) {
