@@ -32,7 +32,11 @@ public class CommandJoin extends Command {
         var existingCampaign = CommonUtils.getCampaignOfPlayer(sender.getName());
 
         if (existingCampaign != null) {
-            LogUtils.send("你已经加入了竞赛 " + existingCampaign.getName() + "。若要加入 " + cam + "，请先退出先前的竞赛。", sender);
+            LogUtils.send("你已经加入了竞赛 " + existingCampaign.getName() + "。", sender);
+
+            if (!existingCampaign.getName().equals(cam)) {
+                LogUtils.send("若要加入 " + cam + "，请先退出先前的竞赛。", sender);
+            }
             return true;
         }
 
