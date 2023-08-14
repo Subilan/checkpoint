@@ -3,7 +3,6 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
-import red.oases.checkpoint.Utils.CommonUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,27 +13,16 @@ public class CommandInfo extends Command {
     }
 
     protected boolean execute() {
-        if (args.length == 1) {
-            LogUtils.send("参数不足: /cpt info <alias> 或者 /cpt info <track.number>", sender);
+        if (args.length < 2) {
+            LogUtils.send("参数不足：/cpt info <track.number>", sender);
             return true;
         }
 
-        var target = args[1];
-        var isAlias = !target.contains(".");
-        String path;
+        var path = "data." + args[1];
 
-        if (isAlias) {
-            path = CommonUtils.getPathByAlias(target);
-            if (path == null) {
-                LogUtils.send(String.format("别名 %s 不存在。", target), sender);
-                return true;
-            }
-        } else {
-            path = String.format("data.%s", target);
-            if (FileUtils.selections.getConfigurationSection(path) == null) {
-                LogUtils.send(String.format("路径点 %s 不存在。", target), sender);
-                return true;
-            }
+        if (FileUtils.selections.getConfigurationSection(path) == null) {
+            LogUtils.send(String.format("路径点 %s 不存在。", args[1]), sender);
+            return true;
         }
 
         var pos1 = FileUtils.selections.getIntegerList(path + ".pos1");
@@ -54,12 +42,6 @@ public class CommandInfo extends Command {
                 pos2.get(0), pos2.get(1), pos2.get(2),
                 creator, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(createdAt))
         );
-
-        var targetAlias = isAlias ? target : CommonUtils.getAliasByPath(target);
-
-        if (!targetAlias.equalsIgnoreCase("")) {
-            result += String.format("\n别名: %s", targetAlias);
-        }
 
         LogUtils.send(result, sender);
         return true;
