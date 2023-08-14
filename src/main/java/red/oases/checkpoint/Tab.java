@@ -59,11 +59,11 @@ public class Tab implements TabCompleter {
 
         if (args.length == 2) {
             switch (args[0]) {
-                case "remove", "copy", "cp" -> {
+                case "copy", "cp", "info" -> {
                     return getAllPaths();
                 }
 
-                case "list", "move" -> {
+                case "remove", "list", "move" -> {
                     return new ArrayList<>(CommonUtils.getTrackNames());
                 }
 
@@ -85,6 +85,12 @@ public class Tab implements TabCompleter {
             switch (args[0]) {
                 case "copy", "cp" -> {
                     return List.of("<track.number>");
+                }
+
+                case "remove" -> {
+                    var target = FileUtils.selections.getConfigurationSection("data." + args[1]);
+                    if (target == null) return List.of();
+                    return new ArrayList<>(target.getKeys(false));
                 }
 
                 case "xcopy", "xcp" -> {
@@ -120,10 +126,8 @@ public class Tab implements TabCompleter {
                 }
 
                 case "campaign" -> {
-                    switch (args[1]) {
-                        case "setstatus" -> {
-                            return List.of("open", "close");
-                        }
+                    if (args[1].equals("setstatus")) {
+                        return List.of("open", "close");
                     }
                 }
             }
