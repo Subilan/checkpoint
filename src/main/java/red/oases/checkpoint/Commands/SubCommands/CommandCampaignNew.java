@@ -26,6 +26,10 @@ public class CommandCampaignNew extends Command {
         var tracks = CommonUtils.getTrackNames();
         var campaigns = CommonUtils.getCampaignNames();
 
+        if (args.length < 4) {
+            LogUtils.send("由于没有指定赛道名称，默认使用与竞赛名称同名赛道。", sender);
+        }
+
         if (!tracks.contains(track)) {
             LogUtils.send("赛道 " + track + " 不存在。", sender);
             return true;
@@ -36,7 +40,7 @@ public class CommandCampaignNew extends Command {
             return true;
         }
 
-        var campaign = new Campaign(name).create(track, sender);
+        var campaign = Campaign.create(name, track, sender);
 
         LogUtils.send("已创建竞赛 " + name + "。", sender);
         LogUtils.send("竞赛现在处于 " + (campaign.isOpen() ? "开启" : "关闭") + " 状态。", sender);

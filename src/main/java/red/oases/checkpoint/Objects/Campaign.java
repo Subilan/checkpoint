@@ -33,6 +33,17 @@ public class Campaign {
         return section.getBoolean("is_open");
     }
 
+    public Campaign(String cam, Boolean nocheck) {
+        this.name = cam;
+        this.section = FileUtils.campaigns.getConfigurationSection(cam);
+        if (section == null) {
+            if (nocheck) {
+                this.section = FileUtils.campaigns.createSection(cam);
+            } else {
+                throw new ObjectNotFoundException("campaign");
+            }
+        }
+    }
 
     public Campaign(String cam) {
         this.name = cam;
@@ -40,13 +51,14 @@ public class Campaign {
         if (section == null) throw new ObjectNotFoundException("campaign");
     }
 
-    public Campaign create(String track, CommandSender sender) {
-        this.section.set("target_track", track);
-        this.section.set("created_at", new Date().getTime());
-        this.section.set("created_by", sender);
-        this.section.set("is_open", false);
+    public static Campaign create(String name, String track, CommandSender sender) {
+        var campaign = new Campaign(name, true);
+        campaign.section.set("target_track", track);
+        campaign.section.set("created_at", new Date().getTime());
+        campaign.section.set("created_by", sender.getName());
+        campaign.section.set("is_open", false);
         FileUtils.saveCampaigns();
-        return this;
+        return campaign;
     }
 
     public void delete() {
@@ -85,11 +97,7 @@ public class Campaign {
         return new Track(getTrackName());
     }
 
-    public boolean isFinished() {
-        return this.isFinished;
-    }
-
-    public void setFinished(DedicatedPlayerTimer timer) {
+    public void setFinished() {
         this.isFinished = true;
     }
 }
