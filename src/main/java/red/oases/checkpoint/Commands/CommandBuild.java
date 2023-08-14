@@ -41,6 +41,11 @@ public class CommandBuild extends Command {
             return true;
         }
 
+        if (Point.isPresent(track, number)) {
+            LogUtils.send("错误：" + track + "." + number + " 已经存在。", sender);
+            return true;
+        }
+
         Point.build(
                 track,
                 number,
