@@ -52,7 +52,8 @@ public class Tab implements TabCompleter {
                     "xcopy",
                     "xcp",
                     "campaign",
-                    "join"
+                    "join",
+                    "restart"
             );
             else return List.of("join");
         }
