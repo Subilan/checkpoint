@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class CommonUtils {
     public static Set<String> getCampaignNames() {
+        FileUtils.reload();
         var section = FileUtils.campaigns;
 
         if (section == null) {
@@ -19,6 +20,7 @@ public class CommonUtils {
     }
 
     public static Set<String> getTrackNames() {
+        FileUtils.reload();
         var section = FileUtils.selections.getConfigurationSection("data");
 
         if (section == null) {
