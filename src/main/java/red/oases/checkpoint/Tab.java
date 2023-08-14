@@ -76,7 +76,7 @@ public class Tab implements TabCompleter {
                 }
 
                 case "campaign" -> {
-                    return List.of("setstaus", "new", "delete");
+                    return List.of("setstatus", "new", "delete");
                 }
             }
         }
