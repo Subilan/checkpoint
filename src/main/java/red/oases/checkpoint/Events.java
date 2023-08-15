@@ -12,6 +12,7 @@ import red.oases.checkpoint.Objects.LocationLock;
 import red.oases.checkpoint.Objects.PlayerTimer;
 import red.oases.checkpoint.Objects.Point;
 import red.oases.checkpoint.Utils.AnalyticUtils;
+import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 
 public class Events implements Listener {
@@ -134,7 +135,7 @@ public class Events implements Listener {
     public void handleFinish(Player p, Campaign campaign) {
         campaign.setFinished(p);
         AnalyticUtils.saveCampaignResult(p);
-        var total = PlayerTimer.getTickInReadable(PlayerTimer.getTotalTime(p));
+        var total = CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p));
         LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
         LogUtils.send("统计数据已存储。", p);
         LogUtils.send("如需清除数据重新开始，键入 /cpt restart。", p);
@@ -142,7 +143,7 @@ public class Events implements Listener {
 
     public void sendPartialTotal(Player p, Point pt) {
         assert pt.getPrevious() != null;
-        var totalInSecond = PlayerTimer.getTickInSeconds(PlayerTimer.getTick(p, pt.getPrevious().number));
+        var totalInSecond = CommonUtils.millisecondsToSeconds(PlayerTimer.getTick(p, pt.getPrevious().number));
         LogUtils.send(String.format(
                 "%s 从 %s 到 %s 共计用时 %s 秒。",
                 p.getName(),

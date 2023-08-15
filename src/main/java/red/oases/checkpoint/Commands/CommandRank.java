@@ -3,7 +3,6 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.PlayerTimer;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
@@ -67,7 +66,7 @@ public class CommandRank extends Command {
             result.append(String.format("[%s] %s - %s - %s",
                     i + 1,
                     targetAnalytics.getPlayerName(),
-                    PlayerTimer.getTickInReadable(targetAnalytics.getTimeTotal()),
+                    CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal()),
                     CommonUtils.formatDate(targetAnalytics.getFinishedAt())
                     ));
         }
