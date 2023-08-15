@@ -45,14 +45,3 @@ processResources {
         expand props
     }
 }
-
-tasks.build.doLast {
-    exec {
-        workingDir "${buildDir}"
-        executable = "cp"
-        args = List.of(
-                "/Users/su/IdeaProjects/checkpoint/build/libs/checkpoint-1.0.jar",
-                "/Users/su/Desktop/server-dev/1.20.1/plugins"
-        )
-    }
-}
