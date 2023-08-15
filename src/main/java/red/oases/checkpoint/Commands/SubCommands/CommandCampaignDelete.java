@@ -12,6 +12,10 @@ public class CommandCampaignDelete extends Command {
     }
 
     protected boolean execute() {
+        if (args.length < 3) {
+            LogUtils.send("参数不足：/cpt campaign delete <name>", sender);
+            return true;
+        }
 
         var name = args[2];
         var campaigns = CommonUtils.getCampaignNames();
