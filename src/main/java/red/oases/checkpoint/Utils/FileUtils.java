@@ -12,10 +12,12 @@ public class FileUtils {
     public static FileConfiguration tracks;
     public static FileConfiguration campaigns;
     public static FileConfiguration analytics;
+    public static FileConfiguration progress;
     public static File configFile;
     public static File tracksFile;
     public static File campaignFile;
     public static File analyticsFile;
+    public static File progressFile;
 
     public static void init() {
         configFile = new File(
@@ -30,6 +32,9 @@ public class FileUtils {
         analyticsFile = new File(
                 datafolder.getAbsoluteFile() + "/analytics.yml"
         );
+        progressFile = new File(
+                datafolder.getAbsoluteFile() + "/progress.yml"
+        );
 
         reload();
     }
@@ -39,6 +44,7 @@ public class FileUtils {
         tracks = YamlConfiguration.loadConfiguration(tracksFile);
         campaigns = YamlConfiguration.loadConfiguration(campaignFile);
         analytics = YamlConfiguration.loadConfiguration(analyticsFile);
+        progress = YamlConfiguration.loadConfiguration(progressFile);
     }
 
     public static void saveConfig() {
@@ -68,6 +74,14 @@ public class FileUtils {
     public static void saveAnalytics() {
         try {
             analytics.save(analyticsFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveProgress() {
+        try {
+            progress.save(progressFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

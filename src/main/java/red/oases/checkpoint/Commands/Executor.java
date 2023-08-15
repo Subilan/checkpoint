@@ -95,6 +95,10 @@ public class Executor implements CommandExecutor {
                 case "setcheckpoint" -> {
                     return new CommandSetcheckpoint(args, sender).collect();
                 }
+
+                case "tp", "teleport" -> {
+                    return new CommandTeleport(args, sender).collect();
+                }
             }
         }
 

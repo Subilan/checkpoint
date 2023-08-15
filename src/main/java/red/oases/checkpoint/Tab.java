@@ -3,8 +3,12 @@ package red.oases.checkpoint;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Objects.PlayerTimer;
+import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 
@@ -59,9 +63,19 @@ public class Tab implements TabCompleter {
                     "stashselection",
                     "mycampaign",
                     "forcecontinuous",
-                    "setcheckpoint"
+                    "setcheckpoint",
+                    "teleport",
+                    "tp"
             );
-            else return List.of("join", "restart", "rank", "mycampaign", "quit");
+            else return List.of(
+                    "join",
+                    "restart",
+                    "rank",
+                    "mycampaign",
+                    "quit",
+                    "teleport",
+                    "tp"
+            );
         }
 
         if (args.length == 2) {
@@ -84,6 +98,14 @@ public class Tab implements TabCompleter {
 
                 case "campaign" -> {
                     return List.of("setstatus", "new", "delete");
+                }
+
+                case "teleport", "tp" -> {
+                    var p = (Player) sender;
+                    var campaign = Campaign.of(p);
+                    if (campaign == null) return List.of();
+                    var available = Progress.getAvailableCheckpointsFor(p, campaign);
+                    return available.stream().map(x -> x.number.toString()).toList();
                 }
             }
         }

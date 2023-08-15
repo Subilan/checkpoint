@@ -1,5 +1,7 @@
 package red.oases.checkpoint.Objects;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
@@ -63,6 +65,7 @@ public class Point {
     }
 
     public ConfigurationSection getSection() {
+        if (this.track.getSection() == null) return null;
         return this.track.getSection().getConfigurationSection(this.number.toString());
     }
 
@@ -123,5 +126,19 @@ public class Point {
         return (x >= X.getMin() && x <= X.getMax())
                 && (y >= Y.getMin() && y <= Y.getMax())
                 && (z >= Z.getMin() && z <= Z.getMax());
+    }
+
+    public Location getTransportableLocation(World world) {
+        var pos1 = getFirstPosition();
+        var pos2 = getSecondPosition();
+        var X = getStats(pos1, pos2, 0);
+        var Y = getStats(pos1, pos2, 1);
+        var Z = getStats(pos1, pos2, 2);
+
+        var x = (double) (X.getMax() + X.getMax()) / 2;
+        var y = (double) Y.getMin() + 1;
+        var z = (double) (Z.getMin() + Z.getMin()) / 2;
+
+        return new Location(world, x, y, z);
     }
 }

@@ -7,10 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.LocationLock;
-import red.oases.checkpoint.Objects.PlayerTimer;
-import red.oases.checkpoint.Objects.Point;
+import red.oases.checkpoint.Objects.*;
 import red.oases.checkpoint.Utils.AnalyticUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
@@ -106,6 +103,9 @@ public class Events implements Listener {
                 if (pt.isFirst()) {
                     LogUtils.send("你已通过首个记录点，计时正式开始！", p);
                 }
+                if (pt.isCheckpoint()) {
+                    Progress.enableCheckpointFor(p, pt, campaign);
+                }
                 if (pt.isLast()) {
                     handleChangePoint(p, pt);
                     handleFinish(p, campaign);
@@ -135,6 +135,7 @@ public class Events implements Listener {
     public void handleFinish(Player p, Campaign campaign) {
         campaign.setFinished(p);
         AnalyticUtils.saveCampaignResult(p);
+        Progress.clearCheckpoints(p, campaign);
         var total = CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p));
         LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
         LogUtils.send("统计数据已存储。", p);

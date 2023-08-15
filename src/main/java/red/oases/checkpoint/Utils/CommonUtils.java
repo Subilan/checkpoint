@@ -3,7 +3,9 @@ package red.oases.checkpoint.Utils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Objects.LocationLock;
 import red.oases.checkpoint.Objects.PlayerTimer;
+import red.oases.checkpoint.Objects.Progress;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -81,8 +83,10 @@ public class CommonUtils {
     public static void cleanCampaignFor(Player p) {
         var campaign = Campaign.of(p);
         assert campaign != null;
+        LocationLock.unlock(p);
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);
+        Progress.clearCheckpoints(p, campaign);
         PlayerTimer.reset(p);
         campaign.unsetFinished(p);
         campaign.removePlayer(p);
