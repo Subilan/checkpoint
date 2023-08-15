@@ -63,7 +63,7 @@ public class CommandRank extends Command {
 
         for (var i = iterationRangeStart; i <= iterationRangeEnd; i++) {
             var targetAnalytics = analytics.get(i);
-            result.append(String.format("[%s] %s - %s - %s",
+            result.append(String.format("[%s] %s - %s - %s\n",
                     i + 1,
                     targetAnalytics.getPlayerName(),
                     CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal()),
