@@ -31,6 +31,7 @@ public class CommandRestart extends Command {
         }
 
         PlayerTimer.reset(p);
+        campaign.unsetFinished(p);
         LogUtils.send("你已重置比赛状态。", sender);
         return true;
     }
