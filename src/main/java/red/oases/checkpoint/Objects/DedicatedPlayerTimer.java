@@ -22,7 +22,7 @@ public class DedicatedPlayerTimer {
             public void run() {
                 PlayerTimer.tick(p, pt.number);
             }
-        }, 0, 1000);
+        }, 0, 1);
         this.isLocked = true;
     }
 
