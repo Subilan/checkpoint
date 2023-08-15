@@ -14,7 +14,6 @@ import java.util.List;
 public class Campaign {
     public ConfigurationSection section;
     private final String name;
-    public boolean isFinished = false;
 
     public static @Nullable Campaign of(Player p) {
         for (var cam : CommonUtils.getCampaignNames()) {

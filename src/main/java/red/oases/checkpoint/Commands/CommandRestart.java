@@ -26,7 +26,7 @@ public class CommandRestart extends Command {
             return true;
         }
 
-        if (PlayerTimer.getTicks(p).isEmpty()) {
+        if (!campaign.isFinished(p) && PlayerTimer.getTicks(p).isEmpty()) {
             LogUtils.send("你还没有开始比赛。", sender);
             return true;
         }
