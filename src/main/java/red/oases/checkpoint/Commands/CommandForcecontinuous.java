@@ -24,7 +24,7 @@ public class CommandForcecontinuous extends Command {
             return true;
         }
 
-        var section = FileUtils.selections.getConfigurationSection("data." + track);
+        var section = FileUtils.tracks.getConfigurationSection("data." + track);
         assert section != null;
         var shouldBe = 1;
         for (var k : section.getKeys(false)) {

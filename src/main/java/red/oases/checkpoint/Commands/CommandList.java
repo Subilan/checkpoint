@@ -20,7 +20,7 @@ public class CommandList extends Command {
 
         var track = args[1];
         var page = 1;
-        var section = FileUtils.selections.getConfigurationSection("data." + track);
+        var section = FileUtils.tracks.getConfigurationSection("data." + track);
 
         if (args.length == 3) {
             page = CommonUtils.mustPositive(args[2]);
@@ -61,7 +61,7 @@ public class CommandList extends Command {
 
         for (var i = iterationRangeStart; i <= iterationRangeEnd; i++) {
             var k = keys.get(i);
-            var targetSection = FileUtils.selections.getConfigurationSection(
+            var targetSection = FileUtils.tracks.getConfigurationSection(
                     String.format("data.%s.%s", track, k)
             );
             if (targetSection == null) continue;

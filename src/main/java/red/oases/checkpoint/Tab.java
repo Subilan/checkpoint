@@ -14,7 +14,7 @@ public class Tab implements TabCompleter {
 
     public List<String> getAllPaths() {
         var result = new ArrayList<String>();
-        var section = FileUtils.selections.getConfigurationSection("data");
+        var section = FileUtils.tracks.getConfigurationSection("data");
 
         if (section == null) {
             return List.of();
@@ -95,7 +95,7 @@ public class Tab implements TabCompleter {
                 }
 
                 case "remove", "setcheckpoint" -> {
-                    var target = FileUtils.selections.getConfigurationSection("data." + args[1]);
+                    var target = FileUtils.tracks.getConfigurationSection("data." + args[1]);
                     if (target == null) return List.of();
                     return new ArrayList<>(target.getKeys(false));
                 }

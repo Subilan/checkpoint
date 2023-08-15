@@ -9,11 +9,11 @@ import java.io.IOException;
 public class FileUtils {
     public static File datafolder;
     public static FileConfiguration config;
-    public static FileConfiguration selections;
+    public static FileConfiguration tracks;
     public static FileConfiguration campaigns;
     public static FileConfiguration analytics;
     public static File configFile;
-    public static File selectionsFile;
+    public static File tracksFile;
     public static File campaignFile;
     public static File analyticsFile;
 
@@ -21,7 +21,7 @@ public class FileUtils {
         configFile = new File(
                 datafolder.getAbsoluteFile() + "/config.yml"
         );
-        selectionsFile = new File(
+        tracksFile = new File(
                 datafolder.getAbsoluteFile() + "/selections.yml"
         );
         campaignFile = new File(
@@ -36,7 +36,7 @@ public class FileUtils {
 
     public static void reload() {
         config = YamlConfiguration.loadConfiguration(configFile);
-        selections = YamlConfiguration.loadConfiguration(selectionsFile);
+        tracks = YamlConfiguration.loadConfiguration(tracksFile);
         campaigns = YamlConfiguration.loadConfiguration(campaignFile);
         analytics = YamlConfiguration.loadConfiguration(analyticsFile);
     }
@@ -51,7 +51,7 @@ public class FileUtils {
 
     public static void saveSelections() {
         try {
-            selections.save(selectionsFile);
+            tracks.save(tracksFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

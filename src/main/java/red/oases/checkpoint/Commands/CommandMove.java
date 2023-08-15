@@ -66,7 +66,7 @@ public class CommandMove extends Command{
             }
         }
 
-        var section = FileUtils.selections.getConfigurationSection("data");
+        var section = FileUtils.tracks.getConfigurationSection("data");
         assert section != null;
         assert section.getConfigurationSection(fromTrack) != null;
         assert section.getConfigurationSection(toTrack) == null;

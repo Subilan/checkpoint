@@ -27,7 +27,7 @@ public class CommonUtils {
 
     public static Set<String> getTrackNames() {
         FileUtils.reload();
-        var section = FileUtils.selections.getConfigurationSection("data");
+        var section = FileUtils.tracks.getConfigurationSection("data");
 
         if (section == null) {
             return new HashSet<>();
@@ -46,7 +46,7 @@ public class CommonUtils {
     public static String getAliasByPath(String path) {
         var result = new AtomicReference<>("");
 
-        var aliasSection = FileUtils.selections.getConfigurationSection("aliases");
+        var aliasSection = FileUtils.tracks.getConfigurationSection("aliases");
 
         if (aliasSection != null) {
             var map = aliasSection.getValues(false);
@@ -59,7 +59,7 @@ public class CommonUtils {
     }
 
     public static @Nullable String getPathByAlias(String alias) {
-        return FileUtils.selections.getString(String.format("aliases.%s", alias));
+        return FileUtils.tracks.getString(String.format("aliases.%s", alias));
     }
 
     /**

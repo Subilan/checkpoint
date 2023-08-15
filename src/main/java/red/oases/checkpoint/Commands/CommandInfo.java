@@ -5,9 +5,6 @@ import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class CommandInfo extends Command {
     public CommandInfo(String[] args, CommandSender sender) {
         super(args, sender);
@@ -21,15 +18,15 @@ public class CommandInfo extends Command {
 
         var path = "data." + args[1];
 
-        if (FileUtils.selections.getConfigurationSection(path) == null) {
+        if (FileUtils.tracks.getConfigurationSection(path) == null) {
             LogUtils.send(String.format("路径点 %s 不存在。", args[1]), sender);
             return true;
         }
 
-        var pos1 = FileUtils.selections.getIntegerList(path + ".pos1");
-        var pos2 = FileUtils.selections.getIntegerList(path + ".pos2");
-        var creator = FileUtils.selections.getString(path + ".creator");
-        var createdAt = FileUtils.selections.getLong(path + ".created_at");
+        var pos1 = FileUtils.tracks.getIntegerList(path + ".pos1");
+        var pos2 = FileUtils.tracks.getIntegerList(path + ".pos2");
+        var creator = FileUtils.tracks.getString(path + ".creator");
+        var createdAt = FileUtils.tracks.getLong(path + ".created_at");
 
         var result = String.format(
                 """

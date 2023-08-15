@@ -31,7 +31,7 @@ public class CommandCopy extends Command {
             }
         }
 
-        var section = FileUtils.selections.getConfigurationSection("data");
+        var section = FileUtils.tracks.getConfigurationSection("data");
 
         if (section == null) {
             LogUtils.send("目前还没有任何检查点。", sender);

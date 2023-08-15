@@ -31,7 +31,7 @@ public class Point {
     }
 
     public static boolean isPresent(String trackname, Integer number) {
-        return FileUtils.selections.getConfigurationSection("data." + trackname + "." + number) != null;
+        return FileUtils.tracks.getConfigurationSection("data." + trackname + "." + number) != null;
     }
 
     public static void delete(String trackname, Integer number) {
@@ -41,7 +41,7 @@ public class Point {
     }
 
     public static void build(String trackname, Integer number, List<Integer> pos1, List<Integer> pos2, String creator) {
-        var section = FileUtils.selections.createSection("data." + trackname + "." + number);
+        var section = FileUtils.tracks.createSection("data." + trackname + "." + number);
         section.set("pos1", pos1);
         section.set("pos2", pos2);
         section.set("creator", creator);

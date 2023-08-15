@@ -16,7 +16,7 @@ public class Track {
     }
 
     public ConfigurationSection getSection() {
-        return FileUtils.selections.getConfigurationSection("data." + this.name);
+        return FileUtils.tracks.getConfigurationSection("data." + this.name);
     }
 
     public List<Point> getPoints() {
