@@ -1,7 +1,9 @@
 package red.oases.checkpoint.Utils;
 
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Objects.PlayerTimer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -79,5 +81,22 @@ public class CommonUtils {
         }
 
         return null;
+    }
+
+    public static @Nullable Campaign getCampaignOfPlayer(Player p) {
+        for (var cam : getCampaignNames()) {
+            var players = FileUtils.campaigns.getStringList(cam + ".players");
+            if (players.contains(p.getName())) return new Campaign(cam);
+        }
+
+        return null;
+    }
+
+    public static void cleanCampaignFor(Player p) {
+        PlayerTimer.reset(p);
+        var campaign = CommonUtils.getCampaignOfPlayer(p);
+        assert campaign != null;
+        campaign.unsetFinished(p);
+        AnalyticUtils.removeCampaignResult(p);
     }
 }

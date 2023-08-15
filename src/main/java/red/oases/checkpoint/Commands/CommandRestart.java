@@ -4,7 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
+import red.oases.checkpoint.Objects.Analytics;
 import red.oases.checkpoint.Objects.PlayerTimer;
+import red.oases.checkpoint.Utils.AnalyticUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 
@@ -30,8 +32,7 @@ public class CommandRestart extends Command {
             return true;
         }
 
-        PlayerTimer.reset(p);
-        campaign.unsetFinished(p);
+        CommonUtils.cleanCampaignFor(p);
         LogUtils.send("你已重置比赛状态。", sender);
         return true;
     }
