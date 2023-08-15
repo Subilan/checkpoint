@@ -96,6 +96,10 @@ public class Point {
         return this.number == this.track.getSection().getKeys(false).size();
     }
 
+    public boolean isFirst() {
+        return this.number == 1;
+    }
+
     private static IntSummaryStatistics getStats(List<Integer> input1, List<Integer> input2, int index) {
         return Stream.of(input1.get(index), input2.get(index))
                 .collect(Collectors.summarizingInt(Integer::intValue));

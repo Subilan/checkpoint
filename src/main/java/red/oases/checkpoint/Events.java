@@ -1,6 +1,7 @@
 package red.oases.checkpoint;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -76,7 +77,7 @@ public class Events implements Listener {
 
         if (campaign == null) return;
 
-        if (campaign.isFinished) return;
+        if (campaign.isFinished(p)) return;
 
         var loc = p.getLocation();
         var x = loc.getBlockX();
@@ -100,18 +101,22 @@ public class Events implements Listener {
                     LogUtils.send("比赛已经结束或者未开始。", p);
                     break;
                 }
+                if (pt.isFirst()) {
+                    LogUtils.send("你已通过首个记录点，计时正式开始！", p);
+                }
                 if (pt.isLast()) {
                     assert pt.getPrevious() != null;
                     PlayerTimer.getDedicated(p).stopTimerFor(p, pt.getPrevious());
-                    campaign.setFinished();
-                    var ticks = PlayerTimer.getTicks(p);
-                    LogUtils.send(ticks.toString(), p);
+                    sendPartialTotal(p, pt);
+                    campaign.setFinished(p);
+                    var total = PlayerTimer.getTickInReadable(PlayerTimer.getTotalTime(p));
+                    LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
                     break;
                 } else {
                     if (pt.hasPrevious()) {
                         assert pt.getPrevious() != null;
                         PlayerTimer.getDedicated(p).stopTimerFor(p, pt.getPrevious());
-                        LogUtils.send(PlayerTimer.getTick(p, pt.getPrevious().number).toString(), p);
+                        sendPartialTotal(p, pt);
                     }
                     PlayerTimer.getDedicated(p).startTimerFor(p, pt);
                 }
@@ -123,5 +128,17 @@ public class Events implements Listener {
         } else {
             LocationLock.unlock(p);
         }
+    }
+
+    public void sendPartialTotal(Player p, Point pt) {
+        assert pt.getPrevious() != null;
+        var totalInSecond = PlayerTimer.getTickInSeconds(PlayerTimer.getTick(p, pt.getPrevious().number));
+        LogUtils.send(String.format(
+                "%s 从 %s 到 %s 共计用时 %s 秒。",
+                p.getName(),
+                pt.getPrevious().number,
+                pt.number,
+                totalInSecond
+        ), p);
     }
 }
