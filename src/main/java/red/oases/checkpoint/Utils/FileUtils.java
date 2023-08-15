@@ -24,7 +24,7 @@ public class FileUtils {
                 datafolder.getAbsoluteFile() + "/config.yml"
         );
         tracksFile = new File(
-                datafolder.getAbsoluteFile() + "/selections.yml"
+                datafolder.getAbsoluteFile() + "/tracks.yml"
         );
         campaignFile = new File(
                 datafolder.getAbsoluteFile() + "/campaign.yml"
