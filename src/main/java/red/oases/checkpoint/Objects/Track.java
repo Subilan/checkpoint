@@ -1,6 +1,7 @@
 package red.oases.checkpoint.Objects;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 
@@ -13,10 +14,6 @@ public class Track {
 
     public Track(String t) {
         this.name = t;
-    }
-
-    public boolean isPresent() {
-        return FileUtils.selections.getConfigurationSection("data." + this.name) != null;
     }
 
     public ConfigurationSection getSection() {

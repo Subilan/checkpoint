@@ -15,6 +15,7 @@ public class CommandForcecontinuous extends Command {
     protected boolean execute() {
         if (args.length < 2) {
             LogUtils.send("参数不足：/cpt forcecontinuous <track>", sender);
+            return true;
         }
 
         var track = args[1];

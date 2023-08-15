@@ -131,8 +131,14 @@ public class Tab implements TabCompleter {
                 }
 
                 case "campaign" -> {
-                    if (args[1].equals("setstatus")) {
-                        return List.of("open", "close");
+                    switch (args[1]) {
+                        case "setstatus" -> {
+                            return List.of("open", "close", "private");
+                        }
+
+                        case "new" -> {
+                            return new ArrayList<>(CommonUtils.getTrackNames());
+                        }
                     }
                 }
             }

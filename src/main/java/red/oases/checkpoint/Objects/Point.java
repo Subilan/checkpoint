@@ -22,8 +22,7 @@ public class Point {
     }
 
     public static boolean isPresent(String trackname, Integer number) {
-        var track = new Track(trackname);
-        return track.getSection().getConfigurationSection(number.toString()) != null;
+        return FileUtils.selections.getConfigurationSection("data." + trackname + "." + number) != null;
     }
 
     public static void delete(String trackname, Integer number) {

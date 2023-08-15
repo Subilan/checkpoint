@@ -2,6 +2,7 @@ package red.oases.checkpoint.Utils;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 import red.oases.checkpoint.Objects.Analytics;
@@ -29,9 +30,7 @@ public class AnalyticUtils {
         FileUtils.saveAnalytics();
     }
 
-    public static void removeCampaignResult(Player p) {
-        var campaign = Campaign.of(p);
-        if (campaign == null) return;
+    public static void removeCampaignResult(Player p, @NotNull Campaign campaign) {
         var an = Analytics.of(campaign, p);
         if (an == null) return;
         an.destory();

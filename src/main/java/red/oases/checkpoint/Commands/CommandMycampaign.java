@@ -26,18 +26,19 @@ public class CommandMycampaign extends Command {
         }
 
         var string = String.format("""
-                竞赛信息
+                \n竞赛信息
                 
                 竞赛名称 - %s
                 参与人数 - %s
-                赛道总长 - %d 点""",
+                路径点总数 - %d
+                """,
                 campaign.getName(),
                 campaign.getPlayers().size(),
                 campaign.getTrack().getPoints().size());
         var finished = campaign.getFinishedPlayers().size();
 
         if (finished > 0) string += "\n已经有 " + finished + " 名玩家完成了比赛！";
-        string += "\n";
+        if (campaign.isFinished((Player) sender)) string += "\n你已经完成了比赛！";
         LogUtils.send(string, sender);
         return true;
     }

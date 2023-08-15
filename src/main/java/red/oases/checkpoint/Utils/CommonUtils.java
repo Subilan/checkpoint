@@ -79,11 +79,13 @@ public class CommonUtils {
     }
 
     public static void cleanCampaignFor(Player p) {
-        PlayerTimer.reset(p);
         var campaign = Campaign.of(p);
         assert campaign != null;
+        // 必须放在 campaign 数据被删除之前
+        AnalyticUtils.removeCampaignResult(p, campaign);
+        PlayerTimer.reset(p);
         campaign.unsetFinished(p);
-        AnalyticUtils.removeCampaignResult(p);
+        campaign.removePlayer(p);
     }
 
     public static String formatTimestamp(long epoch) {

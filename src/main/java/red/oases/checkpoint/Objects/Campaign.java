@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Campaign {
-    public ConfigurationSection section;
     private final String name;
 
     public static @Nullable Campaign of(Player p) {
@@ -42,23 +41,23 @@ public class Campaign {
     }
 
     public String getTrackName() {
-        return section.getString("target_track");
+        return getSection().getString("target_track");
     }
 
     public Date getCreatedAt() {
-        return new Date(section.getLong("created_at"));
+        return new Date(getSection().getLong("created_at"));
     }
 
     public String getCreatedBy() {
-        return section.getString("created_by");
+        return getSection().getString("created_by");
     }
 
     public List<@NotNull Analytics> getAnalytics() {
         var result = new ArrayList<Analytics>();
-        var section = AnalyticUtils.getSection(this.getName());
-        if (section == null) return List.of();
-        for (var k : section.getKeys(false)) {
-            var an = Analytics.of(this, section.getString(k + ".player"));
+        var sec = AnalyticUtils.getSection(this.getName());
+        if (sec == null) return List.of();
+        for (var k : sec.getKeys(false)) {
+            var an = Analytics.of(this, sec.getString(k + ".player"));
             if (an == null) continue;
             result.add(an);
         }
@@ -66,19 +65,19 @@ public class Campaign {
     }
 
     public String getStatus() {
-        return section.getString("status");
+        return getSection().getString("status");
     }
 
     public boolean isOpen() {
-        return Objects.equals(section.getString("status"), "open");
+        return Objects.equals(getSection().getString("status"), "open");
     }
 
     public boolean isPrivate() {
-        return Objects.equals(section.getString("status"), "private");
+        return Objects.equals(getSection().getString("status"), "private");
     }
 
     public List<String> getFinishedPlayers() {
-        return section.getStringList("finished_players");
+        return getSection().getStringList("finished_players");
     }
 
     public boolean isFinished(Player p) {
@@ -87,10 +86,11 @@ public class Campaign {
 
     public Campaign(String cam, Boolean nocheck) {
         this.name = cam;
-        this.section = FileUtils.campaigns.getConfigurationSection(cam);
+        var section = FileUtils.campaigns.getConfigurationSection(cam);
         if (section == null) {
             if (nocheck) {
-                this.section = FileUtils.campaigns.createSection(cam);
+                FileUtils.campaigns.createSection(cam);
+                FileUtils.saveCampaigns();
             } else {
                 throw new ObjectNotFoundException("campaign");
             }
@@ -99,16 +99,16 @@ public class Campaign {
 
     public Campaign(String cam) {
         this.name = cam;
-        this.section = FileUtils.campaigns.getConfigurationSection(cam);
+        var section = FileUtils.campaigns.getConfigurationSection(cam);
         if (section == null) throw new ObjectNotFoundException("campaign");
     }
 
     public static Campaign create(String name, String track, CommandSender sender) {
         var campaign = new Campaign(name, true);
-        campaign.section.set("target_track", track);
-        campaign.section.set("created_at", new Date().getTime());
-        campaign.section.set("created_by", sender.getName());
-        campaign.section.set("status", "close");
+        campaign.getSection().set("target_track", track);
+        campaign.getSection().set("created_at", new Date().getTime());
+        campaign.getSection().set("created_by", sender.getName());
+        campaign.getSection().set("status", "close");
         FileUtils.saveCampaigns();
         return campaign;
     }
@@ -119,19 +119,19 @@ public class Campaign {
     }
 
     public void setStatus(String status) {
-        this.section.set("status", status);
+        this.getSection().set("status", status);
         FileUtils.saveCampaigns();
     }
 
     public void addPlayer(Player p) {
-        var list = this.section.getStringList("players");
+        var list = this.getSection().getStringList("players");
         list.add(p.getName());
-        this.section.set("players", list);
+        this.getSection().set("players", list);
         FileUtils.saveCampaigns();
     }
 
     public List<String> getPlayers() {
-        return this.section.getStringList("players");
+        return this.getSection().getStringList("players");
     }
 
     /**
@@ -139,9 +139,9 @@ public class Campaign {
      * @param p 玩家对象
      */
     public void removePlayer(Player p) {
-        var list = this.section.getStringList("players");
+        var list = this.getSection().getStringList("players");
         list.remove(p.getName());
-        this.section.set("players", list);
+        this.getSection().set("players", list);
         this.unsetFinished(p);
         FileUtils.saveCampaigns();
     }
