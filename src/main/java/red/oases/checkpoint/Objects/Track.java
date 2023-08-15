@@ -1,7 +1,6 @@
 package red.oases.checkpoint.Objects;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 
