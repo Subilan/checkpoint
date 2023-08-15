@@ -11,9 +11,11 @@ public class FileUtils {
     public static FileConfiguration config;
     public static FileConfiguration selections;
     public static FileConfiguration campaigns;
+    public static FileConfiguration analytics;
     public static File configFile;
     public static File selectionsFile;
     public static File campaignFile;
+    public static File analyticsFile;
 
     public static void init() {
         configFile = new File(
@@ -25,6 +27,9 @@ public class FileUtils {
         campaignFile = new File(
                 datafolder.getAbsoluteFile() + "/campaign.yml"
         );
+        analyticsFile = new File(
+                datafolder.getAbsoluteFile() + "/analytics.yml"
+        );
 
         reload();
     }
@@ -33,6 +38,7 @@ public class FileUtils {
         config = YamlConfiguration.loadConfiguration(configFile);
         selections = YamlConfiguration.loadConfiguration(selectionsFile);
         campaigns = YamlConfiguration.loadConfiguration(campaignFile);
+        analytics = YamlConfiguration.loadConfiguration(analyticsFile);
     }
 
     public static void saveConfig() {
@@ -54,6 +60,14 @@ public class FileUtils {
     public static void saveCampaigns() {
         try {
             campaigns.save(campaignFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveAnalytics() {
+        try {
+            analytics.save(analyticsFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
