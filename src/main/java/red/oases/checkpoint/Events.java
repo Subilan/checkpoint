@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import red.oases.checkpoint.Objects.*;
 import red.oases.checkpoint.Utils.AnalyticUtils;
@@ -124,6 +125,15 @@ public class Events implements Listener {
         } else {
             LocationLock.unlock(p);
         }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        var p = e.getPlayer();
+        var campaign = Campaign.of(p);
+        if (campaign == null) return;
+        Progress.clearCheckpoints(p, campaign);
+        // 当存档机制完善后删除此机制。
     }
 
     public void handleChangePoint(Player p, Point pt) {
