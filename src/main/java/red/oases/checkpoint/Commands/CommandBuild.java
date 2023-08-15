@@ -16,12 +16,17 @@ public class CommandBuild extends Command {
 
     protected boolean execute() {
         if (args.length < 3) {
-            LogUtils.send("参数不足: /cpt build <track> <number>", sender);
+            LogUtils.send("参数不足: /cpt build <track> <number> [force?]", sender);
             return true;
         }
 
         var track = args[1];
         var number = CommonUtils.mustPositive(args[2]);
+        var force = false;
+
+        if (args.length >= 4) {
+            force = args[3].equals("true");
+        }
 
         if (args[2].contains(".")) {
             LogUtils.send("错误: 序号必须为整数。", sender);
@@ -41,8 +46,9 @@ public class CommandBuild extends Command {
             return true;
         }
 
-        if (Point.isPresent(track, number)) {
-            LogUtils.send("错误：" + track + "." + number + " 已经存在。", sender);
+        if (Point.isPresent(track, number) && !force) {
+            LogUtils.send("错误：%s.%d 已经存在。".formatted(track, number), sender);
+            LogUtils.send("如果需要覆盖，请在指令末尾加上 true。", sender);
             return true;
         }
 
