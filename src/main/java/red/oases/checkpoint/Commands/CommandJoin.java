@@ -43,6 +43,13 @@ public class CommandJoin extends Command {
 
         var campaign = new Campaign(cam);
 
+        if (campaign.isPrivate() || !campaign.isOpen()) {
+            LogUtils.send("无法加入此竞赛。", sender);
+            if (campaign.isPrivate()) LogUtils.send("此竞赛为私密。", sender);
+            else LogUtils.send("此竞赛已关闭或者没有开始。", sender);
+            return true;
+        }
+
         campaign.addPlayer((Player) sender);
 
         LogUtils.send("你已成功加入竞赛 " + cam + "！", sender);

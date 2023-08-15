@@ -13,6 +13,7 @@ import red.oases.checkpoint.Utils.FileUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Campaign {
     public ConfigurationSection section;
@@ -64,8 +65,16 @@ public class Campaign {
         return result;
     }
 
+    public String getStatus() {
+        return section.getString("status");
+    }
+
     public boolean isOpen() {
-        return section.getBoolean("is_open");
+        return Objects.equals(section.getString("status"), "open");
+    }
+
+    public boolean isPrivate() {
+        return Objects.equals(section.getString("status"), "private");
     }
 
     public List<String> getFinishedPlayers() {
@@ -99,7 +108,7 @@ public class Campaign {
         campaign.section.set("target_track", track);
         campaign.section.set("created_at", new Date().getTime());
         campaign.section.set("created_by", sender.getName());
-        campaign.section.set("is_open", false);
+        campaign.section.set("status", "close");
         FileUtils.saveCampaigns();
         return campaign;
     }
@@ -110,7 +119,7 @@ public class Campaign {
     }
 
     public void setStatus(String status) {
-        this.section.set("is_open", status.equals("open"));
+        this.section.set("status", status);
         FileUtils.saveCampaigns();
     }
 

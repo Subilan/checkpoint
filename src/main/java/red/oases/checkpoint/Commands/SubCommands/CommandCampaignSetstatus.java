@@ -25,8 +25,8 @@ public class CommandCampaignSetstatus extends Command {
             return true;
         }
 
-        if (!status.equals("open") && !status.equals("close")) {
-            LogUtils.send("状态必须为 open 或者 close。", sender);
+        if (!status.equals("open") && !status.equals("close") && !status.equals("private")) {
+            LogUtils.send("状态必须为 open、close 或者 private。", sender);
             return true;
         }
 

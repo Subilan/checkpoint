@@ -99,7 +99,7 @@ public class Events implements Listener {
                     LogUtils.send("你必须先通过第 " + nextStage + " 个检查点。", p);
                     break;
                 }
-                if (!campaign.isOpen()) {
+                if (!campaign.isOpen() && !campaign.isPrivate()) {
                     LogUtils.send("比赛已经结束或者未开始。", p);
                     break;
                 }
