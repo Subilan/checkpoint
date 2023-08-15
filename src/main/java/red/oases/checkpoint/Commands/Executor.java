@@ -72,6 +72,10 @@ public class Executor implements CommandExecutor {
                     return new CommandRestart(args, sender).collect();
                 }
 
+                case "rank" -> {
+                    return new CommandRank(args, sender).collect();
+                }
+
                 case "campaign" -> {
                     return new CommandCampaign(args, sender).collect();
                 }

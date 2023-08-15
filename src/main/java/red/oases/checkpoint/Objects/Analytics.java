@@ -25,6 +25,18 @@ public class Analytics {
         return null;
     }
 
+    public static @Nullable Analytics of(Campaign c, String playername) {
+        var target = FileUtils.analytics.getConfigurationSection(c.getName());
+        if (target == null) return null;
+        var keys = target.getKeys(false);
+        for (var k : keys) {
+            if (Objects.equals(target.getString(k + ".player"), playername)) {
+                return new Analytics(c, k);
+            }
+        }
+        return null;
+    }
+
     public Analytics(Campaign c, String uuid) {
         this.campaign = c;
         this.uuid = uuid;

@@ -53,9 +53,10 @@ public class Tab implements TabCompleter {
                     "xcp",
                     "campaign",
                     "join",
-                    "restart"
+                    "restart",
+                    "rank"
             );
-            else return List.of("join");
+            else return List.of("join", "restart", "rank");
         }
 
         if (args.length == 2) {
@@ -72,7 +73,7 @@ public class Tab implements TabCompleter {
                     return List.of("<T1.N1,T2.N2,...>");
                 }
 
-                case "join" -> {
+                case "join", "rank" -> {
                     return new ArrayList<>(CommonUtils.getCampaignNames());
                 }
 

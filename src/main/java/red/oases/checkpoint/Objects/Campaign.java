@@ -3,11 +3,14 @@ package red.oases.checkpoint.Objects;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
+import red.oases.checkpoint.Utils.AnalyticUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +50,18 @@ public class Campaign {
 
     public String getCreatedBy() {
         return section.getString("created_by");
+    }
+
+    public List<@NotNull Analytics> getAnalytics() {
+        var result = new ArrayList<Analytics>();
+        var section = AnalyticUtils.getSection(this.getName());
+        if (section == null) return List.of();
+        for (var k : section.getKeys(false)) {
+            var an = Analytics.of(this, section.getString(k + ".player"));
+            if (an == null) continue;
+            result.add(an);
+        }
+        return result;
     }
 
     public boolean isOpen() {
