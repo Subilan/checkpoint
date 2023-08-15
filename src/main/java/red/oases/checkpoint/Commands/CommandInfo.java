@@ -1,6 +1,7 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
+import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 
@@ -40,7 +41,7 @@ public class CommandInfo extends Command {
                 path,
                 pos1.get(0), pos1.get(1), pos1.get(2),
                 pos2.get(0), pos2.get(1), pos2.get(2),
-                creator, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date(createdAt))
+                creator, CommonUtils.formatTimestamp(createdAt)
         );
 
         LogUtils.send(result, sender);

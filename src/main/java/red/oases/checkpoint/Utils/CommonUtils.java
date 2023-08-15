@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.PlayerTimer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -80,5 +82,13 @@ public class CommonUtils {
         assert campaign != null;
         campaign.unsetFinished(p);
         AnalyticUtils.removeCampaignResult(p);
+    }
+
+    public static String formatTimestamp(long epoch) {
+        return formatDate(new Date(epoch));
+    }
+
+    public static String formatDate(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date);
     }
 }
