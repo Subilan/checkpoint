@@ -21,6 +21,15 @@ public class Point {
         FileUtils.saveSelections();
     }
 
+    public void setCheckpoint(boolean yes) {
+        getSection().set("is_checkpoint", yes);
+        FileUtils.saveSelections();
+    }
+
+    public boolean isCheckpoint() {
+        return getSection().getBoolean("is_checkpoint");
+    }
+
     public static boolean isPresent(String trackname, Integer number) {
         return FileUtils.selections.getConfigurationSection("data." + trackname + "." + number) != null;
     }

@@ -91,6 +91,10 @@ public class Executor implements CommandExecutor {
                 case "forcecontinuous" -> {
                     return new CommandForcecontinuous(args, sender).collect();
                 }
+
+                case "setcheckpoint" -> {
+                    return new CommandSetcheckpoint(args, sender).collect();
+                }
             }
         }
 

@@ -53,11 +53,13 @@ public class Tab implements TabCompleter {
                     "xcp",
                     "campaign",
                     "join",
+                    "quit",
                     "restart",
                     "rank",
                     "stashselection",
                     "mycampaign",
-                    "forcecontinuous"
+                    "forcecontinuous",
+                    "setcheckpoint"
             );
             else return List.of("join", "restart", "rank", "mycampaign", "quit");
         }
@@ -68,7 +70,7 @@ public class Tab implements TabCompleter {
                     return getAllPaths();
                 }
 
-                case "remove", "list", "move" -> {
+                case "remove", "list", "move", "forcecontinuous", "setcheckpoint" -> {
                     return new ArrayList<>(CommonUtils.getTrackNames());
                 }
 
@@ -92,7 +94,7 @@ public class Tab implements TabCompleter {
                     return List.of("<track.number>");
                 }
 
-                case "remove" -> {
+                case "remove", "setcheckpoint" -> {
                     var target = FileUtils.selections.getConfigurationSection("data." + args[1]);
                     if (target == null) return List.of();
                     return new ArrayList<>(target.getKeys(false));
@@ -122,7 +124,7 @@ public class Tab implements TabCompleter {
 
         if (args.length == 4) {
             switch (args[0]) {
-                case "copy", "cp", "xcopy", "xcp", "build" -> {
+                case "copy", "cp", "xcopy", "xcp", "build", "setcheckpoint" -> {
                     return List.of("true", "false");
                 }
 
