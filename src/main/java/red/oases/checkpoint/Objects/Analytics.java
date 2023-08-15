@@ -68,5 +68,6 @@ public class Analytics {
 
     public void destory() {
         FileUtils.analytics.set(this.campaign.getName() + "." + this.uuid, null);
+        FileUtils.saveAnalytics();
     }
 }
