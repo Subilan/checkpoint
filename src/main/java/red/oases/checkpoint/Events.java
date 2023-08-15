@@ -13,7 +13,6 @@ import red.oases.checkpoint.Objects.PlayerTimer;
 import red.oases.checkpoint.Objects.Point;
 import red.oases.checkpoint.Utils.AnalyticUtils;
 import red.oases.checkpoint.Utils.LogUtils;
-import red.oases.checkpoint.Utils.CommonUtils;
 
 public class Events implements Listener {
 
@@ -75,7 +74,7 @@ public class Events implements Listener {
 
 //        if (!p.isGliding()) return;
 
-        var campaign = CommonUtils.getCampaignOfPlayer(p.getName());
+        var campaign = Campaign.of(p.getName());
 
         if (campaign == null) return;
 

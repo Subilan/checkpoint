@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 import red.oases.checkpoint.Objects.Analytics;
+import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.PlayerTimer;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 public class AnalyticUtils {
     public static void saveCampaignResult(Player p) {
-        var campaign = CommonUtils.getCampaignOfPlayer(p);
+        var campaign = Campaign.of(p);
         if (campaign == null)
             throw new ObjectNotFoundException("Campaign must be present when saving campaign result.");
         if (!isCampaignPresent(campaign.getName())) FileUtils.analytics.createSection(campaign.getName());
@@ -29,7 +30,7 @@ public class AnalyticUtils {
     }
 
     public static void removeCampaignResult(Player p) {
-        var campaign = CommonUtils.getCampaignOfPlayer(p);
+        var campaign = Campaign.of(p);
         if (campaign == null) return;
         var an = Analytics.of(campaign, p);
         if (an == null) return;

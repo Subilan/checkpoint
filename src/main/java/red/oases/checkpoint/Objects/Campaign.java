@@ -3,7 +3,9 @@ package red.oases.checkpoint.Objects;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
+import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.Date;
@@ -13,6 +15,24 @@ public class Campaign {
     public ConfigurationSection section;
     private final String name;
     public boolean isFinished = false;
+
+    public static @Nullable Campaign of(Player p) {
+        for (var cam : CommonUtils.getCampaignNames()) {
+            var players = FileUtils.campaigns.getStringList(cam + ".players");
+            if (players.contains(p.getName())) return new Campaign(cam);
+        }
+
+        return null;
+    }
+
+    public static @Nullable Campaign of(String playername) {
+        for (var cam : CommonUtils.getCampaignNames()) {
+            var players = FileUtils.campaigns.getStringList(cam + ".players");
+            if (players.contains(playername)) return new Campaign(cam);
+        }
+
+        return null;
+    }
 
     public String getName() {
         return this.name;

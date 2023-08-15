@@ -30,7 +30,7 @@ public class CommandJoin extends Command {
             return true;
         }
 
-        var existingCampaign = CommonUtils.getCampaignOfPlayer(sender.getName());
+        var existingCampaign = Campaign.of(sender.getName());
 
         if (existingCampaign != null) {
             LogUtils.send("你已经加入了竞赛 " + existingCampaign.getName() + "。", sender);

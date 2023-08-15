@@ -4,9 +4,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
-import red.oases.checkpoint.Objects.Analytics;
+import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.PlayerTimer;
-import red.oases.checkpoint.Utils.AnalyticUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 
@@ -18,7 +17,7 @@ public class CommandRestart extends Command {
     }
 
     protected boolean execute() {
-        var campaign = CommonUtils.getCampaignOfPlayer(sender.getName());
+        var campaign = Campaign.of(sender.getName());
 
         var p = (Player) sender;
 

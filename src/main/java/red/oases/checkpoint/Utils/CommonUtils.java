@@ -74,27 +74,9 @@ public class CommonUtils {
         return result;
     }
 
-    public static @Nullable Campaign getCampaignOfPlayer(String playername) {
-        for (var cam : getCampaignNames()) {
-            var players = FileUtils.campaigns.getStringList(cam + ".players");
-            if (players.contains(playername)) return new Campaign(cam);
-        }
-
-        return null;
-    }
-
-    public static @Nullable Campaign getCampaignOfPlayer(Player p) {
-        for (var cam : getCampaignNames()) {
-            var players = FileUtils.campaigns.getStringList(cam + ".players");
-            if (players.contains(p.getName())) return new Campaign(cam);
-        }
-
-        return null;
-    }
-
     public static void cleanCampaignFor(Player p) {
         PlayerTimer.reset(p);
-        var campaign = CommonUtils.getCampaignOfPlayer(p);
+        var campaign = Campaign.of(p);
         assert campaign != null;
         campaign.unsetFinished(p);
         AnalyticUtils.removeCampaignResult(p);
