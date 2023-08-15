@@ -2,6 +2,7 @@ package red.oases.checkpoint.Objects;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 import red.oases.checkpoint.Utils.FileUtils;
 
@@ -31,6 +32,14 @@ public class Campaign {
 
     public boolean isOpen() {
         return section.getBoolean("is_open");
+    }
+
+    public List<String> getFinishedPlayers() {
+        return section.getStringList("finished_players");
+    }
+
+    public boolean isFinished(Player p) {
+        return getFinishedPlayers().contains(p.getName());
     }
 
     public Campaign(String cam, Boolean nocheck) {
@@ -71,33 +80,64 @@ public class Campaign {
         FileUtils.saveCampaigns();
     }
 
-    public void addPlayer(String playername) {
+    public void addPlayer(Player p) {
         var list = this.section.getStringList("players");
-        list.add(playername);
+        list.add(p.getName());
         this.section.set("players", list);
         FileUtils.saveCampaigns();
     }
 
-    public void removePlayer(String playername) {
+    /**
+     * 从参赛名单中去除一位玩家，同时删除其存在的竞赛数据。
+     * @param p 玩家对象
+     */
+    public void removePlayer(Player p) {
         var list = this.section.getStringList("players");
-        list.remove(playername);
+        list.remove(p.getName());
         this.section.set("players", list);
+        this.unsetFinished(p);
         FileUtils.saveCampaigns();
     }
 
     public static List<String> getPlayers(String cam) {
-        var section = FileUtils.campaigns.getConfigurationSection(cam);
+        var section = getSection(cam);
 
         if (section == null) return List.of();
 
         return section.getStringList("players");
     }
 
+    public static ConfigurationSection getSection(String name) {
+        return FileUtils.campaigns.getConfigurationSection(name);
+    }
+
+    public ConfigurationSection getSection() {
+        return getSection(this.name);
+    }
+
     public Track getTrack() {
         return new Track(getTrackName());
     }
 
-    public void setFinished() {
-        this.isFinished = true;
+    /**
+     * 将玩家的状态设置为已完成竞赛。
+     * @param p 玩家对象
+     */
+    public void setFinished(Player p) {
+        var list = getSection().getStringList("finished_players");
+        list.add(p.getName());
+        getSection().set("finished_players", list);
+        FileUtils.saveCampaigns();
+    }
+
+    /**
+     * 将玩家的状态设置为未完成竞赛。
+     * @param p 玩家对象
+     */
+    public void unsetFinished(Player p) {
+        var list = getSection().getStringList("finished_players");
+        list.remove(p.getName());
+        getSection().set("finished_players", list);
+        FileUtils.saveCampaigns();
     }
 }

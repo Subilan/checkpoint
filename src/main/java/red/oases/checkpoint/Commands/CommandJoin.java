@@ -1,6 +1,7 @@
 package red.oases.checkpoint.Commands;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
@@ -42,7 +43,7 @@ public class CommandJoin extends Command {
 
         var campaign = new Campaign(cam);
 
-        campaign.addPlayer(sender.getName());
+        campaign.addPlayer((Player) sender);
 
         LogUtils.send("你已成功加入竞赛 " + cam + "！", sender);
 
