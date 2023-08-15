@@ -31,7 +31,7 @@ public class CommandRestart extends Command {
             return true;
         }
 
-        CommonUtils.cleanCampaignFor(p);
+        CommonUtils.cleanCampaignFor(p, false);
         LogUtils.send("你已重置比赛状态。", sender);
         return true;
     }

@@ -25,7 +25,7 @@ public class CommandQuit extends Command {
 
         var p = (Player) sender;
 
-        CommonUtils.cleanCampaignFor(p);
+        CommonUtils.cleanCampaignFor(p, true);
         LogUtils.send("你已退出竞赛 " + campaign.getName() + "。", sender);
         return true;
     }

@@ -80,7 +80,7 @@ public class CommonUtils {
         return result;
     }
 
-    public static void cleanCampaignFor(Player p) {
+    public static void cleanCampaignFor(Player p, Boolean remove) {
         var campaign = Campaign.of(p);
         assert campaign != null;
         LocationLock.unlock(p);
@@ -89,7 +89,7 @@ public class CommonUtils {
         Progress.clearCheckpoints(p, campaign);
         PlayerTimer.reset(p);
         campaign.unsetFinished(p);
-        campaign.removePlayer(p);
+        if (remove) campaign.removePlayer(p);
     }
 
     public static String formatTimestamp(long epoch) {
