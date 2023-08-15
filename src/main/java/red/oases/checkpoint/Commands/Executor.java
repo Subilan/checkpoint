@@ -79,6 +79,18 @@ public class Executor implements CommandExecutor {
                 case "campaign" -> {
                     return new CommandCampaign(args, sender).collect();
                 }
+
+                case "mycampaign" -> {
+                    return new CommandMycampaign(args, sender).collect();
+                }
+
+                case "stashselection" -> {
+                    return new CommandStashselection(args, sender).collect();
+                }
+
+                case "forcecontinuous" -> {
+                    return new CommandForcecontinuous(args, sender).collect();
+                }
             }
         }
 

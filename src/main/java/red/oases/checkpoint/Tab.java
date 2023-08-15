@@ -54,9 +54,12 @@ public class Tab implements TabCompleter {
                     "campaign",
                     "join",
                     "restart",
-                    "rank"
+                    "rank",
+                    "stashselection",
+                    "mycampaign",
+                    "forcecontinuous"
             );
-            else return List.of("join", "restart", "rank");
+            else return List.of("join", "restart", "rank", "mycampaign", "quit");
         }
 
         if (args.length == 2) {

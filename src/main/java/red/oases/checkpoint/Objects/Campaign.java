@@ -130,6 +130,10 @@ public class Campaign {
         FileUtils.saveCampaigns();
     }
 
+    public List<String> getPlayers() {
+        return this.section.getStringList("players");
+    }
+
     /**
      * 从参赛名单中去除一位玩家，同时删除其存在的竞赛数据。
      * @param p 玩家对象
