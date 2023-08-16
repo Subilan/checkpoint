@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import javax.naming.Name;
 import java.util.logging.Logger;
 
 public final class LogUtils {
@@ -28,6 +29,37 @@ public final class LogUtils {
 
     public static Component t(String str, TextColor color) {
         return Component.text(str).color(color);
+    }
+
+    public static Component getListItem(Integer index, String str) {
+        return t("[")
+                .append(t(index.toString(), NamedTextColor.GREEN))
+                .append(t("] "))
+                .append(t(str));
+    }
+
+    public static TextColor getTextColorByIndex(int index) {
+        switch (index) {
+            case 1 -> {
+                return NamedTextColor.AQUA;
+            }
+            case 2 -> {
+                return NamedTextColor.GREEN;
+            }
+            case 3 -> {
+                return NamedTextColor.GOLD;
+            }
+            default -> {
+                return NamedTextColor.YELLOW;
+            }
+        }
+    }
+
+    public static Component getListItemColored(Integer index, String str) {
+        return t("[")
+                .append(t(index.toString(), getTextColorByIndex(index)))
+                .append(t("] "))
+                .append(t(str));
     }
 
     public static Component getPrefixedDefaultPrefix(Component prefix) {
