@@ -38,7 +38,7 @@ public class CommandRank extends Command {
 
         var targetCampaign = new Campaign(campaign);
 
-        var result = new StringBuilder("\n" + campaign + " 排名数据\n\n");
+        var result = new StringBuilder(campaign + " 的排名数据\n\n");
         var analytics = targetCampaign.getAnalytics();
         int iterationRangeStart;
         int iterationRangeEnd;
@@ -77,7 +77,7 @@ public class CommandRank extends Command {
                 lastPage
         ));
 
-        LogUtils.send(result.toString(), sender);
+        LogUtils.sendWithoutPrefix(result.toString(), sender);
         return true;
     }
 }

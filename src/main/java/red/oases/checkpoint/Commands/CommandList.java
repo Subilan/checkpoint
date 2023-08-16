@@ -35,7 +35,7 @@ public class CommandList extends Command {
             return true;
         }
 
-        var result = new StringBuilder("\n" + track + " 下的所有路径点\n\n");
+        var result = new StringBuilder(track + " 下的所有路径点\n\n");
         var keys = new ArrayList<>(section.getKeys(false));
         int iterationRangeStart;
         int iterationRangeEnd;
@@ -82,7 +82,7 @@ public class CommandList extends Command {
                 lastPage
         ));
 
-        LogUtils.send(result.toString(), sender);
+        LogUtils.sendWithoutPrefix(result.toString(), sender);
         return true;
     }
 }
