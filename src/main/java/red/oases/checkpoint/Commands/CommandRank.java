@@ -3,6 +3,7 @@ package red.oases.checkpoint.Commands;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Objects.DisplayList;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
@@ -38,46 +39,24 @@ public class CommandRank extends Command {
 
         var targetCampaign = new Campaign(campaign);
 
-        var result = new StringBuilder(campaign + " 的排名数据\n\n");
         var analytics = targetCampaign.getAnalytics();
-        int iterationRangeStart;
-        int iterationRangeEnd;
-        var lastPage = (int) Math.ceil(analytics.size() / 10d);
+        var list = new DisplayList(
+                10,
+                analytics.size(),
+                sender,
+                targetCampaign.getName() + " 的排名信息"
+        );
 
-        if (page > lastPage) {
-            if (page == 1) {
-                LogUtils.send("暂无任何参赛者。", sender);
-            } else {
-                LogUtils.send("页码过大。", sender);
-            }
-            return true;
-        }
-
-        if (analytics.size() <= 10) {
-            iterationRangeStart = 0;
-            iterationRangeEnd = analytics.size() - 1;
-        } else {
-            iterationRangeStart = 10 * (page - 1);
-            iterationRangeEnd = Math.min(iterationRangeStart + 9, analytics.size() - 1);
-        }
-
-        for (var i = iterationRangeStart; i <= iterationRangeEnd; i++) {
+        list.sendPage(page, i -> {
             var targetAnalytics = analytics.get(i);
-            result.append(String.format("[%s] %s - %s - %s\n",
+            return (String.format("[%s] %s - %s - %s\n",
                     i + 1,
                     targetAnalytics.getPlayerName(),
                     CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal()),
                     CommonUtils.formatDate(targetAnalytics.getFinishedAt())
-                    ));
-        }
+            ));
+        });
 
-        result.append(String.format(
-                "\n\n第 %s 页 - 共 %s 页",
-                page,
-                lastPage
-        ));
-
-        LogUtils.sendWithoutPrefix(result.toString(), sender);
         return true;
     }
 }
