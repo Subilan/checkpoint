@@ -2,7 +2,6 @@ package red.oases.checkpoint.Objects;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Extra.Interfaces.ListItemCallbackComponent;
 import red.oases.checkpoint.Utils.LogUtils;
@@ -64,13 +63,14 @@ public class DisplayList {
         }
 
         result = result.appendNewline()
-                .append(Component.text("第 ")
-                        .append(Component.text(page).color(NamedTextColor.YELLOW))
-                        .append(Component.text("/%s".formatted(lastPage)))
+                .append(Component.empty()
+                        .append(Component.text("· ").color(NamedTextColor.GRAY))
+                        .append(Component.text("第 "))
+                        .append(Component.text(page).color(NamedTextColor.YELLOW)))
+                        .append(Component.text("/%s".formatted(lastPage)).color(NamedTextColor.GRAY))
                         .append(Component.text(" 页"))
-                        .color(NamedTextColor.WHITE)
-                        .decorate(TextDecoration.ITALIC))
-                .appendNewline();
+                        .append(Component.text(" ·").color(NamedTextColor.GRAY))
+                        .color(NamedTextColor.WHITE);
 
         LogUtils.sendWithoutPrefix(result, sender);
     }
