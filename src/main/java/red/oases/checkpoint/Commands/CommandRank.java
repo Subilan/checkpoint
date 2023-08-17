@@ -47,10 +47,9 @@ public class CommandRank extends Command {
                 targetCampaign.getName() + " 的排名信息"
         );
 
-        list.sendPage(page, i -> {
+        list.sendPageWithComponent(page, i -> {
             var targetAnalytics = analytics.get(i);
-            return (String.format("[%s] %s - %s - %s\n",
-                    i + 1,
+            return LogUtils.getListItemColored(i + 1, String.format("%s - %s - %s\n",
                     targetAnalytics.getPlayerName(),
                     CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal()),
                     CommonUtils.formatDate(targetAnalytics.getFinishedAt())
