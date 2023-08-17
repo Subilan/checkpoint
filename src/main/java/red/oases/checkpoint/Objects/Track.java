@@ -19,8 +19,13 @@ public class Track {
         return FileUtils.tracks.getConfigurationSection("data." + this.name);
     }
 
+    public boolean isPresent() {
+        return this.getSection() != null;
+    }
+
     public List<Point> getPoints() {
         var result = new ArrayList<Point>();
+        if (!this.isPresent()) return List.of();
         var keys = this.getSection().getKeys(false)
                 .stream()
                 .sorted()
