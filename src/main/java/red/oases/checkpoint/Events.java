@@ -12,6 +12,7 @@ import red.oases.checkpoint.Objects.*;
 import red.oases.checkpoint.Utils.AnalyticUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.SoundUtils;
 
 public class Events implements Listener {
 
@@ -103,13 +104,16 @@ public class Events implements Listener {
                 }
                 if (pt.isFirst()) {
                     LogUtils.send("你已通过首个记录点，计时正式开始！", p);
+                    SoundUtils.playSoundA(p);
                 }
                 if (pt.isCheckpoint()) {
                     Progress.enableCheckpointFor(p, pt, campaign);
+                    SoundUtils.playSoundB(p);
                 }
                 if (pt.isLast()) {
                     handleChangePoint(p, pt);
                     handleFinish(p, campaign);
+                    SoundUtils.playSoundC(p);
                     break;
                 } else {
                     if (pt.hasPrevious()) {
