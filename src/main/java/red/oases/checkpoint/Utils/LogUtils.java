@@ -59,9 +59,9 @@ public final class LogUtils {
     }
 
     public static Component getListItemColored(Integer index, Component str) {
-        return t("[")
+        return t("[").color(NamedTextColor.GRAY)
                 .append(t(index.toString(), getTextColorByIndex(index)))
-                .append(t("] "))
+                .append(t("] ").color(NamedTextColor.GRAY))
                 .append(str);
     }
 

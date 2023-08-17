@@ -1,5 +1,8 @@
 package red.oases.checkpoint.Commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
@@ -44,16 +47,18 @@ public class CommandRank extends Command {
                 10,
                 analytics.size(),
                 sender,
-                targetCampaign.getName() + " 的排名信息"
+                DisplayList.getTitle(targetCampaign.getName(), "的排名信息")
         );
 
-        list.sendPageWithComponent(page, i -> {
+        list.sendPage(page, i -> {
             var targetAnalytics = analytics.get(i);
-            return LogUtils.getListItemColored(i + 1, String.format("%s - %s - %s\n",
-                    targetAnalytics.getPlayerName(),
-                    CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal()),
-                    CommonUtils.formatDate(targetAnalytics.getFinishedAt())
-            ));
+            return LogUtils.getListItemColored(i + 1,
+                            Component.text(targetAnalytics.getPlayerName()).color(NamedTextColor.WHITE)
+                                    .appendSpace().append(Component.text("@").color(NamedTextColor.LIGHT_PURPLE))
+                                    .appendSpace().append(Component.text(CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal())).color(NamedTextColor.YELLOW))
+                                    .appendSpace().append(Component.text("完成于 " + CommonUtils.formatDate(targetAnalytics.getFinishedAt())).decorate(TextDecoration.ITALIC).color(NamedTextColor.GRAY))
+                                    .appendNewline()
+            );
         });
 
         return true;

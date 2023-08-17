@@ -1,5 +1,8 @@
 package red.oases.checkpoint.Commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Objects.DisplayList;
 import red.oases.checkpoint.Utils.FileUtils;
@@ -41,7 +44,7 @@ public class CommandList extends Command {
                 10,
                 keys.size(),
                 sender,
-                track + " 下的所有路径点"
+                DisplayList.getTitle(track, "下的所有路径点")
         );
 
         list.sendPage(page, i -> {
@@ -49,16 +52,18 @@ public class CommandList extends Command {
             var targetSection = FileUtils.tracks.getConfigurationSection(
                     String.format("data.%s.%s", track, k)
             );
-            if (targetSection == null) return "continue";
+            if (targetSection == null) return null;
             var pos1 = targetSection.getIntegerList("pos1");
             var pos2 = targetSection.getIntegerList("pos2");
             var creator = targetSection.getString("creator");
-            return (String.format("[%s] (%s, %s, %s) - (%s, %s, %s) %s\n",
-                    k,
-                    pos1.get(0), pos1.get(1), pos1.get(2),
-                    pos2.get(0), pos2.get(1), pos2.get(2),
-                    creator
-            ));
+            return Component.empty()
+                    .append(Component.text("(%s, %s, %s)".formatted(pos1.get(0), pos1.get(1), pos1.get(2))).color(NamedTextColor.YELLOW))
+                    .appendSpace()
+                    .append(Component.text("-").color(NamedTextColor.GRAY))
+                    .appendSpace()
+                    .append(Component.text("(%s, %s, %s)".formatted(pos2.get(0), pos2.get(1), pos2.get(2))).color(NamedTextColor.YELLOW))
+                    .appendSpace()
+                    .append(Component.text("由 %s 创建".formatted(creator)).color(NamedTextColor.GRAY).decorate(TextDecoration.ITALIC));
         });
 
         return true;
