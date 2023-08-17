@@ -46,10 +46,10 @@ public final class LogUtils {
                 return NamedTextColor.GREEN;
             }
             case 3 -> {
-                return NamedTextColor.GOLD;
+                return NamedTextColor.YELLOW;
             }
             default -> {
-                return NamedTextColor.YELLOW;
+                return NamedTextColor.GOLD;
             }
         }
     }
