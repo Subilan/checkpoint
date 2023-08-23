@@ -17,21 +17,28 @@ public class CommandRestart extends Command {
     }
 
     protected boolean execute() {
-        var campaign = Campaign.of(sender.getName());
+        if (args.length < 2) {
+            LogUtils.send("参数不足：/cpt restart <campaign>", sender);
+            return true;
+        }
 
+        var cam = args[1];
         var p = (Player) sender;
+        var campaigns = Campaign.get(p);
 
-        if (campaign == null) {
+        if (campaigns.isEmpty()) {
             LogUtils.send("你还没有加入任何竞赛。", sender);
             return true;
         }
 
-        if (!campaign.isFinished(p) && PlayerTimer.getTicks(p).isEmpty()) {
+        var target = new Campaign(cam);
+
+        if (!target.isFinished(p) && PlayerTimer.getTicks(p).isEmpty()) {
             LogUtils.send("你还没有开始比赛。", sender);
             return true;
         }
 
-        CommonUtils.cleanCampaignFor(p, false);
+        CommonUtils.cleanCampaignFor(p, target, false);
         LogUtils.send("你已重置比赛状态。", sender);
         return true;
     }

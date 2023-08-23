@@ -23,22 +23,26 @@ public class CommandJoin extends Command {
 
         var cam = args[1];
 
-        var campaigns = CommonUtils.getCampaignNames();
-
-        if (!campaigns.contains(cam)) {
+        if (!Campaign.isPresent(cam)) {
             LogUtils.send("竞赛 " + cam + " 不存在。", sender);
             return true;
         }
 
-        var existingCampaign = Campaign.of(sender.getName());
+        var p = (Player) sender;
 
-        if (existingCampaign != null) {
-            LogUtils.send("你已经加入了竞赛 " + existingCampaign.getName() + "。", sender);
+        var existingCampaigns = Campaign.get(p);
 
-            if (!existingCampaign.getName().equals(cam)) {
-                LogUtils.send("若要加入 " + cam + "，请先退出先前的竞赛。", sender);
-            }
+        // config
+        if (existingCampaigns.size() > 2) {
+            LogUtils.send("加入的竞赛数量已达上限。", sender);
             return true;
+        }
+
+        for (var c : existingCampaigns) {
+            if (c.getName().equals(cam)) {
+                LogUtils.send("你已经加入了竞赛 " + c.getName() + "。", sender);
+                return true;
+            }
         }
 
         var campaign = new Campaign(cam);
@@ -50,7 +54,7 @@ public class CommandJoin extends Command {
             return true;
         }
 
-        campaign.addPlayer((Player) sender);
+        campaign.addPlayer(p);
 
         LogUtils.send("你已成功加入竞赛 " + cam + "！", sender);
 

@@ -18,6 +18,27 @@ import java.util.Objects;
 public class Campaign {
     private final String name;
 
+    public static boolean isPresent(String cam) {
+        return CommonUtils.getCampaignNames().contains(cam);
+    }
+
+    /**
+     * 判断是否该玩家目前参与了至少一场比赛
+     * @param p 玩家
+     * @return 是否参与
+     */
+    public static boolean any(Player p) {
+        return !Campaign.get(p).isEmpty();
+    }
+
+    public static List<Campaign> get(Player p) {
+        return CommonUtils.getCampaignNames().stream().filter(c -> {
+            var players = FileUtils.campaigns.getStringList(c + ".players");
+            return players.contains(p.getName());
+        }).map(Campaign::new).toList();
+    }
+
+    @Deprecated
     public static @Nullable Campaign of(Player p) {
         for (var cam : CommonUtils.getCampaignNames()) {
             var players = FileUtils.campaigns.getStringList(cam + ".players");
@@ -27,6 +48,7 @@ public class Campaign {
         return null;
     }
 
+    @Deprecated
     public static @Nullable Campaign of(String playername) {
         for (var cam : CommonUtils.getCampaignNames()) {
             var players = FileUtils.campaigns.getStringList(cam + ".players");

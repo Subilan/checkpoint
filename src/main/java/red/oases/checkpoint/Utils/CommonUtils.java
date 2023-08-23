@@ -1,7 +1,6 @@
 package red.oases.checkpoint.Utils;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.LocationLock;
 import red.oases.checkpoint.Objects.PlayerTimer;
@@ -13,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CommonUtils {
     public static Set<String> getCampaignNames() {
@@ -55,9 +53,9 @@ public class CommonUtils {
         return result;
     }
 
-    public static void cleanCampaignFor(Player p, Boolean remove) {
-        var campaign = Campaign.of(p);
-        assert campaign != null;
+    public static void cleanCampaignFor(Player p, Campaign campaign, Boolean remove) {
+        var campaigns = Campaign.get(p);
+        assert !campaigns.isEmpty() && Campaign.isPresent(campaign.getName());
         LocationLock.unlock(p);
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);

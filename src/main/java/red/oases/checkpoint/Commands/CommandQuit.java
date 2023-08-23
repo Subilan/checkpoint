@@ -16,17 +16,29 @@ public class CommandQuit extends Command {
     }
 
     protected boolean execute() {
-        var campaign = Campaign.of(sender.getName());
+        if (args.length < 2) {
+            LogUtils.send("参数不足：/cpt quit <campaign>", sender);
+        }
 
-        if (campaign == null) {
-            LogUtils.send("你还没有加入任何竞赛。", sender);
-            return true;
+        var cam = args[1];
+
+        if (!Campaign.isPresent(cam)) {
+            LogUtils.send("警告：对应竞赛已经不存在，退出操作仍会进行。", sender);
         }
 
         var p = (Player) sender;
 
-        CommonUtils.cleanCampaignFor(p, true);
-        LogUtils.send("你已退出竞赛 " + campaign.getName() + "。", sender);
+        var campaigns = Campaign.get(p);
+
+        if (campaigns.isEmpty()) {
+            LogUtils.send("你还没有加入任何竞赛。", sender);
+            return true;
+        }
+
+        var campaign = new Campaign(cam);
+
+        CommonUtils.cleanCampaignFor(p, campaign, true);
+        LogUtils.send("你已退出竞赛 " + cam + "。", sender);
         return true;
     }
 }

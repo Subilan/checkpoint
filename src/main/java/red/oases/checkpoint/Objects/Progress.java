@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Progress {
@@ -43,10 +44,17 @@ public class Progress {
         return list.stream().map(s -> {
             var track = s.split("\\.")[0];
             var number = CommonUtils.mustPositive(s.split("\\.")[1]);
-            System.out.println(track);
-            System.out.println(number);
             return new Point(track, number);
         }).toList();
+    }
+
+    public static List<Point> getAllAvailableCheckpointsFor(Player p) {
+        var campaigns = Campaign.get(p);
+        var result = new ArrayList<Point>();
+        for (var campaign : campaigns) {
+            result.addAll(getAvailableCheckpointsFor(p, campaign));
+        }
+        return result;
     }
 
     public static String identify(Point pt) {

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.PlayerTimer;
 import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
