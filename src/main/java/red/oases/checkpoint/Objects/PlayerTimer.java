@@ -14,30 +14,32 @@ public class PlayerTimer {
         return new DedicatedPlayerTimer(p);
     }
 
-    public static String path(Player p, Integer number) {
-        return p.getName() + "." + number.toString();
+    public static String path(Player p, Campaign campaign, Integer number) {
+        return p.getName() + "." + campaign.getName() + "." + number.toString();
     }
 
-    public static void tick(Player p, int number) {
+    public static void tick(Player p, Campaign campaign, int number) {
         timerStorage.set(
-                path(p, number),
-                timerStorage.getLong(path(p, number)) + 1
+                path(p, campaign, number),
+                timerStorage.getLong(path(p, campaign, number)) + 1
         );
     }
 
-    public static Long getTick(Player p, Integer index) {
-        return timerStorage.getLong(path(p, index));
+    public static Long getTick(Player p, Campaign campaign, Integer index) {
+        return timerStorage.getLong(path(p, campaign, index));
     }
 
-    public static Long getTotalTime(Player p) {
-        var ticks = getTicks(p);
+    public static Long getTotalTime(Player p, Campaign campaign) {
+        var ticks = getTicks(p, campaign);
         var sum = 0;
         for (var t : ticks) sum += t;
         return (long) sum;
     }
 
-    public static List<Long> getTicks(Player p) {
-        var section = timerStorage.getConfigurationSection(p.getName());
+    public static List<Long> getTicks(Player p, Campaign campaign) {
+        var section = timerStorage.getConfigurationSection(
+                p.getName() + "." + campaign.getName()
+        );
         if (section == null) return List.of();
         var list = new ArrayList<Long>();
         for (var k : section.getKeys(false)) {
@@ -46,10 +48,6 @@ public class PlayerTimer {
             list.add(section.getLong(k));
         }
         return list.stream().toList();
-    }
-
-    public static Integer getPlayerStage(Player p) {
-        return getTicks(p).size();
     }
 
     public static Timer getTimer(Player p) {

@@ -13,14 +13,17 @@ public class DedicatedPlayerTimer {
         this.player = p;
     }
 
-    public void startTimerFor(Player p, @NotNull Point pt) {
+    public void startTimerFor(Player p, @NotNull Campaign campaign, @NotNull Point pt) {
         if (this.isLocked) return;
         PlayerTimer.renewTimer(p);
-        PlayerTimer.timerStorage.set(pt.number.toString(), 0);
+        PlayerTimer.timerStorage.set(
+                PlayerTimer.path(p, campaign, pt.number),
+                0
+        );
         PlayerTimer.getTimer(p).scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                PlayerTimer.tick(p, pt.number);
+                PlayerTimer.tick(p, campaign, pt.number);
             }
         }, 0, 1);
         this.isLocked = true;
