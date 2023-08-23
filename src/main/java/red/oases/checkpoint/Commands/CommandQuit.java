@@ -18,6 +18,7 @@ public class CommandQuit extends Command {
     protected boolean execute() {
         if (args.length < 2) {
             LogUtils.send("参数不足：/cpt quit <campaign>", sender);
+            return true;
         }
 
         var cam = args[1];
