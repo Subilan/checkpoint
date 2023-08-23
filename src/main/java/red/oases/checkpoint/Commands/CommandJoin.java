@@ -57,6 +57,7 @@ public class CommandJoin extends Command {
         campaign.addPlayer(p);
 
         LogUtils.send("你已成功加入竞赛 " + cam + "！", sender);
+        LogUtils.send("在正式开始之前，请键入 /cpt run <竞赛名> 准备。", sender);
 
         return true;
     }

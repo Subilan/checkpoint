@@ -33,8 +33,8 @@ public class CommandRestart extends Command {
 
         var target = new Campaign(cam);
 
-        if (!target.isFinished(p) && PlayerTimer.getTicks(p).isEmpty()) {
-            LogUtils.send("你还没有开始比赛。", sender);
+        if (!target.isFinished(p) && PlayerTimer.getTicks(p, target).isEmpty()) {
+            LogUtils.send("你还没有开始这场比赛。", sender);
             return true;
         }
 
