@@ -8,8 +8,8 @@ import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
 
 @DisableConsole
-public class CommandUnrun extends Command {
-    public CommandUnrun(String[] args, CommandSender sender) {
+public class CommandUnset extends Command {
+    public CommandUnset(String[] args, CommandSender sender) {
         super(args, sender);
     }
 
