@@ -59,7 +59,6 @@ public class Tab implements TabCompleter {
                     "quit",
                     "restart",
                     "rank",
-                    "stashselection",
                     "mycampaign",
                     "forcecontinuous",
                     "setcheckpoint",
