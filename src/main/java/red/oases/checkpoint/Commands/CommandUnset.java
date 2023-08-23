@@ -16,7 +16,7 @@ public class CommandUnset extends Command {
     @Override
     protected boolean execute() {
         if (args.length < 2) {
-            LogUtils.send("参数不足：/cpt unrun <campaign>", sender);
+            LogUtils.send("参数不足：/cpt unset <campaign>", sender);
             return true;
         }
 

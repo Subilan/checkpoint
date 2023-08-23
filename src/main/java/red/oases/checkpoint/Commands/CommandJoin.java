@@ -50,7 +50,7 @@ public class CommandJoin extends Command {
         if (campaign.isPrivate() || !campaign.isOpen()) {
             LogUtils.send("无法加入此竞赛。", sender);
             if (campaign.isPrivate()) LogUtils.send("此竞赛为私密。", sender);
-            else LogUtils.send("此竞赛已关闭或者没有开始。", sender);
+            else LogUtils.send("此竞赛处于关闭状态。", sender);
             return true;
         }
 

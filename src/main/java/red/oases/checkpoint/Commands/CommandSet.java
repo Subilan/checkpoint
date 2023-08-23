@@ -16,7 +16,7 @@ public class CommandSet extends Command {
     @Override
     protected boolean execute() {
         if (args.length < 2) {
-            LogUtils.send("参数不足：/cpt run <campaign>", sender);
+            LogUtils.send("参数不足：/cpt set <campaign>", sender);
             return true;
         }
 
@@ -32,7 +32,12 @@ public class CommandSet extends Command {
 
         if (campaign.isFinished(p)) {
             LogUtils.send("你已完成该比赛。", sender);
-            LogUtils.send("若想清空数据重新开始，请使用 /cpt restart " + campaign.getName(), sender);
+            LogUtils.send("若想清空数据重新开始，请使用 /cpt reset " + campaign.getName(), sender);
+            return true;
+        }
+
+        if (!campaign.isOpen() && !campaign.isPrivate()) {
+            LogUtils.send("比赛已关闭。", sender);
             return true;
         }
 
@@ -40,7 +45,7 @@ public class CommandSet extends Command {
 
         if (running != null) {
             LogUtils.send("你已经准备了比赛 " + running.getName() + "。", sender);
-            LogUtils.send("如需取消准备，请输入 /cpt unrun " + running.getName(), sender);
+            LogUtils.send("如需取消准备，请输入 /cpt unset " + running.getName(), sender);
             return true;
         }
 
