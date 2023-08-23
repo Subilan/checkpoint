@@ -99,6 +99,14 @@ public class Executor implements CommandExecutor {
                 case "tp", "teleport" -> {
                     return new CommandTeleport(args, sender).collect();
                 }
+
+                case "run" -> {
+                    return new CommandRun(args, sender).collect();
+                }
+
+                case "unrun" -> {
+                    return new CommandUnrun(args, sender).collect();
+                }
             }
         }
 

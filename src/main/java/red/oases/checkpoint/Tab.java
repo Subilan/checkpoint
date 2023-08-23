@@ -64,7 +64,9 @@ public class Tab implements TabCompleter {
                     "forcecontinuous",
                     "setcheckpoint",
                     "teleport",
-                    "tp"
+                    "tp",
+                    "run",
+                    "unrun"
             );
             else return List.of(
                     "join",
@@ -91,12 +93,16 @@ public class Tab implements TabCompleter {
                     return List.of("<T1.N1,T2.N2,...>");
                 }
 
-                case "join", "rank" -> {
+                case "join", "rank", "run", "unrun", "quit" -> {
                     return new ArrayList<>(CommonUtils.getCampaignNames());
                 }
 
                 case "campaign" -> {
                     return List.of("setstatus", "new", "delete");
+                }
+
+                case "build" -> {
+                    return List.of("<track>");
                 }
 
                 case "teleport", "tp" -> {
@@ -139,6 +145,10 @@ public class Tab implements TabCompleter {
                             return List.of("<name>");
                         }
                     }
+                }
+
+                case "build" -> {
+                    return List.of("<number>");
                 }
             }
         }
