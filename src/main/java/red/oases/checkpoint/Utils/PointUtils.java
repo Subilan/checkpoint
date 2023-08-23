@@ -16,6 +16,10 @@ public class PointUtils {
         return "checkpoint.%s.%s".formatted(campaign.getName(), p.getName());
     }
 
+    public static List<Point> getAllCheckpoints(Campaign campaign) {
+        return campaign.getTrack().getPoints().stream().filter(Point::isCheckpoint).toList();
+    }
+
     public static void enableCheckpointFor(Player p, Point pt, Campaign campaign) {
         if (!pt.isCheckpoint()) return;
         var list = FileUtils.progress.getStringList(checkpointPath(p, campaign));
