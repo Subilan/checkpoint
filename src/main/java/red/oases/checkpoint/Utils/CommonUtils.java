@@ -59,6 +59,7 @@ public class CommonUtils {
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);
         PointUtils.clearCheckpoints(p, campaign);
+        ProgressUtils.deleteProgress(p);
         PlayerTimer.reset(p);
         campaign.unsetFinished(p);
         if (remove) campaign.removePlayer(p);
