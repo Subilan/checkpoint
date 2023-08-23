@@ -68,8 +68,8 @@ public class Executor implements CommandExecutor {
                     return new CommandQuit(args, sender).collect();
                 }
 
-                case "restart" -> {
-                    return new CommandRestart(args, sender).collect();
+                case "reset" -> {
+                    return new CommandReset(args, sender).collect();
                 }
 
                 case "rank" -> {

@@ -181,7 +181,7 @@ public class Events implements Listener {
         var total = CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p, campaign));
         LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
         LogUtils.send("统计数据已存储。", p);
-        LogUtils.send("如需清除数据重新开始，键入 /cpt restart。", p);
+        LogUtils.send("如需清除数据重新开始，键入 /cpt reset " + campaign.getName(), p);
     }
 
     public void sendPartialTotal(Player p, Campaign campaign, Point pt) {

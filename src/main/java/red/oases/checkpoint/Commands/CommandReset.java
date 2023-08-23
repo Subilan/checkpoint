@@ -11,14 +11,14 @@ import red.oases.checkpoint.Utils.LogUtils;
 
 @PermissionLevel(0)
 @DisableConsole
-public class CommandRestart extends Command {
-    public CommandRestart(String[] args, CommandSender sender) {
+public class CommandReset extends Command {
+    public CommandReset(String[] args, CommandSender sender) {
         super(args, sender);
     }
 
     protected boolean execute() {
         if (args.length < 2) {
-            LogUtils.send("参数不足：/cpt restart <campaign>", sender);
+            LogUtils.send("参数不足：/cpt reset <campaign>", sender);
             return true;
         }
 
