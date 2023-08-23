@@ -1,8 +1,6 @@
 package red.oases.checkpoint;
 
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;

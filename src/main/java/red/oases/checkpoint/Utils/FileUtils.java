@@ -46,14 +46,14 @@ public class FileUtils {
         analytics = YamlConfiguration.loadConfiguration(fanalytics);
         checkpoints = YamlConfiguration.loadConfiguration(fcheckpoints);
     }
-
-    public static void saveConfig() {
-        try {
-            config.save(fconfig);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    public static void saveConfig() {
+//        try {
+//            config.save(fconfig);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static void saveSelections() {
         try {

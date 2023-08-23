@@ -6,10 +6,11 @@ commands:
   checkpoint:
     aliases: ['cpt']
     description: Checkpoint main command.
-    permission: checkpoint.admin
-    permission-message: "你必须有 checkpoint.admin 权限才能访问该指令。"
-    usage: /cpt ...
+    permission: checkpoint.user
 permissions:
   checkpoint.admin:
     default: op
     description: 完全访问 Checkpoint 的权限
+  checkpoint.user:
+    default: true
+    description: 玩家权限
