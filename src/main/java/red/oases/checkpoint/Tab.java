@@ -6,10 +6,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.PointUtils;
+import red.oases.checkpoint.Utils.ProgressUtils;
 
 import java.util.*;
 
@@ -93,7 +93,7 @@ public class Tab implements TabCompleter {
                     return List.of("<T1.N1,T2.N2,...>");
                 }
 
-                case "join", "rank", "run", "unrun", "quit" -> {
+                case "join", "rank", "run", "unrun", "quit", "restart" -> {
                     return new ArrayList<>(CommonUtils.getCampaignNames());
                 }
 
@@ -107,7 +107,7 @@ public class Tab implements TabCompleter {
 
                 case "teleport", "tp" -> {
                     var p = (Player) sender;
-                    var campaign = Campaign.of(p);
+                    var campaign = ProgressUtils.getRunningCampaign(p);
                     if (campaign == null) return List.of();
                     var available = PointUtils.getAvailableCheckpointsFor(p, campaign);
                     return available.stream().map(x -> x.number.toString()).toList();
