@@ -4,7 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
+import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.Config;
+import red.oases.checkpoint.Objects.Logic;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
@@ -31,15 +33,21 @@ public class CommandJoin extends Command {
         var defaultCam = Config.getString("default-campaign-name");
 
         if (defaultCam == null) {
-            var campaigns = CommonUtils.getCampaignNames().stream().toList();
+            // 只考虑 open 状态的比赛
+            var campaigns = CommonUtils.getCampaignNames()
+                    .stream()
+                    .filter(cam -> new Campaign(cam).isOpen())
+                    .toList();
             if (campaigns.isEmpty()) {
-                LogUtils.send("暂无赛道可供选择。", sender);
+                LogUtils.send("参赛失败，暂无竞赛可供选择。", sender);
                 return true;
             }
-            defaultCam = campaigns.get(new Random(campaigns.size()).nextInt());
+            defaultCam = campaigns.get(new Random().nextInt(campaigns.size()));
         }
-        LogUtils.send("默认为你选择的赛道为 " + defaultCam + "。", sender);
+        LogUtils.send("默认为你选择的竞赛为 " + defaultCam + "。", sender);
         LogUtils.send("如需切换，请使用 /cpt switch 指令。", sender);
+
+        Logic.initializeCampaignFor(p, new Campaign(defaultCam));
 
         return true;
     }

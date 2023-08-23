@@ -61,6 +61,13 @@ public class ProgressUtils {
         else return pt.number;
     }
 
+    public static void disableCampaignFor(Player p) {
+        var list = FileUtils.progress.getStringList("campaign_enabled");
+        list.remove(p.getName());
+        FileUtils.progress.set("campaign_enabled", list);
+        FileUtils.saveProgress();
+    }
+
     public static void enableCampaignFor(Player p) {
         var list = FileUtils.progress.getStringList("campaign_enabled");
         list.add(p.getName());

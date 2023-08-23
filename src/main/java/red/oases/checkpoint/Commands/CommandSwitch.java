@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Objects.Config;
+import red.oases.checkpoint.Objects.Logic;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
 
@@ -45,11 +47,15 @@ public class CommandSwitch extends Command {
                 LogUtils.send("你已经在竞赛 " + campaign.getName() + " 中了。", sender);
                 return true;
             }
+
+            if (Config.getBoolean("single-choice")) {
+                Logic.cleanCampaignFor(p, currentCampaign, true);
+                LogUtils.send("你在 " + currentCampaign.getName() + " 中的数据已删除。", sender);
+            }
         }
 
-        campaign.addPlayer(p);
-        ProgressUtils.refreshProgress(p);
-        ProgressUtils.setRunningCampaign(p, campaign);
+        Logic.initializeCampaignFor(p, campaign);
+
         LogUtils.send("已切换到 " + campaign.getName() + "。", sender);
         return true;
     }

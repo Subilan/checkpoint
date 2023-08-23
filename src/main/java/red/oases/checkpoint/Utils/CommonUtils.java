@@ -1,10 +1,5 @@
 package red.oases.checkpoint.Utils;
 
-import org.bukkit.entity.Player;
-import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.LocationLock;
-import red.oases.checkpoint.Objects.PlayerTimer;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -50,19 +45,6 @@ public class CommonUtils {
             return 0;
         }
         return result;
-    }
-
-    public static void cleanCampaignFor(Player p, Campaign campaign, Boolean remove) {
-        var campaigns = Campaign.get(p);
-        assert !campaigns.isEmpty() && Campaign.isPresent(campaign.getName());
-        LocationLock.unlock(p);
-        // 必须放在 campaign 数据被删除之前
-        AnalyticUtils.removeCampaignResult(p, campaign);
-        PointUtils.clearCheckpoints(p, campaign);
-        ProgressUtils.deleteProgress(p);
-        PlayerTimer.reset(p);
-        campaign.unsetFinished(p);
-        if (remove) campaign.removePlayer(p);
     }
 
     public static String formatTimestamp(long epoch) {
