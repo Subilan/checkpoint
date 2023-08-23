@@ -20,7 +20,8 @@ public class DisplayMap {
 
     public void send() {
         var result = Component
-                .newline().append(divider)
+                .empty()
+                .append(divider)
                 .appendNewline().append(title)
                 .appendNewline().append(divider)
                 .appendNewline()
@@ -35,8 +36,6 @@ public class DisplayMap {
                     .append(map.get(k))
                     .appendNewline();
         }
-
-        result = result.appendNewline();
 
         sender.sendMessage(result);
     }

@@ -33,10 +33,10 @@ public class CommandMycampaign extends Command {
 
         for (var campaign : campaigns) {
             var map = new HashMap<String, Component>();
-            map.put("竞赛名称", LogUtils.t(campaign.getName()));
-            map.put("参与人数", LogUtils.t(String.valueOf(campaign.getPlayers().size())));
-            map.put("路径点总数", LogUtils.t(String.valueOf(campaign.getTrack().getPoints().size())));
-            map.put("记录点总数", LogUtils.t(String.valueOf(PointUtils.getAllCheckpoints(campaign).size())));
+            map.put("竞赛名称", LogUtils.t(campaign.getName(), NamedTextColor.YELLOW));
+            map.put("参与人数", LogUtils.t(String.valueOf(campaign.getPlayers().size()), NamedTextColor.YELLOW));
+            map.put("路径点总数", LogUtils.t(String.valueOf(campaign.getTrack().getPoints().size()), NamedTextColor.YELLOW));
+            map.put("记录点总数", LogUtils.t(String.valueOf(PointUtils.getAllCheckpoints(campaign).size()), NamedTextColor.YELLOW));
             map.put("当前竞赛状态", campaign.isOpen()
                     ? LogUtils.t("开启", NamedTextColor.GREEN)
                     : (campaign.isPrivate()
@@ -45,24 +45,16 @@ public class CommandMycampaign extends Command {
 
             var finished = campaign.getFinishedPlayers().size();
 
-            if (finished > 0) map.put("已完成人数", LogUtils.t(String.valueOf(finished)));
+            if (finished > 0) map.put("已完成人数", LogUtils.t(String.valueOf(finished), NamedTextColor.LIGHT_PURPLE));
 
             new DisplayMap(
-                    LogUtils.t(p.getName()).color(NamedTextColor.YELLOW)
+                    LogUtils.t(campaign.getName()).color(NamedTextColor.YELLOW)
                             .appendSpace()
-                            .append(LogUtils.t("参加的竞赛信息").color(NamedTextColor.AQUA)),
+                            .append(LogUtils.t("的竞赛信息").color(NamedTextColor.AQUA)),
                     sender,
                     map
             ).send();
         }
-
-        var content = LogUtils.t("共参与了", NamedTextColor.GREEN)
-                .appendSpace()
-                .append(LogUtils.t(String.valueOf(campaigns.size()), NamedTextColor.YELLOW))
-                .appendSpace()
-                .append(LogUtils.t("场竞赛", NamedTextColor.GREEN))
-                .appendNewline().appendNewline()
-                .append(LogUtils.t("竞赛名称 - "));
 
         return true;
     }
