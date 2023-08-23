@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
+import red.oases.checkpoint.Utils.PointUtils;
 
 @DisableConsole
 @PermissionLevel(0)
@@ -39,7 +39,7 @@ public class CommandTeleport extends Command {
             return true;
         }
 
-        var avail = Progress.getAvailableCheckpointsFor(p, campaign);
+        var avail = PointUtils.getAvailableCheckpointsFor(p, campaign);
 
         if (avail.isEmpty()) {
             LogUtils.send("你没有可以传送的记录点。", sender);

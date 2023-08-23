@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.LocationLock;
 import red.oases.checkpoint.Objects.PlayerTimer;
-import red.oases.checkpoint.Objects.Progress;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,7 +58,7 @@ public class CommonUtils {
         LocationLock.unlock(p);
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);
-        Progress.clearCheckpoints(p, campaign);
+        PointUtils.clearCheckpoints(p, campaign);
         PlayerTimer.reset(p);
         campaign.unsetFinished(p);
         if (remove) campaign.removePlayer(p);

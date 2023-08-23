@@ -9,10 +9,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import red.oases.checkpoint.Objects.*;
-import red.oases.checkpoint.Utils.AnalyticUtils;
-import red.oases.checkpoint.Utils.CommonUtils;
-import red.oases.checkpoint.Utils.LogUtils;
-import red.oases.checkpoint.Utils.SoundUtils;
+import red.oases.checkpoint.Utils.*;
 
 public class Events implements Listener {
 
@@ -107,7 +104,7 @@ public class Events implements Listener {
                     SoundUtils.playSoundA(p);
                 }
                 if (pt.isCheckpoint()) {
-                    Progress.enableCheckpointFor(p, pt, campaign);
+                    PointUtils.enableCheckpointFor(p, pt, campaign);
                     SoundUtils.playSoundB(p);
                 }
                 if (pt.isLast()) {
@@ -136,7 +133,7 @@ public class Events implements Listener {
         var p = e.getPlayer();
         var campaign = Campaign.of(p);
         if (campaign == null) return;
-        Progress.clearCheckpoints(p, campaign);
+        PointUtils.clearCheckpoints(p, campaign);
         // 当存档机制完善后删除此机制。
     }
 
@@ -149,7 +146,7 @@ public class Events implements Listener {
     public void handleFinish(Player p, Campaign campaign) {
         campaign.setFinished(p);
         AnalyticUtils.saveCampaignResult(p);
-        Progress.clearCheckpoints(p, campaign);
+        PointUtils.clearCheckpoints(p, campaign);
         var total = CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p));
         LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
         LogUtils.send("统计数据已存储。", p);

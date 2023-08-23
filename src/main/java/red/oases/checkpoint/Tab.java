@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
+import red.oases.checkpoint.Utils.PointUtils;
 
 import java.util.*;
 
@@ -103,7 +103,7 @@ public class Tab implements TabCompleter {
                     var p = (Player) sender;
                     var campaign = Campaign.of(p);
                     if (campaign == null) return List.of();
-                    var available = Progress.getAvailableCheckpointsFor(p, campaign);
+                    var available = PointUtils.getAvailableCheckpointsFor(p, campaign);
                     return available.stream().map(x -> x.number.toString()).toList();
                 }
             }
