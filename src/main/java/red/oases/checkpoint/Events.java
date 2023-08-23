@@ -132,9 +132,11 @@ public class Events implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         var p = e.getPlayer();
-        var campaign = Campaign.of(p);
-        if (campaign == null) return;
-        PointUtils.clearCheckpoints(p, campaign);
+        var campaigns = Campaign.get(p);
+        if (campaigns.isEmpty()) return;
+        for (var campaign : campaigns) {
+            PointUtils.clearCheckpoints(p, campaign);
+        }
         // 当存档机制完善后删除此机制。
     }
 

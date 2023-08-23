@@ -4,10 +4,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
-import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.PointUtils;
+import red.oases.checkpoint.Utils.ProgressUtils;
 
 @DisableConsole
 @PermissionLevel(0)
@@ -32,7 +32,7 @@ public class CommandTeleport extends Command {
         }
 
         var p = (Player) sender;
-        var campaign = Campaign.of(p);
+        var campaign = ProgressUtils.getRunningCampaign(p);
 
         if (campaign == null) {
             LogUtils.send("此指令只能在参与竞赛后使用。", sender);
