@@ -65,7 +65,8 @@ public class Tab implements TabCompleter {
                     "teleport",
                     "tp",
                     "set",
-                    "unset"
+                    "unset",
+                    "start"
             );
             else return List.of(
                     "join",
@@ -76,7 +77,8 @@ public class Tab implements TabCompleter {
                     "teleport",
                     "tp",
                     "set",
-                    "unset"
+                    "unset",
+                    "start"
             );
         }
 

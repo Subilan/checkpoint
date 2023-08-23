@@ -103,6 +103,10 @@ public class Executor implements CommandExecutor {
                 case "unset" -> {
                     return new CommandUnset(args, sender).collect();
                 }
+
+                case "start" -> {
+                    return new CommandStart(args, sender).collect();
+                }
             }
         }
 
