@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PointUtils {
     public static void clearCheckpoints(Player p, Campaign campaign) {
-        FileUtils.progress.set(checkpointPath(p, campaign), null);
+        FileUtils.checkpoints.set(checkpointPath(p, campaign), null);
         FileUtils.saveProgress();
     }
 
@@ -22,14 +22,14 @@ public class PointUtils {
 
     public static void enableCheckpointFor(Player p, Point pt, Campaign campaign) {
         if (!pt.isCheckpoint()) return;
-        var list = FileUtils.progress.getStringList(checkpointPath(p, campaign));
+        var list = FileUtils.checkpoints.getStringList(checkpointPath(p, campaign));
         list.add(identify(pt));
-        FileUtils.progress.set(checkpointPath(p, campaign), list);
+        FileUtils.checkpoints.set(checkpointPath(p, campaign), list);
         FileUtils.saveProgress();
     }
 
     public static List<Point> getAvailableCheckpointsFor(Player p, Campaign campaign) {
-        var list = FileUtils.progress.getStringList(checkpointPath(p, campaign));
+        var list = FileUtils.checkpoints.getStringList(checkpointPath(p, campaign));
         return list.stream().map(s -> {
             var track = s.split("\\.")[0];
             var number = CommonUtils.mustPositive(s.split("\\.")[1]);

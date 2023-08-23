@@ -12,44 +12,44 @@ public class FileUtils {
     public static FileConfiguration tracks;
     public static FileConfiguration campaigns;
     public static FileConfiguration analytics;
-    public static FileConfiguration progress;
-    public static File configFile;
-    public static File tracksFile;
-    public static File campaignFile;
-    public static File analyticsFile;
-    public static File progressFile;
+    public static FileConfiguration checkpoints;
+    public static File fconfig;
+    public static File ftracks;
+    public static File fcampaigns;
+    public static File fanalytics;
+    public static File fcheckpoints;
 
     public static void init() {
-        configFile = new File(
+        fconfig = new File(
                 datafolder.getAbsoluteFile() + "/config.yml"
         );
-        tracksFile = new File(
+        ftracks = new File(
                 datafolder.getAbsoluteFile() + "/tracks.yml"
         );
-        campaignFile = new File(
+        fcampaigns = new File(
                 datafolder.getAbsoluteFile() + "/campaign.yml"
         );
-        analyticsFile = new File(
+        fanalytics = new File(
                 datafolder.getAbsoluteFile() + "/analytics.yml"
         );
-        progressFile = new File(
-                datafolder.getAbsoluteFile() + "/progress.yml"
+        fcheckpoints = new File(
+                datafolder.getAbsoluteFile() + "/checkpoints.yml"
         );
 
         reload();
     }
 
     public static void reload() {
-        config = YamlConfiguration.loadConfiguration(configFile);
-        tracks = YamlConfiguration.loadConfiguration(tracksFile);
-        campaigns = YamlConfiguration.loadConfiguration(campaignFile);
-        analytics = YamlConfiguration.loadConfiguration(analyticsFile);
-        progress = YamlConfiguration.loadConfiguration(progressFile);
+        config = YamlConfiguration.loadConfiguration(fconfig);
+        tracks = YamlConfiguration.loadConfiguration(ftracks);
+        campaigns = YamlConfiguration.loadConfiguration(fcampaigns);
+        analytics = YamlConfiguration.loadConfiguration(fanalytics);
+        checkpoints = YamlConfiguration.loadConfiguration(fcheckpoints);
     }
 
     public static void saveConfig() {
         try {
-            config.save(configFile);
+            config.save(fconfig);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +57,7 @@ public class FileUtils {
 
     public static void saveSelections() {
         try {
-            tracks.save(tracksFile);
+            tracks.save(ftracks);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,7 +65,7 @@ public class FileUtils {
 
     public static void saveCampaigns() {
         try {
-            campaigns.save(campaignFile);
+            campaigns.save(fcampaigns);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class FileUtils {
 
     public static void saveAnalytics() {
         try {
-            analytics.save(analyticsFile);
+            analytics.save(fanalytics);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class FileUtils {
 
     public static void saveProgress() {
         try {
-            progress.save(progressFile);
+            checkpoints.save(fcheckpoints);
         } catch (IOException e) {
             e.printStackTrace();
         }
