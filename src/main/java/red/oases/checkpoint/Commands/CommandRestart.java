@@ -31,6 +31,11 @@ public class CommandRestart extends Command {
             return true;
         }
 
+        if (!Campaign.isPresent(cam)) {
+            LogUtils.send(cam + " 对应竞赛不存在。", sender);
+            return true;
+        }
+
         var target = new Campaign(cam);
 
         if (!target.isFinished(p) && PlayerTimer.getTicks(p, target).isEmpty()) {
