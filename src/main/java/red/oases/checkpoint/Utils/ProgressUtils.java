@@ -34,8 +34,13 @@ public class ProgressUtils {
 
     public static void initProgress(Player p) {
         if (progressStorage.containsKey(p)) {
-            throw new DuplicateException("Check the code logic.");
+            throw new DuplicateException();
         }
+        progressStorage.put(p, new Progress(p));
+    }
+
+    public static void refreshProgress(Player p) {
+        progressStorage.remove(p);
         progressStorage.put(p, new Progress(p));
     }
 
@@ -54,5 +59,16 @@ public class ProgressUtils {
         var pt = Objects.requireNonNull(getProgress(p)).getPoint();
         if (pt == null) return 0;
         else return pt.number;
+    }
+
+    public static void enableCampaignFor(Player p) {
+        var list = FileUtils.progress.getStringList("campaign_enabled");
+        list.add(p.getName());
+        FileUtils.progress.set("campaign_enabled", list);
+        FileUtils.saveProgress();
+    }
+
+    public static boolean HasCampaignEnabled(Player p) {
+        return FileUtils.progress.getStringList("campaign_enabled").contains(p.getName());
     }
 }

@@ -13,11 +13,13 @@ public class FileUtils {
     public static FileConfiguration campaigns;
     public static FileConfiguration analytics;
     public static FileConfiguration checkpoints;
+    public static FileConfiguration progress;
     public static File fconfig;
     public static File ftracks;
     public static File fcampaigns;
     public static File fanalytics;
     public static File fcheckpoints;
+    public static File fprogress;
 
     public static void init() {
         fconfig = new File(
@@ -35,6 +37,9 @@ public class FileUtils {
         fcheckpoints = new File(
                 datafolder.getAbsoluteFile() + "/checkpoints.yml"
         );
+        fprogress = new File(
+                datafolder.getAbsoluteFile() + "/progress.yml"
+        );
 
         reload();
     }
@@ -45,6 +50,7 @@ public class FileUtils {
         campaigns = YamlConfiguration.loadConfiguration(fcampaigns);
         analytics = YamlConfiguration.loadConfiguration(fanalytics);
         checkpoints = YamlConfiguration.loadConfiguration(fcheckpoints);
+        progress = YamlConfiguration.loadConfiguration(fprogress);
     }
 //
 //    public static void saveConfig() {
@@ -79,9 +85,17 @@ public class FileUtils {
         }
     }
 
-    public static void saveProgress() {
+    public static void saveCheckpoints() {
         try {
             checkpoints.save(fcheckpoints);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveProgress() {
+        try {
+            progress.save(fprogress);
         } catch (IOException e) {
             e.printStackTrace();
         }

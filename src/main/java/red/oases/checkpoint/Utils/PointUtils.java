@@ -9,7 +9,7 @@ import java.util.List;
 public class PointUtils {
     public static void clearCheckpoints(Player p, Campaign campaign) {
         FileUtils.checkpoints.set(checkpointPath(p, campaign), null);
-        FileUtils.saveProgress();
+        FileUtils.saveCheckpoints();
     }
 
     public static String checkpointPath(Player p, Campaign campaign) {
@@ -25,7 +25,7 @@ public class PointUtils {
         var list = FileUtils.checkpoints.getStringList(checkpointPath(p, campaign));
         list.add(identify(pt));
         FileUtils.checkpoints.set(checkpointPath(p, campaign), list);
-        FileUtils.saveProgress();
+        FileUtils.saveCheckpoints();
     }
 
     public static List<Point> getAvailableCheckpointsFor(Player p, Campaign campaign) {
