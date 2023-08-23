@@ -64,9 +64,7 @@ public class Tab implements TabCompleter {
                     "setcheckpoint",
                     "teleport",
                     "tp",
-                    "set",
-                    "unset",
-                    "start"
+                    "switch"
             );
             else return List.of(
                     "join",
@@ -76,9 +74,7 @@ public class Tab implements TabCompleter {
                     "quit",
                     "teleport",
                     "tp",
-                    "set",
-                    "unset",
-                    "start"
+                    "switch"
             );
         }
 
@@ -96,7 +92,7 @@ public class Tab implements TabCompleter {
                     return List.of("<T1.N1,T2.N2,...>");
                 }
 
-                case "join", "rank", "set", "unset", "quit", "reset" -> {
+                case "join", "rank", "quit", "reset", "switch" -> {
                     return new ArrayList<>(CommonUtils.getCampaignNames());
                 }
 

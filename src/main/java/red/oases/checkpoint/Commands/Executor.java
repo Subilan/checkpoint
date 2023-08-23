@@ -96,16 +96,8 @@ public class Executor implements CommandExecutor {
                     return new CommandTeleport(args, sender).collect();
                 }
 
-                case "set" -> {
-                    return new CommandSet(args, sender).collect();
-                }
-
-                case "unset" -> {
-                    return new CommandUnset(args, sender).collect();
-                }
-
-                case "start" -> {
-                    return new CommandStart(args, sender).collect();
+                case "switch" -> {
+                    return new CommandSwitch(args, sender).collect();
                 }
             }
         }
