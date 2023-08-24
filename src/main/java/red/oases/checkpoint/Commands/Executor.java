@@ -97,6 +97,10 @@ public class Executor implements CommandExecutor {
                 case "switch" -> {
                     return new CommandSwitch(args, sender).collect();
                 }
+
+                case "reload" -> {
+                    return new CommandReload(args, sender).collect();
+                }
             }
         }
 

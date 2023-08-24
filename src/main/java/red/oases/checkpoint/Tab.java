@@ -64,6 +64,7 @@ public class Tab implements TabCompleter {
                     "setcheckpoint",
                     "teleport",
                     "tp",
+                    "reload",
                     "switch"
             );
             else return List.of(
