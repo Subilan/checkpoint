@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
+import red.oases.checkpoint.Extra.Exceptions.NoCandidateException;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.Config;
 import red.oases.checkpoint.Objects.Logic;
@@ -29,9 +30,11 @@ public class CommandJoin extends Command {
             return true;
         }
 
-        var join = Logic.joinOrRandom(p);
+        String join;
 
-        if (join == null) {
+        try {
+            join = Logic.joinOrRandom(p);
+        } catch (NoCandidateException e) {
             LogUtils.send("参赛失败，暂无比赛可选择。", sender);
             return true;
         }

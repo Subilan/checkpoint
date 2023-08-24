@@ -6,4 +6,8 @@ default-campaign-name: ~
 # 建议当此项为 true 时给玩家适当的提醒。
 single-choice: false
 # 如果为 true，自动在玩家登录的时候执行 /cpt join
+# 如果执行不成功（例如所有的比赛都处于关闭状态），会为玩家发送一条提示
+# 如果不需要这条提示，请启用 disable-auto-join-failure-warning。
 auto-join-on-login: false
+# 见上
+disable-auto-join-failure-warning: false

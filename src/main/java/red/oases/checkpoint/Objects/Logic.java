@@ -2,6 +2,7 @@ package red.oases.checkpoint.Objects;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
+import red.oases.checkpoint.Extra.Exceptions.NoCandidateException;
 import red.oases.checkpoint.Utils.*;
 
 import java.util.Random;
@@ -54,7 +55,7 @@ public class Logic {
      * @param p 操作玩家
      * @return 分配到的比赛。如果没有分配到，为 null
      */
-    public static @Nullable String joinOrRandom(Player p) {
+    public static String joinOrRandom(Player p) throws NoCandidateException {
         var defaultCam = Config.getString("default-campaign-name");
 
         if (defaultCam == null) {
@@ -62,7 +63,7 @@ public class Logic {
             defaultCam = Logic.randomCampaign();
 
             if (defaultCam == null) {
-                return null;
+                throw new NoCandidateException();
             }
         }
 

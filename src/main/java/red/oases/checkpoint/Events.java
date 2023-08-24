@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import red.oases.checkpoint.Extra.Exceptions.NoCandidateException;
 import red.oases.checkpoint.Objects.*;
 import red.oases.checkpoint.Utils.*;
 
@@ -157,7 +158,15 @@ public class Events implements Listener {
         if (!Config.getBoolean("auto-join-on-login")) return;
         var p = e.getPlayer();
         if (ProgressUtils.HasCampaignEnabled(p)) return;
-        var join = Logic.joinOrRandom(p);
+        String join;
+        try {
+            join = Logic.joinOrRandom(p);
+        } catch (NoCandidateException ex) {
+            if (!Config.getBoolean("disable-auto-join-failure-warning")) {
+                LogUtils.send("找不到可自动分配比赛，请联系管理员。", p);
+            }
+            return;
+        }
         LogUtils.send("已为你自动分配比赛 " + join + "，开始滑翔吧~", p);
         LogUtils.send("如需切换，请使用 /cpt switch <比赛名称>。", p);
     }
