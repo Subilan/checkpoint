@@ -1,9 +1,10 @@
-package red.oases.checkpoint.Commands;
+package red.oases.checkpoint.Commands.PlayerCommands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;

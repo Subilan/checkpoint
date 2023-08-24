@@ -4,6 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import red.oases.checkpoint.Commands.OpCommands.*;
+import red.oases.checkpoint.Commands.PlayerCommands.*;
 import red.oases.checkpoint.Utils.LogUtils;
 
 public class Executor implements CommandExecutor {

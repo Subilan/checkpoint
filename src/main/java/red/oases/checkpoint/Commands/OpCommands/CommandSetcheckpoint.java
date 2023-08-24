@@ -1,6 +1,7 @@
-package red.oases.checkpoint.Commands;
+package red.oases.checkpoint.Commands.OpCommands;
 
 import org.bukkit.command.CommandSender;
+import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Objects.Point;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;

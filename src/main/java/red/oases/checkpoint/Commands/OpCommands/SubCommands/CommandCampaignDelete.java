@@ -1,4 +1,4 @@
-package red.oases.checkpoint.Commands.SubCommands;
+package red.oases.checkpoint.Commands.OpCommands.SubCommands;
 
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Objects.Campaign;

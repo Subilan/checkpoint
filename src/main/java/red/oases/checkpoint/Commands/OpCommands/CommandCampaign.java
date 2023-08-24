@@ -1,9 +1,10 @@
-package red.oases.checkpoint.Commands;
+package red.oases.checkpoint.Commands.OpCommands;
 
 import org.bukkit.command.CommandSender;
-import red.oases.checkpoint.Commands.SubCommands.CommandCampaignDelete;
-import red.oases.checkpoint.Commands.SubCommands.CommandCampaignNew;
-import red.oases.checkpoint.Commands.SubCommands.CommandCampaignSetstatus;
+import red.oases.checkpoint.Commands.Command;
+import red.oases.checkpoint.Commands.OpCommands.SubCommands.CommandCampaignDelete;
+import red.oases.checkpoint.Commands.OpCommands.SubCommands.CommandCampaignNew;
+import red.oases.checkpoint.Commands.OpCommands.SubCommands.CommandCampaignSetstatus;
 import red.oases.checkpoint.Utils.LogUtils;
 
 public class CommandCampaign extends Command {

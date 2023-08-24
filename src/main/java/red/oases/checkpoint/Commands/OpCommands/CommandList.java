@@ -1,9 +1,10 @@
-package red.oases.checkpoint.Commands;
+package red.oases.checkpoint.Commands.OpCommands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
+import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Objects.DisplayList;
 import red.oases.checkpoint.Objects.Track;
 import red.oases.checkpoint.Utils.FileUtils;

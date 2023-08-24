@@ -1,7 +1,8 @@
-package red.oases.checkpoint.Commands;
+package red.oases.checkpoint.Commands.PlayerCommands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Utils.CommonUtils;

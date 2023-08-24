@@ -1,13 +1,14 @@
-package red.oases.checkpoint.Commands;
+package red.oases.checkpoint.Commands.OpCommands;
 
 import org.bukkit.command.CommandSender;
+import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 
 import java.util.HashSet;
 
-public class CommandMove extends Command{
+public class CommandMove extends Command {
     public CommandMove(String[] args, CommandSender sender) {
         super(args, sender);
     }
