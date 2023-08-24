@@ -6,14 +6,9 @@ import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Extra.Exceptions.NoCandidateException;
-import red.oases.checkpoint.Objects.Campaign;
-import red.oases.checkpoint.Objects.Config;
 import red.oases.checkpoint.Objects.Logic;
 import red.oases.checkpoint.Utils.LogUtils;
-import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
-
-import java.util.Random;
 
 @PermissionLevel(0)
 @DisableConsole
