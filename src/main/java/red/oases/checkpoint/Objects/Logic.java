@@ -1,7 +1,10 @@
 package red.oases.checkpoint.Objects;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Utils.*;
+
+import java.util.Random;
 
 public class Logic {
 
@@ -31,6 +34,40 @@ public class Logic {
         ProgressUtils.unsetFinished(p, campaign);
         PlayerTimer.reset(p);
         if (remove) campaign.removePlayer(p);
+    }
+
+    public static @Nullable String randomCampaign() {
+        // 只考虑 open 状态的比赛
+        var campaigns = CommonUtils.getCampaignNames()
+                .stream()
+                .filter(cam -> new Campaign(cam).isOpen())
+                .toList();
+        if (campaigns.isEmpty()) {
+            return null;
+        }
+        return campaigns.get(new Random().nextInt(campaigns.size()));
+    }
+
+    /**
+     * 使玩家参赛并按照先配置再随机的方式分配一个比赛
+     *
+     * @param p 操作玩家
+     * @return 分配到的比赛。如果没有分配到，为 null
+     */
+    public static @Nullable String joinOrRandom(Player p) {
+        var defaultCam = Config.getString("default-campaign-name");
+
+        if (defaultCam == null) {
+
+            defaultCam = Logic.randomCampaign();
+
+            if (defaultCam == null) {
+                return null;
+            }
+        }
+
+        Logic.join(p, new Campaign(defaultCam));
+        return defaultCam;
     }
 
     public static boolean join(Player p, Campaign campaign) {

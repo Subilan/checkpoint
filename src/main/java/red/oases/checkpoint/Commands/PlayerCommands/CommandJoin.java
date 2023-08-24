@@ -29,25 +29,16 @@ public class CommandJoin extends Command {
             return true;
         }
 
-        var defaultCam = Config.getString("default-campaign-name");
+        var join = Logic.joinOrRandom(p);
 
-        if (defaultCam == null) {
-            // 只考虑 open 状态的比赛
-            var campaigns = CommonUtils.getCampaignNames()
-                    .stream()
-                    .filter(cam -> new Campaign(cam).isOpen())
-                    .toList();
-            if (campaigns.isEmpty()) {
-                LogUtils.send("参赛失败，暂无竞赛可供选择。", sender);
-                return true;
-            }
-            defaultCam = campaigns.get(new Random().nextInt(campaigns.size()));
+        if (join == null) {
+            LogUtils.send("参赛失败，暂无比赛可选择。", sender);
+            return true;
         }
-        LogUtils.send("你已成功参赛。", sender);
-        LogUtils.send("默认为你选择的竞赛为 " + defaultCam + "。", sender);
-        LogUtils.send("如需切换，请使用 /cpt switch 指令。", sender);
 
-        Logic.join(p, new Campaign(defaultCam));
+        LogUtils.send("你已成功参赛。", sender);
+        LogUtils.send("默认为你选择的竞赛为 " + join + "。", sender);
+        LogUtils.send("如需切换，请使用 /cpt switch 指令。", sender);
 
         return true;
     }

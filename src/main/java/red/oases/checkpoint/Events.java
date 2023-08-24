@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -149,5 +150,15 @@ public class Events implements Listener {
             PointUtils.clearCheckpoints(p, campaign);
         }
         // 当存档机制完善后删除此机制。
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (!Config.getBoolean("auto-join-on-login")) return;
+        var p = e.getPlayer();
+        if (ProgressUtils.HasCampaignEnabled(p)) return;
+        var join = Logic.joinOrRandom(p);
+        LogUtils.send("已为你自动分配比赛 " + join + "，开始滑翔吧~", p);
+        LogUtils.send("如需切换，请使用 /cpt switch <比赛名称>。", p);
     }
 }

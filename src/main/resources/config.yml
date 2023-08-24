@@ -1,1 +1,9 @@
+# 在玩家执行 /cpt join 后为玩家分配的默认竞赛的名称
+# 留空则随机选择
 default-campaign-name: ~
+# 如果为 true，玩家只能在一个比赛中留下数据
+# 当切换到另外的比赛时，先前比赛的数据会被删除
+# 建议当此项为 true 时给玩家适当的提醒。
+single-choice: false
+# 如果为 true，自动在玩家登录的时候执行 /cpt join
+auto-join-on-login: false
