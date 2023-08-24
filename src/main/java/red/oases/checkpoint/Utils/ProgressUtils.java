@@ -70,7 +70,7 @@ public class ProgressUtils {
 
     public static void enableCampaignFor(Player p) {
         var list = FileUtils.progress.getStringList("campaign_enabled");
-        list.add(p.getName());
+        if (!list.contains(p.getName())) list.add(p.getName());
         FileUtils.progress.set("campaign_enabled", list);
         FileUtils.saveProgress();
     }
