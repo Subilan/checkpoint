@@ -86,7 +86,11 @@ public class Events implements Listener {
 
         for (var pt : points) {
             if (pt.covers(x, y, z)) {
-                if (ProgressUtils.isFinished(p, campaign)) return;
+                if (ProgressUtils.isFinished(p, campaign)) {
+                    LogUtils.send("你已完成这场比赛！", p);
+                    LogUtils.send("如需重新开始，请输入 /cpt reset " + campaign.getName() + " 来清除数据。", p);
+                    return;
+                }
                 inPoint = pt;
                 if (LocationLock.isLocked(p)) break;
 
@@ -102,7 +106,6 @@ public class Events implements Listener {
 
                 if (pt.isFirst()) {
                     LogUtils.send("你已通过首个记录点，计时正式开始！", p);
-                    SoundUtils.playSoundA(p);
                 }
 
                 if (pt.isCheckpoint()) {
@@ -114,6 +117,10 @@ public class Events implements Listener {
                     Logic.handleFinish(p, campaign);
                     SoundUtils.playSoundC(p);
                     break;
+                }
+
+                if (!pt.isLast() && !pt.isCheckpoint()) {
+                    SoundUtils.playSoundA(p);
                 }
 
                 Logic.handleChangePoint(p, campaign, pt);
