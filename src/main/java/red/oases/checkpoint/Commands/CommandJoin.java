@@ -28,8 +28,6 @@ public class CommandJoin extends Command {
             return true;
         }
 
-        ProgressUtils.enableCampaignFor(p);
-        LogUtils.send("你已成功参赛。", sender);
         var defaultCam = Config.getString("default-campaign-name");
 
         if (defaultCam == null) {
@@ -44,10 +42,11 @@ public class CommandJoin extends Command {
             }
             defaultCam = campaigns.get(new Random().nextInt(campaigns.size()));
         }
+        LogUtils.send("你已成功参赛。", sender);
         LogUtils.send("默认为你选择的竞赛为 " + defaultCam + "。", sender);
         LogUtils.send("如需切换，请使用 /cpt switch 指令。", sender);
 
-        Logic.initializeCampaignFor(p, new Campaign(defaultCam));
+        Logic.join(p, new Campaign(defaultCam));
 
         return true;
     }

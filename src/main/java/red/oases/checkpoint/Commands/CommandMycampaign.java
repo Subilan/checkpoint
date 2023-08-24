@@ -10,6 +10,7 @@ import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.DisplayMap;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.PointUtils;
+import red.oases.checkpoint.Utils.ProgressUtils;
 
 import java.util.HashMap;
 
@@ -43,9 +44,9 @@ public class CommandMycampaign extends Command {
                                     ? LogUtils.t("私有", NamedTextColor.LIGHT_PURPLE)
                                     : LogUtils.t("关闭", NamedTextColor.RED)));
 
-            var finished = campaign.getFinishedPlayers().size();
+            var finished = ProgressUtils.getFinishedPlayers(campaign);
 
-            if (finished > 0) map.put("已完成人数", LogUtils.t(String.valueOf(finished), NamedTextColor.LIGHT_PURPLE));
+            if (!finished.isEmpty()) map.put("已完成人数", LogUtils.t(String.valueOf(finished.size()), NamedTextColor.LIGHT_PURPLE));
 
             new DisplayMap(
                     LogUtils.t(campaign.getName()).color(NamedTextColor.YELLOW)

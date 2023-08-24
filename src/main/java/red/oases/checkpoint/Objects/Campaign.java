@@ -98,14 +98,6 @@ public class Campaign {
         return Objects.equals(getSection().getString("status"), "private");
     }
 
-    public List<String> getFinishedPlayers() {
-        return getSection().getStringList("finished_players");
-    }
-
-    public boolean isFinished(Player p) {
-        return getFinishedPlayers().contains(p.getName());
-    }
-
     public Campaign(String cam, Boolean nocheck) {
         this.name = cam;
         var section = FileUtils.campaigns.getConfigurationSection(cam);
@@ -147,7 +139,7 @@ public class Campaign {
 
     public void addPlayer(Player p) {
         var list = this.getSection().getStringList("players");
-        list.add(p.getName());
+        if (!list.contains(p.getName())) list.add(p.getName());
         this.getSection().set("players", list);
         FileUtils.saveCampaigns();
     }
@@ -164,7 +156,6 @@ public class Campaign {
         var list = this.getSection().getStringList("players");
         list.remove(p.getName());
         this.getSection().set("players", list);
-        this.unsetFinished(p);
         FileUtils.saveCampaigns();
     }
 
@@ -186,27 +177,5 @@ public class Campaign {
 
     public Track getTrack() {
         return new Track(getTrackName());
-    }
-
-    /**
-     * 将玩家的状态设置为已完成竞赛。
-     * @param p 玩家对象
-     */
-    public void setFinished(Player p) {
-        var list = getSection().getStringList("finished_players");
-        list.add(p.getName());
-        getSection().set("finished_players", list);
-        FileUtils.saveCampaigns();
-    }
-
-    /**
-     * 将玩家的状态设置为未完成竞赛。
-     * @param p 玩家对象
-     */
-    public void unsetFinished(Player p) {
-        var list = getSection().getStringList("finished_players");
-        list.remove(p.getName());
-        getSection().set("finished_players", list);
-        FileUtils.saveCampaigns();
     }
 }

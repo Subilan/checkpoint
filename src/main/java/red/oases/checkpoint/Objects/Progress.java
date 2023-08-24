@@ -1,6 +1,7 @@
 package red.oases.checkpoint.Objects;
 
 import org.bukkit.entity.Player;
+import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ public class Progress {
     public Progress(Player p) {
         this.p = p;
     }
-
     public void setCampaign(Campaign campaign) {
         this.campaign = campaign;
     }

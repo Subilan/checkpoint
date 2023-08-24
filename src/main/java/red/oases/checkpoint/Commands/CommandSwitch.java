@@ -42,6 +42,12 @@ public class CommandSwitch extends Command {
 
         var currentCampaign = ProgressUtils.getRunningCampaign(p);
         var campaign = new Campaign(cam);
+
+        if (ProgressUtils.isFinished(p, campaign)) {
+            LogUtils.send("提示：你已完成 "+ campaign.getName() + "。", sender);
+            LogUtils.send("如需重新开始，请输入 /cpt reset " + campaign.getName() + " 清除数据。", sender);
+        }
+
         if (currentCampaign != null) {
             if (currentCampaign.getName().equals(cam)) {
                 LogUtils.send("你已经在竞赛 " + campaign.getName() + " 中了。", sender);
@@ -54,7 +60,7 @@ public class CommandSwitch extends Command {
             }
         }
 
-        Logic.initializeCampaignFor(p, campaign);
+        Logic.join(p, campaign);
 
         LogUtils.send("已切换到 " + campaign.getName() + "。", sender);
         return true;

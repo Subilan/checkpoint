@@ -27,6 +27,8 @@ public class AnalyticUtils {
         FileUtils.saveAnalytics();
     }
 
+
+
     public static void removeCampaignResult(Player p, @NotNull Campaign campaign) {
         var an = Analytics.of(campaign, p);
         if (an == null) return;

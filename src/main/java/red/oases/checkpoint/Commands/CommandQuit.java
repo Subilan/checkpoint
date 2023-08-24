@@ -4,6 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
+import red.oases.checkpoint.Objects.Campaign;
+import red.oases.checkpoint.Objects.Logic;
+import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
 
@@ -22,9 +25,9 @@ public class CommandQuit extends Command {
             return true;
         }
 
-        ProgressUtils.disableCampaignFor(p);
+        Logic.quit(p);
 
-        LogUtils.send("已退出参赛。", sender);
+        LogUtils.send("已退出参赛。参赛数据已删除。", sender);
         return true;
     }
 }
