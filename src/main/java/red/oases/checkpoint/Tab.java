@@ -67,6 +67,7 @@ public class Tab implements TabCompleter {
                     "switch"
             );
             else return List.of(
+                    "about",
                     "join",
                     "reset",
                     "rank",

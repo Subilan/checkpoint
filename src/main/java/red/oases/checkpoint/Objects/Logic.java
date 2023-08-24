@@ -26,8 +26,8 @@ public class Logic {
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);
         PointUtils.clearCheckpoints(p, campaign);
-        ProgressUtils.setRunningCampaign(p, null);
         ProgressUtils.refreshProgress(p);
+        ProgressUtils.setRunningCampaign(p, null);
         ProgressUtils.unsetFinished(p, campaign);
         PlayerTimer.reset(p);
         if (remove) campaign.removePlayer(p);

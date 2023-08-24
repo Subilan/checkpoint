@@ -90,6 +90,7 @@ public class Events implements Listener {
         for (var pt : points) {
             if (pt.covers(x, y, z)) {
                 if (ProgressUtils.isFinished(p, campaign)) {
+                    SoundUtils.playSoundD(p);
                     LogUtils.send("你已完成这场比赛！", p);
                     LogUtils.send("如需重新开始，请输入 /cpt reset " + campaign.getName() + " 来清除数据。", p);
                     return;
