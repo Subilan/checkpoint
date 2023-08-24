@@ -4,7 +4,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import red.oases.checkpoint.Extra.Exceptions.ObjectNotFoundException;
 import red.oases.checkpoint.Objects.Analytics;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.PlayerTimer;

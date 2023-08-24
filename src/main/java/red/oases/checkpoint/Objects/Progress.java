@@ -1,7 +1,6 @@
 package red.oases.checkpoint.Objects;
 
 import org.bukkit.entity.Player;
-import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,10 +20,10 @@ public class Progress {
     public void setCampaign(Campaign campaign) {
         this.campaign = campaign;
     }
-
-    public void unsetCampaign(Campaign campaign) {
-        this.campaign = null;
-    }
+//
+//    public void unsetCampaign(Campaign campaign) {
+//        this.campaign = null;
+//    }
 
     /**
      * 在玩家进度记录中添加该点，并将当前 point 指向最新的点。

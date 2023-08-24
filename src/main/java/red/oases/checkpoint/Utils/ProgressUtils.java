@@ -2,7 +2,6 @@ package red.oases.checkpoint.Utils;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-import red.oases.checkpoint.Extra.Exceptions.DuplicateException;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.Point;
 import red.oases.checkpoint.Objects.Progress;
