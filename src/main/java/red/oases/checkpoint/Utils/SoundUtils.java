@@ -12,6 +12,8 @@ public class SoundUtils {
 
     public static final Sound blast = Sound.sound(Key.key("entity.firework_rocket.blast"), Sound.Source.AMBIENT, 1f, 1f);
 
+    public static final Sound villagerNo = Sound.sound(Key.key("entity.villager.no"), Sound.Source.AMBIENT, 2f, 1f);
+
     /**
      * 在玩家 p 周围播放正常通过检查点的声音（吸收经验的声音）
      * @param p 玩家
@@ -29,12 +31,20 @@ public class SoundUtils {
     }
 
     /**
-     * 在玩家 p 周围播放到达终点的声音（升级+烟花））
+     * 在玩家 p 周围播放到达终点的声音（升级+烟花）
      * @param p 玩家
      */
     public static void playSoundC(Player p) {
         p.playSound(levelUp);
         p.playSound(blast);
         p.playSound(twinkle);
+    }
+
+    /**
+     * 在玩家 p 周围播放到达的点错误的声音（村民的否定）
+     * @param p 玩家
+     */
+    public static void playSoundD(Player p) {
+        p.playSound(villagerNo);
     }
 }

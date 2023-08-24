@@ -98,6 +98,7 @@ public class Events implements Listener {
                 if (LocationLock.isLocked(p)) break;
 
                 if (nextStage != pt.number) {
+                    SoundUtils.playSoundD(p);
                     LogUtils.send("你必须先通过第 " + nextStage + " 个检查点。", p);
                     break;
                 }
