@@ -61,9 +61,10 @@ public class CommandSwitch extends Command {
             }
         }
 
-        Logic.join(p, campaign);
+        if (Logic.join(p, campaign)) {
+            LogUtils.send("已切换到 " + campaign.getName() + "。", sender);
+        }
 
-        LogUtils.send("已切换到 " + campaign.getName() + "。", sender);
         return true;
     }
 }

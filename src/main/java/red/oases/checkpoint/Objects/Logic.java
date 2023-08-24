@@ -33,11 +33,16 @@ public class Logic {
         if (remove) campaign.removePlayer(p);
     }
 
-    public static void join(Player p, Campaign campaign) {
+    public static boolean join(Player p, Campaign campaign) {
+        if (!campaign.isOpen()) {
+            LogUtils.send(campaign.getName() + " 处于关闭状态，此时无法加入。", p);
+            return false;
+        }
         campaign.addPlayer(p);
         ProgressUtils.refreshProgress(p);
         ProgressUtils.enableCampaignFor(p);
         ProgressUtils.setRunningCampaign(p, campaign);
+        return true;
     }
 
     public static void quit(Player p) {
