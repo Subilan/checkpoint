@@ -50,10 +50,6 @@ public class Executor implements CommandExecutor {
                     return new CommandList(args, sender).collect();
                 }
 
-                case "info" -> {
-                    return new CommandInfo(args, sender).collect();
-                }
-
                 case "remove" -> {
                     return new CommandRemove(args,sender).collect();
                 }

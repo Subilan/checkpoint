@@ -22,7 +22,10 @@ public class Events implements Listener {
 
         if (e.getHand() != EquipmentSlot.HAND) return;
         if (block == null) return;
-        if (!player.hasPermission("checkpoint.admin")) return;
+        if (!player.hasPermission("checkpoint.admin")) {
+            LogUtils.send("你需要拥有 checkpoint.admin 权限才能执行此操作。", player);
+            return;
+        }
         if (player.getInventory()
                 .getItemInMainHand()
                 .getType() != Material.SPECTRAL_ARROW) return;
