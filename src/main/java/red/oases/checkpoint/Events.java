@@ -29,7 +29,6 @@ public class Events implements Listener {
                 .getType() != Material.SPECTRAL_ARROW) return;
 
         if (!player.hasPermission("checkpoint.admin")) {
-            LogUtils.send("你需要拥有 checkpoint.admin 权限才能执行此操作。", player);
             return;
         }
 
