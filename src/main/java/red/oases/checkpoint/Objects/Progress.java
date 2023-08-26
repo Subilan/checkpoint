@@ -37,7 +37,7 @@ public class Progress {
         FileUtils.saveProgress();
     }
 
-    public static void updateExpiration(Player p){
+    public static void updateExpiration(Player p) {
         FileUtils.progress.set(Path.halfway(p, "expiration"),
                 new Date().getTime() + (1000L * Config.getHalfwayProgressDeadline())
         );

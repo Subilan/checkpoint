@@ -182,6 +182,7 @@ public class Logic {
     }
 
     public static void handleAutoResume(Player p, Boolean warning) {
+
         if (!ProgressUtils.isHalfway(p)) {
             if (warning) LogUtils.send("继续失败：你已完成或还未开始此比赛。", p);
             return;
@@ -195,13 +196,16 @@ public class Logic {
             return;
         }
 
-        if (Progress.isPauseExpired(p)) {
-            if (warning) LogUtils.send("继续失败：数据已过期。", p);
+        if (!Progress.isPaused(p, running)) {
+            if (warning) LogUtils.send("继续失败：你没有暂停此比赛。", p);
             return;
         }
 
-        if (!Progress.isPaused(p, running)) {
-            if (warning) LogUtils.send("继续失败：你没有暂停此比赛。", p);
+        if (Progress.isPauseExpired(p)) {
+            if (warning) {
+                LogUtils.send("继续失败：数据已过期。", p);
+                LogUtils.send("请尝试使用 /cpt reset " + running.getName() + " 重置数据。", p);
+            }
             return;
         }
 
