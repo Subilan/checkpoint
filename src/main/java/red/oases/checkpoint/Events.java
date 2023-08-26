@@ -76,7 +76,7 @@ public class Events implements Listener {
 
         if (campaign == null) return;
 
-        if (!p.isGliding()) return;
+//        if (!p.isGliding()) return;
 
         var loc = p.getLocation();
         var x = loc.getBlockX();
@@ -179,8 +179,14 @@ public class Events implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         var p = e.getPlayer();
 
-        if (Config.getBoolean("auto-join-on-login")) {
+        if (Config.getAutoJoinOnLogin()) {
             if (!Progress.isCampaignEnabled(p)) Logic.handleAutoJoin(p);
+        }
+
+        if (ProgressUtils.isHalfway(p)) {
+            if (Config.getAutoResumeOnLogin()) {
+                if (Progress.hasPaused(p)) Logic.handleAutoResume(p);
+            }
         }
     }
 }

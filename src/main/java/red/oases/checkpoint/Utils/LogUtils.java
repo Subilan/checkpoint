@@ -70,6 +70,10 @@ public final class LogUtils {
                 .append(prefix);
     }
 
+    public static void send(Component comp, CommandSender p) {
+        p.sendMessage(getDefaultPrefix().append(comp));
+    }
+
     public static void send(String text, CommandSender p) {
         p.sendMessage(getDefaultPrefix().append(t(text)));
     }

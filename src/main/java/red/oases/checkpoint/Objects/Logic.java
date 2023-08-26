@@ -1,5 +1,6 @@
 package red.oases.checkpoint.Objects;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import red.oases.checkpoint.Extra.Exceptions.NoCandidateException;
@@ -171,12 +172,56 @@ public class Logic {
         try {
             join = Logic.joinOrRandom(p);
         } catch (NoCandidateException ex) {
-            if (!Config.getBoolean("disable-auto-join-failure-warning")) {
+            if (!Config.getDisableWarningAutoJoin()) {
                 LogUtils.send("找不到可自动分配比赛，请联系管理员。", p);
             }
             return;
         }
         LogUtils.send("已为你自动分配比赛 " + join + "，开始滑翔吧~", p);
         LogUtils.send("如需切换，请使用 /cpt switch <比赛名称>。", p);
+    }
+
+    public static void handleAutoResume(Player p) {
+        if (!ProgressUtils.isHalfway(p)) {
+            LogUtils.send("继续失败：你已完成或还未开始此比赛。", p);
+            return;
+        }
+
+        var running = Progress.getRunningCampaign(p);
+        assert running != null;
+
+        if (!running.isOpen()) {
+            LogUtils.send("继续失败：比赛已关闭。", p);
+            return;
+        }
+
+        if (Progress.isPauseExpired(p)) {
+            LogUtils.send("继续失败：数据已过期。", p);
+            return;
+        }
+
+        if (!Progress.isPaused(p, running)) {
+            LogUtils.send("继续失败：你没有暂停此比赛。", p);
+            return;
+        }
+
+        var pt = Progress.getPoint(p);
+        assert pt != null;
+
+        Progress.setPaused(p, running, false);
+        PlayerTimer.retrieveTicks(p, running);
+        PlayerTimer.getDedicated(p).startTimerFor(
+                p, running, pt, PlayerTimer.getLastTick(p)
+        );
+        SoundUtils.playSoundB(p);
+        LogUtils.send("最后通过第 " + pt.number + " 个点", p);
+        LogUtils.send(pt.number + "-" + (pt.number + 1) + " 当前用时 " + CommonUtils.millisecondsToReadable(PlayerTimer.getTick(p, running, pt.number)), p);
+        LogUtils.send("当前总计用时 " + CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p, running)), p);
+        LogUtils.sendWithoutPrefix(
+                LogUtils.t("--- ", NamedTextColor.YELLOW)
+                        .append(LogUtils.t("比赛 " + running.getName() + " 计时已重新开始", NamedTextColor.GREEN))
+                        .append(LogUtils.t(" ---", NamedTextColor.YELLOW)),
+                p
+        );
     }
 }

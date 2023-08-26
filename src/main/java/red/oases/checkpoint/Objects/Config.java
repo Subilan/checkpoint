@@ -16,8 +16,24 @@ public class Config {
         return FileUtils.config.getInt(path);
     }
 
+    public static boolean getAutoJoinOnLogin() {
+        return getBoolean("auto-join-on-login");
+    }
+
     public static boolean getAllowResume() {
         return getBoolean("allow-resume");
+    }
+
+    public static boolean getAutoResumeOnLogin() {
+        return getBoolean("auto-resume-on-login");
+    }
+
+    public static boolean getDisableWarningAutoResume() {
+        return getBoolean("disable-auto-resume-failure-warning");
+    }
+
+    public static boolean getDisableWarningAutoJoin() {
+        return getBoolean("disable-auto-join-failure-warning");
     }
 
     public static Integer getHalfwayProgressDeadline() {

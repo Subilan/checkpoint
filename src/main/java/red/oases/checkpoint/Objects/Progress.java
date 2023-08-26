@@ -48,6 +48,17 @@ public class Progress {
         return FileUtils.progress.getBoolean(Path.paused(p, campaign));
     }
 
+    public static boolean hasPaused(Player p) {
+        var section = FileUtils.progress.getConfigurationSection("paused");
+        if (section == null) return false;
+        var campaigns = section.getConfigurationSection(p.getName());
+        if (campaigns == null) return false;
+        for (var cam : campaigns.getKeys(false)) {
+            if (campaigns.getBoolean(cam)) return true;
+        }
+        return false;
+    }
+
     public static boolean isPauseExpired(Player p) {
         return FileUtils.progress.getLong(Path.halfway(p, "expiration")) < new Date().getTime();
     }
