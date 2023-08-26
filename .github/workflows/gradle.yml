@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: checkpoint-latest
-        path: build/libs/checkpoint-1.0.jar
+        path: build/libs/*.jar
