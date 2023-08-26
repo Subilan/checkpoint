@@ -76,7 +76,7 @@ public class Events implements Listener {
 
         if (campaign == null) return;
 
-//        if (!p.isGliding()) return;
+        if (!p.isGliding()) return;
 
         var loc = p.getLocation();
         var x = loc.getBlockX();
@@ -172,7 +172,7 @@ public class Events implements Listener {
                 Progress.updateExpiration(p);
             } else {
                 Logic.reset(p, running);
-                System.out.println("Resetting the progress of player " + p.getName() + " as no valid deadline is specified.");
+//                System.out.println("Resetting the progress of player " + p.getName() + " as no valid deadline is specified.");
             }
         }
     }
