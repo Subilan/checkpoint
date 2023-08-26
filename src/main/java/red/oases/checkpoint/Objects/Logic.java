@@ -226,7 +226,7 @@ public class Logic {
         }
         SoundUtils.playSoundA(p);
         LogUtils.send("最后通过第 " + pt.number + " 个点", p);
-        LogUtils.send(pt.number + "-" + (pt.number + 1) + " 当前用时 " + CommonUtils.millisecondsToReadable(PlayerTimer.getTick(p, running, pt.number)), p);
+        LogUtils.send(pt.number + "-" + (pt.number + 1) + " 当前用时 " + CommonUtils.millisecondsToSeconds(PlayerTimer.getTick(p, running, pt.number)), p);
         LogUtils.send("当前总计用时 " + CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p, running)), p);
 
         if (Config.getDisallowTimerWorkingOffline()) {
