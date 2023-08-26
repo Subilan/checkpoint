@@ -181,9 +181,9 @@ public class Logic {
         LogUtils.send("如需切换，请使用 /cpt switch <比赛名称>。", p);
     }
 
-    public static void handleAutoResume(Player p) {
+    public static void handleAutoResume(Player p, Boolean warning) {
         if (!ProgressUtils.isHalfway(p)) {
-            LogUtils.send("继续失败：你已完成或还未开始此比赛。", p);
+            if (warning) LogUtils.send("继续失败：你已完成或还未开始此比赛。", p);
             return;
         }
 
@@ -191,17 +191,17 @@ public class Logic {
         assert running != null;
 
         if (!running.isOpen()) {
-            LogUtils.send("继续失败：比赛已关闭。", p);
+            if (warning) LogUtils.send("继续失败：比赛已关闭。", p);
             return;
         }
 
         if (Progress.isPauseExpired(p)) {
-            LogUtils.send("继续失败：数据已过期。", p);
+            if (warning) LogUtils.send("继续失败：数据已过期。", p);
             return;
         }
 
         if (!Progress.isPaused(p, running)) {
-            LogUtils.send("继续失败：你没有暂停此比赛。", p);
+            if (warning) LogUtils.send("继续失败：你没有暂停此比赛。", p);
             return;
         }
 

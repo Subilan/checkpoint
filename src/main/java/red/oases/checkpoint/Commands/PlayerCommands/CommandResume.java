@@ -29,7 +29,7 @@ public class CommandResume extends Command {
             return true;
         }
 
-        Logic.handleAutoResume((Player) sender);
+        Logic.handleAutoResume((Player) sender, true);
 
         return true;
     }

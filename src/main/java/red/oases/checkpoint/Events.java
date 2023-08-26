@@ -185,7 +185,7 @@ public class Events implements Listener {
 
         if (ProgressUtils.isHalfway(p)) {
             if (Config.getAutoResumeOnLogin()) {
-                if (Progress.hasPaused(p)) Logic.handleAutoResume(p);
+                if (Progress.hasPaused(p)) Logic.handleAutoResume(p, Config.getDisableWarningAutoResume());
             }
         }
     }
