@@ -19,7 +19,7 @@ disable-auto-join-failure-warning: false
 halfway-progress-deadline: 0
 # 允许在一段之间停留的最长时间
 # 单位：秒，整数
-# 在单段停留超出此时间，整场比赛的数据会被重置
+# 在单段停留超出此时间，整场比赛的数据会被重置，并提示玩家
 timer-max-timeout: 120
 # 是否在玩家下线后仍然计时
 allow-timer-working-offline: false
