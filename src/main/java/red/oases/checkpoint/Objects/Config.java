@@ -16,6 +16,10 @@ public class Config {
         return FileUtils.config.getInt(path);
     }
 
+    public static boolean getAllowResume() {
+        return getBoolean("allow-resume");
+    }
+
     public static Integer getHalfwayProgressDeadline() {
         return getInteger("halfway-progress-deadline");
     }

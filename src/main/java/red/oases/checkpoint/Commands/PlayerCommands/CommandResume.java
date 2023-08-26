@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
+import red.oases.checkpoint.Objects.Config;
 import red.oases.checkpoint.Objects.PlayerTimer;
 import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.CommonUtils;
@@ -21,6 +22,12 @@ public class CommandResume extends Command {
 
     @Override
     protected boolean execute() {
+
+        if (!Config.getAllowResume()) {
+            LogUtils.send("此指令已被禁用。", sender);
+            return true;
+        }
+
         var p = (Player) sender;
 
         if (!ProgressUtils.isHalfway(p)) {
