@@ -30,6 +30,7 @@ public class Logic {
         var campaigns = Campaign.get(p);
         assert !campaigns.isEmpty() && Campaign.isPresent(campaign.getName());
         LocationLock.unlock(p);
+        DedicatedPlayerTimer.unlock(p);
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);
         PointUtils.clearCheckpoints(p, campaign);
@@ -159,9 +160,12 @@ public class Logic {
     public static void handleFinish(Player p, Campaign campaign) {
         Progress.setFinished(p, campaign);
         Progress.cleanHalfway(p);
+        Progress.setPaused(p, campaign, false);
         AnalyticUtils.saveCampaignResult(p, campaign);
         PointUtils.clearCheckpoints(p, campaign);
         var total = CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p, campaign));
+        // 必须放在 PlayerTimer 调用之后
+        PlayerTimer.reset(p, campaign);
         LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
         LogUtils.send("统计数据已存储。", p);
         LogUtils.send("如需清除数据重新开始，键入 /cpt reset " + campaign.getName(), p);
