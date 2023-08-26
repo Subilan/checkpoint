@@ -100,7 +100,7 @@ public class Events implements Listener {
 
                 if (Progress.isPaused(p, campaign)) {
                     SoundUtils.playSoundD(p);
-                    LogUtils.send("你已暂停比赛进程！",p);
+                    LogUtils.send("你已暂停比赛进程！", p);
                     LogUtils.send("输入 /cpt resume 继续，/cpt reset " + campaign.getName() + " 重新开始。", p);
                     return;
                 }
@@ -163,14 +163,16 @@ public class Events implements Listener {
             assert pt.getPrevious() != null; // isHalfway
 
             if (Config.getHalfwayProgressDeadline() > 0) {
-                PlayerTimer.getDedicated(p).stopTimerFor(p);
-                PlayerTimer.saveLastTick(p);
-                PlayerTimer.saveTicks(p, running);
-                Progress.setPaused(p,  running, true);
+                if (Config.getDisallowTimerWorkingOffline()) {
+                    PlayerTimer.getDedicated(p).stopTimerFor(p);
+                    PlayerTimer.saveLastTick(p);
+                    PlayerTimer.saveTicks(p, running);
+                }
+                Progress.setPaused(p, running, true);
                 Progress.updateExpiration(p);
             } else {
                 Logic.reset(p, running);
-                System.out.println("Resetting the progress of player " + p.getName() +" as no valid deadline is specified.");
+                System.out.println("Resetting the progress of player " + p.getName() + " as no valid deadline is specified.");
             }
         }
     }

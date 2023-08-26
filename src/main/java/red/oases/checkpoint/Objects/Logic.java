@@ -153,6 +153,7 @@ public class Logic {
      * 3. 删除所有玩家存在的可传送检查点
      * 4. 删除内存中玩家进度的追踪信息
      * 5. 向玩家发送总用时统计信息
+     * 6. 清除内存中的计时数据
      *
      * @param p        操作玩家
      * @param campaign 指定比赛
@@ -217,19 +218,24 @@ public class Logic {
         assert pt != null;
 
         Progress.setPaused(p, running, false);
-        PlayerTimer.retrieveTicks(p, running);
-        PlayerTimer.getDedicated(p).startTimerFor(
-                p, running, pt, PlayerTimer.getLastTick(p)
-        );
+        if (Config.getDisallowTimerWorkingOffline()) {
+            PlayerTimer.retrieveTicks(p, running);
+            PlayerTimer.getDedicated(p).startTimerFor(
+                    p, running, pt, PlayerTimer.getLastTick(p)
+            );
+        }
         SoundUtils.playSoundA(p);
         LogUtils.send("最后通过第 " + pt.number + " 个点", p);
         LogUtils.send(pt.number + "-" + (pt.number + 1) + " 当前用时 " + CommonUtils.millisecondsToReadable(PlayerTimer.getTick(p, running, pt.number)), p);
         LogUtils.send("当前总计用时 " + CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p, running)), p);
-        LogUtils.sendWithoutPrefix(
-                LogUtils.t("--- ", NamedTextColor.YELLOW)
-                        .append(LogUtils.t("比赛 " + running.getName() + " 计时已重新开始", NamedTextColor.GREEN))
-                        .append(LogUtils.t(" ---", NamedTextColor.YELLOW)),
-                p
-        );
+
+        if (Config.getDisallowTimerWorkingOffline()) {
+            LogUtils.sendWithoutPrefix(
+                    LogUtils.t("--- ", NamedTextColor.YELLOW)
+                            .append(LogUtils.t("比赛 " + running.getName() + " 计时已重新开始", NamedTextColor.GREEN))
+                            .append(LogUtils.t(" ---", NamedTextColor.YELLOW)),
+                    p
+            );
+        }
     }
 }

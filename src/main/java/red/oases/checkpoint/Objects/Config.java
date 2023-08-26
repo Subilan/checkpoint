@@ -32,6 +32,14 @@ public class Config {
         return getBoolean("disable-auto-resume-failure-warning");
     }
 
+    public static Integer getTimerMaxTimeout() {
+        return getInteger("timer-max-timeout");
+    }
+
+    public static boolean getDisallowTimerWorkingOffline() {
+        return !getBoolean("allow-timer-working-offline");
+    }
+
     public static boolean getDisableWarningAutoJoin() {
         return getBoolean("disable-auto-join-failure-warning");
     }

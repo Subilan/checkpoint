@@ -14,11 +14,17 @@ disable-auto-join-failure-warning: false
 # 当玩家在比赛中途退出服务器后，要将其进度保存多久
 # 单位：秒，整数
 # 如果设置为 0，则不为中途退出服务器的玩家保存任何数据
-# 如果为正数，当中途退出服务器的玩家在此期限外上线，其进度数据会被删除
+# 如果为正数，当中途退出服务器的玩家迟于该期限上线，不能继续进度
 # 如果为负数，表示不设期限（不建议）
 halfway-progress-deadline: 0
+# 允许在一段之间停留的最长时间
+# 单位：秒，整数
+# 在单段停留超出此时间，整场比赛的数据会被重置
+timer-max-timeout: 120
+# 是否在玩家下线后仍然计时
+allow-timer-working-offline: false
 # 是否允许玩家手动使用 /cpt resume 继续比赛
-allow-resume: false
+allow-resume: true
 # 如果为 true，会在玩家上线的时候自动尝试继续其比赛
 # 如果执行不成功（例如期限已过），会为玩家发送一条提示
 # 如果不需要这条提示，请启用 disable-auto-resume-failure-warning。

@@ -1,13 +1,19 @@
 package red.oases.checkpoint.Objects;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import red.oases.checkpoint.Utils.LogUtils;
 
 import java.util.TimerTask;
 
 public class DedicatedPlayerTimer {
     public Player player;
-    public boolean isLocked;
+    public boolean isLocked = false;
+
+    public static void unlock(Player p) {
+        PlayerTimer.getDedicated(p).isLocked = false;
+    }
 
     public DedicatedPlayerTimer(Player p) {
         this.player = p;
@@ -24,6 +30,14 @@ public class DedicatedPlayerTimer {
             @Override
             public void run() {
                 PlayerTimer.tick(p, campaign, pt.number);
+                if (PlayerTimer.getTick(p, campaign, pt.number) > Config.getTimerMaxTimeout() * 1000L) {
+                    Logic.reset(p, campaign);
+                    LogUtils.sendWithoutPrefix(
+                            LogUtils.t("由于在单一区间内停留超过 " + Config.getTimerMaxTimeout() + " 秒，本场比赛数据已重置。", NamedTextColor.RED),
+                            p
+                    );
+                    this.cancel();
+                }
             }
         }, 0, 1);
         this.isLocked = true;
