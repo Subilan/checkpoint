@@ -8,7 +8,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import red.oases.checkpoint.Extra.Exceptions.NoCandidateException;
 import red.oases.checkpoint.Objects.*;
 import red.oases.checkpoint.Utils.*;
 
@@ -73,9 +72,7 @@ public class Events implements Listener {
             return;
         }
 
-//        if (!p.isGliding()) return;
-
-        var campaign = ProgressUtils.getRunningCampaign(p);
+        var campaign = Progress.getRunningCampaign(p);
 
         if (campaign == null) return;
 
@@ -93,10 +90,18 @@ public class Events implements Listener {
 
         for (var pt : points) {
             if (pt.covers(x, y, z)) {
-                if (ProgressUtils.isFinished(p, campaign)) {
+
+                if (Progress.isFinished(p, campaign)) {
                     SoundUtils.playSoundD(p);
                     LogUtils.send("你已完成这场比赛！", p);
                     LogUtils.send("如需重新开始，请输入 /cpt reset " + campaign.getName() + " 来清除数据。", p);
+                    return;
+                }
+
+                if (Progress.isPaused(p, campaign)) {
+                    SoundUtils.playSoundD(p);
+                    LogUtils.send("你已暂停比赛进程！",p);
+                    LogUtils.send("输入 /cpt resume 继续，/cpt reset " + campaign.getName() + " 重新开始。", p);
                     return;
                 }
                 inPoint = pt;
@@ -149,27 +154,33 @@ public class Events implements Listener {
         var p = e.getPlayer();
         var campaigns = Campaign.get(p);
         if (campaigns.isEmpty()) return;
-        for (var campaign : campaigns) {
-            PointUtils.clearCheckpoints(p, campaign);
+
+        if (ProgressUtils.isHalfway(p)) {
+            var running = Progress.getRunningCampaign(p);
+            var pt = Progress.getPoint(p);
+            assert running != null;
+            assert pt != null;
+            assert pt.getPrevious() != null; // isHalfway
+
+            if (Config.getHalfwayProgressDeadline() > 0) {
+                PlayerTimer.getDedicated(p).stopTimerFor(p);
+                PlayerTimer.saveLastTick(p);
+                PlayerTimer.saveTicks(p, running);
+                Progress.setPaused(p,  running, true);
+                Progress.updateExpiration(p);
+            } else {
+                Logic.reset(p, running);
+                System.out.println("Resetting the progress of player " + p.getName() +" as no valid deadline is specified.");
+            }
         }
-        // 当存档机制完善后删除此机制。
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (!Config.getBoolean("auto-join-on-login")) return;
         var p = e.getPlayer();
-        if (ProgressUtils.HasCampaignEnabled(p)) return;
-        String join;
-        try {
-            join = Logic.joinOrRandom(p);
-        } catch (NoCandidateException ex) {
-            if (!Config.getBoolean("disable-auto-join-failure-warning")) {
-                LogUtils.send("找不到可自动分配比赛，请联系管理员。", p);
-            }
-            return;
+
+        if (Config.getBoolean("auto-join-on-login")) {
+            if (!Progress.isCampaignEnabled(p)) Logic.handleAutoJoin(p);
         }
-        LogUtils.send("已为你自动分配比赛 " + join + "，开始滑翔吧~", p);
-        LogUtils.send("如需切换，请使用 /cpt switch <比赛名称>。", p);
     }
 }

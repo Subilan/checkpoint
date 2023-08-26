@@ -15,4 +15,8 @@ public class Config {
     public static Integer getInteger(String path) {
         return FileUtils.config.getInt(path);
     }
+
+    public static Integer getHalfwayProgressDeadline() {
+        return getInteger("halfway-progress-deadline");
+    }
 }

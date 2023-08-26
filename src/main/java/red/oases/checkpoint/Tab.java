@@ -6,6 +6,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.PointUtils;
@@ -65,7 +66,8 @@ public class Tab implements TabCompleter {
                     "teleport",
                     "tp",
                     "reload",
-                    "switch"
+                    "switch",
+                    "resume"
             );
             else return List.of(
                     "about",
@@ -76,7 +78,8 @@ public class Tab implements TabCompleter {
                     "quit",
                     "teleport",
                     "tp",
-                    "switch"
+                    "switch",
+                    "resume"
             );
         }
 
@@ -108,7 +111,7 @@ public class Tab implements TabCompleter {
 
                 case "teleport", "tp" -> {
                     var p = (Player) sender;
-                    var campaign = ProgressUtils.getRunningCampaign(p);
+                    var campaign = Progress.getRunningCampaign(p);
                     if (campaign == null) return List.of();
                     var available = PointUtils.getAvailableCheckpointsFor(p, campaign);
                     return available.stream().map(x -> x.number.toString()).toList();

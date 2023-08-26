@@ -101,6 +101,10 @@ public class Executor implements CommandExecutor {
                 case "reload" -> {
                     return new CommandReload(args, sender).collect();
                 }
+
+                case "resume" -> {
+                    return new CommandResume(args, sender).collect();
+                }
             }
         }
 

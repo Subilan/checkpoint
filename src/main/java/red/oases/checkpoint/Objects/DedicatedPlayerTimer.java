@@ -13,12 +13,12 @@ public class DedicatedPlayerTimer {
         this.player = p;
     }
 
-    public void startTimerFor(Player p, @NotNull Campaign campaign, @NotNull Point pt) {
+    public void startTimerFor(Player p, @NotNull Campaign campaign, @NotNull Point pt, Long initialValue) {
         if (this.isLocked) return;
         PlayerTimer.renewTimer(p);
         PlayerTimer.timerStorage.set(
-                PlayerTimer.path(p, campaign, pt.number),
-                0
+                Path.timer(p, campaign, pt.number),
+                initialValue
         );
         PlayerTimer.getTimer(p).scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -29,8 +29,13 @@ public class DedicatedPlayerTimer {
         this.isLocked = true;
     }
 
-    public void stopTimerFor(Player p, @NotNull Point pt) {
-        PlayerTimer.getTimer(p).cancel();
+    public void startTimerFor(Player p, @NotNull Campaign campaign, @NotNull Point pt) {
+        startTimerFor(p, campaign, pt, 0L);
+    }
+
+    public void stopTimerFor(Player p) {
+        var timer = PlayerTimer.getTimer(p);
+        if (timer != null) timer.cancel();
         this.isLocked = false;
     }
 }

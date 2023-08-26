@@ -18,26 +18,32 @@ public class Logic {
      * 5. 重置玩家的进度记录对象
      * 6. 重置玩家的计时器
      * 7. 取消玩家在竞赛中的完成状态
-     * 8. 如果 remove 指定为 true，那么从该竞赛的参赛人中删除该玩家
-     * @param p 玩家
-     * @param campaign 指定竞赛
-     * @param remove 是否除名该玩家
+     * 8. 如果 removeFromCampaign 指定为 true，那么从该竞赛的参赛人中删除该玩家
+     * 9. 如果 cleanRunningCampaign 指定为 true，那么删除玩家正在进行的比赛
+     *
+     * @param p                  玩家
+     * @param campaign           指定竞赛
+     * @param removeFromCampaign 是否从竞赛参与列表中除去玩家
      */
-    public static void cleanCampaignFor(Player p, Campaign campaign, Boolean remove) {
+    public static void cleanCampaignRecord(Player p, Campaign campaign, Boolean removeFromCampaign) {
         var campaigns = Campaign.get(p);
         assert !campaigns.isEmpty() && Campaign.isPresent(campaign.getName());
         LocationLock.unlock(p);
         // 必须放在 campaign 数据被删除之前
         AnalyticUtils.removeCampaignResult(p, campaign);
         PointUtils.clearCheckpoints(p, campaign);
-        ProgressUtils.refreshProgress(p);
-        ProgressUtils.setRunningCampaign(p, null);
-        ProgressUtils.unsetFinished(p, campaign);
-        PlayerTimer.reset(p);
-        if (remove) campaign.removePlayer(p);
+        Progress.unsetFinished(p, campaign);
+        Progress.setPaused(p, campaign, false);
+        Progress.cleanHalfway(p);
+        PlayerTimer.reset(p, campaign);
+        if (removeFromCampaign) campaign.removePlayer(p);
     }
 
-    public static @Nullable String randomCampaign() {
+    public static void emptyRunningCampaign(Player p) {
+        Progress.setRunningCampaign(p, null);
+    }
+
+    public static @Nullable String randomCampaignName() {
         // 只考虑 open 状态的比赛
         var campaigns = CommonUtils.getCampaignNames()
                 .stream()
@@ -60,7 +66,7 @@ public class Logic {
 
         if (defaultCam == null) {
 
-            defaultCam = Logic.randomCampaign();
+            defaultCam = Logic.randomCampaignName();
 
             if (defaultCam == null) {
                 throw new NoCandidateException();
@@ -77,27 +83,33 @@ public class Logic {
             return false;
         }
         campaign.addPlayer(p);
-        ProgressUtils.refreshProgress(p);
-        ProgressUtils.enableCampaignFor(p);
-        ProgressUtils.setRunningCampaign(p, campaign);
+        Progress.enableCampaignFor(p);
+        Progress.setRunningCampaign(p, campaign);
         return true;
     }
 
     public static void quit(Player p) {
         var campaigns = Campaign.get(p);
         for (var campaign : campaigns) {
-            cleanCampaignFor(p, campaign, true);
+            purge(p, campaign);
         }
-        ProgressUtils.disableCampaignFor(p);
+        Progress.disableCampaignFor(p);
+    }
+
+    public static void purge(Player p, Campaign campaign) {
+        cleanCampaignRecord(p, campaign, true);
+        emptyRunningCampaign(p);
     }
 
     public static void reset(Player p, Campaign campaign) {
-        cleanCampaignFor(p, campaign, false);
+        cleanCampaignRecord(p, campaign, false);
     }
 
     public static void sendPartialTotal(Player p, Campaign campaign, Point pt) {
         assert pt.getPrevious() != null;
-        var totalInSecond = CommonUtils.millisecondsToSeconds(PlayerTimer.getTick(p, campaign, pt.getPrevious().number));
+        var totalInSecond = CommonUtils.millisecondsToSeconds(
+                PlayerTimer.getTick(p, campaign, pt.getPrevious().number)
+        );
         LogUtils.send(String.format(
                 "%s 从 %s 到 %s 共计用时 %s 秒。",
                 p.getName(),
@@ -113,21 +125,23 @@ public class Logic {
      * 2. 如果不是终点，打开当前路径点到下一路径点的计时器
      * 3. 如果不是起点，向玩家发送上一段的计时统计信息
      * 4. 向记录对象中传入当前所到达的点
-     * @param p 操作玩家
+     *
+     * @param p  操作玩家
      * @param pt 当前到达的点
      */
     public static void handleChangePoint(Player p, Campaign campaign, Point pt) {
+        var ptm = PlayerTimer.getDedicated(p);
         if (!pt.isFirst()) {
             assert pt.getPrevious() != null;
-            PlayerTimer.getDedicated(p).stopTimerFor(p, pt.getPrevious());
+            ptm.stopTimerFor(p);
             sendPartialTotal(p, campaign, pt);
         }
 
         if (!pt.isLast()) {
-            PlayerTimer.getDedicated(p).startTimerFor(p, campaign, pt);
+            ptm.startTimerFor(p, campaign, pt);
         }
 
-        ProgressUtils.updatePoint(p, pt);
+        Progress.updatePoint(p, pt);
     }
 
     /**
@@ -137,17 +151,32 @@ public class Logic {
      * 3. 删除所有玩家存在的可传送检查点
      * 4. 删除内存中玩家进度的追踪信息
      * 5. 向玩家发送总用时统计信息
-     * @param p 操作玩家
+     *
+     * @param p        操作玩家
      * @param campaign 指定比赛
      */
     public static void handleFinish(Player p, Campaign campaign) {
-        ProgressUtils.setFinished(p, campaign);
+        Progress.setFinished(p, campaign);
+        Progress.cleanHalfway(p);
         AnalyticUtils.saveCampaignResult(p, campaign);
         PointUtils.clearCheckpoints(p, campaign);
-        ProgressUtils.refreshProgress(p);
         var total = CommonUtils.millisecondsToReadable(PlayerTimer.getTotalTime(p, campaign));
         LogUtils.send("你已到达终点，共计用时 " + total + "。", p);
         LogUtils.send("统计数据已存储。", p);
         LogUtils.send("如需清除数据重新开始，键入 /cpt reset " + campaign.getName(), p);
+    }
+
+    public static void handleAutoJoin(Player p) {
+        String join;
+        try {
+            join = Logic.joinOrRandom(p);
+        } catch (NoCandidateException ex) {
+            if (!Config.getBoolean("disable-auto-join-failure-warning")) {
+                LogUtils.send("找不到可自动分配比赛，请联系管理员。", p);
+            }
+            return;
+        }
+        LogUtils.send("已为你自动分配比赛 " + join + "，开始滑翔吧~", p);
+        LogUtils.send("如需切换，请使用 /cpt switch <比赛名称>。", p);
     }
 }

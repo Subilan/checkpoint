@@ -2,6 +2,7 @@ package red.oases.checkpoint.Utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,12 +15,14 @@ public class FileUtils {
     public static FileConfiguration analytics;
     public static FileConfiguration checkpoints;
     public static FileConfiguration progress;
+    public static FileConfiguration ticks;
     public static File fconfig;
     public static File ftracks;
     public static File fcampaigns;
     public static File fanalytics;
     public static File fcheckpoints;
     public static File fprogress;
+    public static File fticks;
 
     public static void init() {
         fconfig = new File(
@@ -40,6 +43,9 @@ public class FileUtils {
         fprogress = new File(
                 datafolder.getAbsoluteFile() + "/progress.yml"
         );
+        fticks = new File(
+                datafolder.getAbsoluteFile() + "/ticks.yml"
+        );
 
         reload();
     }
@@ -51,6 +57,7 @@ public class FileUtils {
         analytics = YamlConfiguration.loadConfiguration(fanalytics);
         checkpoints = YamlConfiguration.loadConfiguration(fcheckpoints);
         progress = YamlConfiguration.loadConfiguration(fprogress);
+        ticks = YamlConfiguration.loadConfiguration(fticks);
     }
 //
 //    public static void saveConfig() {
@@ -96,6 +103,14 @@ public class FileUtils {
     public static void saveProgress() {
         try {
             progress.save(fprogress);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveTicks() {
+        try {
+            ticks.save(fticks);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package red.oases.checkpoint.Objects;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import red.oases.checkpoint.Utils.CommonUtils;
+import red.oases.checkpoint.Utils.FileUtils;
 
 import java.util.*;
 
@@ -14,19 +15,53 @@ public class PlayerTimer {
         return new DedicatedPlayerTimer(p);
     }
 
-    public static String path(Player p, Campaign campaign, Integer number) {
-        return p.getName() + "." + campaign.getName() + "." + number.toString();
-    }
-
     public static void tick(Player p, Campaign campaign, int number) {
         timerStorage.set(
-                path(p, campaign, number),
-                timerStorage.getLong(path(p, campaign, number)) + 1
+                Path.timer(p, campaign, number),
+                timerStorage.getLong(Path.timer(p, campaign, number)) + 1
         );
     }
 
-    public static Long getTick(Player p, Campaign campaign, Integer index) {
-        return timerStorage.getLong(path(p, campaign, index));
+    public static Long getTick(Player p, Campaign campaign, Integer number) {
+        return timerStorage.getLong(Path.timer(p, campaign, number));
+    }
+
+    public static void saveLastTick(Player p) {
+        var pt = Progress.getPoint(p);
+        var running = Progress.getRunningCampaign(p);
+        assert pt != null;
+        assert running != null;
+        FileUtils.ticks.set(
+                Path.lastTick(p),
+                PlayerTimer.getTick(p, running, pt.number)
+        );
+        FileUtils.saveTicks();
+    }
+
+    public static Long getLastTick(Player p) {
+        return FileUtils.ticks.getLong(Path.lastTick(p));
+    }
+
+    public static void saveTicks(Player p, Campaign campaign) {
+        FileUtils.ticks.set(
+                Path.ticks(p, campaign),
+                timerStorage.getConfigurationSection(
+                        Path.ticks(p, campaign)
+                )
+        );
+        timerStorage.set(Path.ticks(p, campaign), null);
+        FileUtils.saveTicks();
+    }
+
+    public static void retrieveTicks(Player p, Campaign campaign) {
+        timerStorage.set(
+                Path.ticks(p, campaign),
+                FileUtils.ticks.getConfigurationSection(
+                        Path.ticks(p, campaign)
+                )
+        );
+        FileUtils.ticks.set(Path.ticks(p, campaign), null);
+        FileUtils.saveTicks();
     }
 
     public static Long getTotalTime(Player p, Campaign campaign) {
@@ -62,9 +97,9 @@ public class PlayerTimer {
         timers.put(p, new Timer());
     }
 
-    public static void reset(Player p) {
+    public static void reset(Player p, Campaign campaign) {
         renewTimer(p);
-        timerStorage.set(p.getName(), null);
+        timerStorage.set(p.getName() + "." + campaign.getName(), null);
     }
 }
 

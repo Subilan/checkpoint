@@ -98,7 +98,8 @@ public class Campaign {
         return Objects.equals(getSection().getString("status"), "private");
     }
 
-    public Campaign(String cam, Boolean nocheck) {
+    public Campaign(@Nullable String cam, Boolean nocheck) {
+        if (cam == null) throw new ObjectNotFoundException("name is null");
         this.name = cam;
         var section = FileUtils.campaigns.getConfigurationSection(cam);
         if (section == null) {
@@ -111,7 +112,8 @@ public class Campaign {
         }
     }
 
-    public Campaign(String cam) {
+    public Campaign(@Nullable String cam) {
+        if (cam == null) throw new ObjectNotFoundException("name is null");
         this.name = cam;
         var section = FileUtils.campaigns.getConfigurationSection(cam);
         if (section == null) throw new ObjectNotFoundException("campaign");

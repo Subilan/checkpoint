@@ -6,8 +6,8 @@ import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Logic;
+import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.LogUtils;
-import red.oases.checkpoint.Utils.ProgressUtils;
 
 @PermissionLevel(0)
 @DisableConsole
@@ -19,7 +19,7 @@ public class CommandQuit extends Command {
     protected boolean execute() {
         var p = (Player) sender;
 
-        if (!ProgressUtils.HasCampaignEnabled(p)) {
+        if (!Progress.isCampaignEnabled(p)) {
             LogUtils.send("你还没有参赛。", sender);
             return true;
         }

@@ -7,6 +7,7 @@ import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.Logic;
+import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
 
@@ -39,13 +40,12 @@ public class CommandReset extends Command {
 
         var target = new Campaign(cam);
 
-        if (ProgressUtils.getCursor(p) == 0 && !ProgressUtils.isFinished(p, target)) {
+        if (!ProgressUtils.isHalfway(p) && !Progress.isFinished(p, target)) {
             LogUtils.send("你还没有开始这场比赛。", sender);
             return true;
         }
 
         Logic.reset(p, target);
-        Logic.join(p, target);
 
         LogUtils.send("你已重置比赛状态。", sender);
         return true;

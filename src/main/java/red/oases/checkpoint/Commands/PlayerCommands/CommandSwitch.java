@@ -8,6 +8,7 @@ import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.Config;
 import red.oases.checkpoint.Objects.Logic;
+import red.oases.checkpoint.Objects.Progress;
 import red.oases.checkpoint.Utils.LogUtils;
 import red.oases.checkpoint.Utils.ProgressUtils;
 
@@ -28,7 +29,7 @@ public class CommandSwitch extends Command {
 
         var p = (Player) sender;
 
-        if (!ProgressUtils.HasCampaignEnabled(p)) {
+        if (!Progress.isCampaignEnabled(p)) {
             LogUtils.send("你还没有参赛。", sender);
             LogUtils.send("请使用 /cpt join 来参赛。", sender);
             return true;
@@ -41,16 +42,16 @@ public class CommandSwitch extends Command {
             return true;
         }
 
-        var currentCampaign = ProgressUtils.getRunningCampaign(p);
+        var currentCampaign = Progress.getRunningCampaign(p);
         var campaign = new Campaign(cam);
 
-        if (ProgressUtils.getCursor(p) > 0) {
+        if (ProgressUtils.isHalfway(p)) {
             LogUtils.send("切换失败：当前比赛尚未完成。", sender);
             LogUtils.send("如果确实需要切换，请使用 /cpt reset " + campaign.getName() + " 清空当前比赛数据再切换。", sender);
             return true;
         }
 
-        if (ProgressUtils.isFinished(p, campaign)) {
+        if (Progress.isFinished(p, campaign)) {
             LogUtils.send("提示：你已完成 "+ campaign.getName() + "。", sender);
             LogUtils.send("如需重新开始，请输入 /cpt reset " + campaign.getName() + " 清除数据。", sender);
         }
@@ -62,7 +63,7 @@ public class CommandSwitch extends Command {
             }
 
             if (Config.getBoolean("single-choice")) {
-                Logic.cleanCampaignFor(p, currentCampaign, true);
+                Logic.cleanCampaignRecord(p, currentCampaign, true);
                 LogUtils.send("你在 " + currentCampaign.getName() + " 中的数据已删除。", sender);
             }
         }
