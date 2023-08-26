@@ -1,9 +1,11 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
 }
 
 group = 'red.oases'
-version = '1.0'
+version = new SimpleDateFormat("YYYY-MM-dd_HH.mm.ss").format(new Date())
 
 repositories {
     mavenCentral()
