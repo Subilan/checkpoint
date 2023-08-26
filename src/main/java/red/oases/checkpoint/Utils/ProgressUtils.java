@@ -4,10 +4,7 @@ import org.bukkit.entity.Player;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.Progress;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 public class ProgressUtils {
 
     public static List<String> getFinishedPlayers(Campaign campaign) {
