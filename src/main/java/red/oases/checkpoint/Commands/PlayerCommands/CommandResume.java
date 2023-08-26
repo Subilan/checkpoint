@@ -7,13 +7,7 @@ import red.oases.checkpoint.Extra.Annotations.DisableConsole;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
 import red.oases.checkpoint.Objects.Config;
 import red.oases.checkpoint.Objects.Logic;
-import red.oases.checkpoint.Objects.PlayerTimer;
-import red.oases.checkpoint.Objects.Progress;
-import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.LogUtils;
-import red.oases.checkpoint.Utils.ProgressUtils;
-import red.oases.checkpoint.Utils.SoundUtils;
-
 @DisableConsole
 @PermissionLevel(0)
 public class CommandResume extends Command {
