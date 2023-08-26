@@ -74,7 +74,7 @@ public class Analytics {
         return getSection().getIntegerList("time_parts");
     }
 
-    public long getTimeTotal() {
+    public Long getTimeTotal() {
         return getSection().getLong("time_total");
     }
 

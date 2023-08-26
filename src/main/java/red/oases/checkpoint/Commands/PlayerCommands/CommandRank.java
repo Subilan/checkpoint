@@ -6,11 +6,14 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import red.oases.checkpoint.Commands.Command;
 import red.oases.checkpoint.Extra.Annotations.PermissionLevel;
+import red.oases.checkpoint.Objects.Analytics;
 import red.oases.checkpoint.Objects.Campaign;
 import red.oases.checkpoint.Objects.DisplayList;
 import red.oases.checkpoint.Utils.CommonUtils;
 import red.oases.checkpoint.Utils.FileUtils;
 import red.oases.checkpoint.Utils.LogUtils;
+
+import java.util.Comparator;
 
 @PermissionLevel(0)
 public class CommandRank extends Command {
@@ -43,7 +46,10 @@ public class CommandRank extends Command {
 
         var targetCampaign = new Campaign(campaign);
 
-        var analytics = targetCampaign.getAnalytics();
+        var analytics = targetCampaign.getAnalytics()
+                .stream()
+                .sorted(Comparator.comparing(Analytics::getTimeTotal))
+                .toList();
         var list = new DisplayList(
                 10,
                 analytics.size(),
@@ -54,11 +60,11 @@ public class CommandRank extends Command {
         list.sendPage(page, i -> {
             var targetAnalytics = analytics.get(i);
             return LogUtils.getListItemColored(i + 1,
-                            Component.text(targetAnalytics.getPlayerName()).color(NamedTextColor.WHITE)
-                                    .appendSpace().append(Component.text("@").color(NamedTextColor.LIGHT_PURPLE))
-                                    .appendSpace().append(Component.text(CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal())).color(NamedTextColor.YELLOW))
-                                    .appendSpace().append(Component.text("完成于 " + CommonUtils.formatDate(targetAnalytics.getFinishedAt())).decorate(TextDecoration.ITALIC).color(NamedTextColor.GRAY))
-                                    .appendNewline()
+                    Component.text(targetAnalytics.getPlayerName()).color(NamedTextColor.WHITE)
+                            .appendSpace().append(Component.text("@").color(NamedTextColor.LIGHT_PURPLE))
+                            .appendSpace().append(Component.text(CommonUtils.millisecondsToReadable(targetAnalytics.getTimeTotal())).color(NamedTextColor.YELLOW))
+                            .appendSpace().append(Component.text("完成于 " + CommonUtils.formatDate(targetAnalytics.getFinishedAt())).decorate(TextDecoration.ITALIC).color(NamedTextColor.GRAY))
+                            .appendNewline()
             );
         });
 
