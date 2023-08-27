@@ -76,7 +76,7 @@ public class Events implements Listener {
 
         if (campaign == null) return;
 
-//        if (!p.isGliding()) return;
+        if (!p.isGliding()) return;
 
         var loc = p.getLocation();
         var x = loc.getBlockX();
