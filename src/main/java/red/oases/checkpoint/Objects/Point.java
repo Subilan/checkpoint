@@ -122,10 +122,11 @@ public class Point {
         var X = getStats(pos1, pos2, 0);
         var Y = getStats(pos1, pos2, 1);
         var Z = getStats(pos1, pos2, 2);
+        var f = Config.getPointDetectionOffset();
 
-        return (x >= X.getMin() - 1 && x <= X.getMax() + 1)
-                && (y >= Y.getMin() - 1 && y <= Y.getMax() + 1)
-                && (z >= Z.getMin() - 1 && z <= Z.getMax() + 1);
+        return (x >= X.getMin() - f && x <= X.getMax() + f)
+                && (y >= Y.getMin() - f && y <= Y.getMax() + f)
+                && (z >= Z.getMin() - f && z <= Z.getMax() + f);
     }
 
     public Location getTransportableLocation(World world) {

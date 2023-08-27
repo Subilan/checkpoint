@@ -30,3 +30,5 @@ allow-resume: true
 # 如果不需要这条提示，请启用 disable-auto-resume-failure-warning。
 auto-resume-on-login: false
 disable-auto-resume-failure-warning: false
+# 将所有选取的检测范围扩大指定的格数（x y z 三个方向）
+point-detection-offset: 0

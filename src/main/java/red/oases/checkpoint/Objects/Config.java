@@ -36,6 +36,10 @@ public class Config {
         return getInteger("timer-max-timeout");
     }
 
+    public static Integer getPointDetectionOffset() {
+        return getInteger("point-detection-offset");
+    }
+
     public static boolean getDisallowTimerWorkingOffline() {
         return !getBoolean("allow-timer-working-offline");
     }
