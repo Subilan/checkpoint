@@ -45,18 +45,18 @@ public class CommandSwitch extends Command {
         var currentCampaign = Progress.getRunningCampaign(p);
         var campaign = new Campaign(cam);
 
-        if (ProgressUtils.isHalfway(p)) {
-            LogUtils.send("切换失败：当前比赛尚未完成。", sender);
-            LogUtils.send("如果确实需要切换，请使用 /cpt reset " + campaign.getName() + " 清空当前比赛数据再切换。", sender);
-            return true;
-        }
-
         if (Progress.isFinished(p, campaign)) {
             LogUtils.send("提示：你已完成 "+ campaign.getName() + "。", sender);
             LogUtils.send("如需重新开始，请输入 /cpt reset " + campaign.getName() + " 清除数据。", sender);
         }
 
         if (currentCampaign != null) {
+            if (ProgressUtils.isHalfway(p)) {
+                LogUtils.send("切换失败：当前比赛尚未完成。", sender);
+                LogUtils.send("如果确实需要切换，请使用 /cpt reset " + currentCampaign.getName() + " 清空当前比赛数据再切换。", sender);
+                return true;
+            }
+
             if (currentCampaign.getName().equals(cam)) {
                 LogUtils.send("你已经在竞赛 " + campaign.getName() + " 中了。", sender);
                 return true;

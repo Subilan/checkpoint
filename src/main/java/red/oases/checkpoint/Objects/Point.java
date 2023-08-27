@@ -122,7 +122,7 @@ public class Point {
         var X = getStats(pos1, pos2, 0);
         var Y = getStats(pos1, pos2, 1);
         var Z = getStats(pos1, pos2, 2);
-        var f = Config.getPointDetectionOffset();
+        int f = Config.getPointDetectionOffset();
 
         return (x >= X.getMin() - f && x <= X.getMax() + f)
                 && (y >= Y.getMin() - f && y <= Y.getMax() + f)
