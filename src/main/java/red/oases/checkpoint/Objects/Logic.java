@@ -133,16 +133,15 @@ public class Logic {
      */
     public static void handleChangePoint(Player p, Campaign campaign, Point pt) {
         var ptm = PlayerTimer.getDedicated(p);
+        assert !pt.isLast();
+
         if (!pt.isFirst()) {
             assert pt.getPrevious() != null;
             ptm.stopTimerFor(p);
             sendPartialTotal(p, campaign, pt);
         }
 
-        if (!pt.isLast()) {
-            ptm.startTimerFor(p, campaign, pt);
-        }
-
+        ptm.startTimerFor(p, campaign, pt);
         Progress.updatePoint(p, pt);
     }
 

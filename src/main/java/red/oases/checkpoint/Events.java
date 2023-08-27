@@ -76,7 +76,7 @@ public class Events implements Listener {
 
         if (campaign == null) return;
 
-        if (!p.isGliding()) return;
+//        if (!p.isGliding()) return;
 
         var loc = p.getLocation();
         var x = loc.getBlockX();
@@ -128,6 +128,7 @@ public class Events implements Listener {
                 }
 
                 if (pt.isLast()) {
+                    Logic.sendPartialTotal(p, campaign, pt);
                     Logic.handleFinish(p, campaign);
                     SoundUtils.playSoundC(p);
                     break;
