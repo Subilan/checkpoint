@@ -14,6 +14,7 @@ public class CommandCampaignSetstatus extends Command {
     protected boolean execute() {
         if (args.length < 4) {
             LogUtils.send("参数不足：/cpt setstatus <name> <state>", sender);
+            return true;
         }
 
         var name = args[2];
