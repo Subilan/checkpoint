@@ -123,9 +123,9 @@ public class Point {
         var Y = getStats(pos1, pos2, 1);
         var Z = getStats(pos1, pos2, 2);
 
-        return (x >= X.getMin() && x <= X.getMax())
-                && (y >= Y.getMin() && y <= Y.getMax())
-                && (z >= Z.getMin() && z <= Z.getMax());
+        return (x >= X.getMin() - 1 && x <= X.getMax() + 1)
+                && (y >= Y.getMin() - 1 && y <= Y.getMax() + 1)
+                && (z >= Z.getMin() - 1 && z <= Z.getMax() + 1);
     }
 
     public Location getTransportableLocation(World world) {
