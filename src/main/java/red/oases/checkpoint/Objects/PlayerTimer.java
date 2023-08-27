@@ -17,13 +17,13 @@ public class PlayerTimer {
 
     public static void tick(Player p, Campaign campaign, int number) {
         timerStorage.set(
-                Path.timer(p, campaign, number),
-                timerStorage.getLong(Path.timer(p, campaign, number)) + 1
+                Path.tick(p, campaign, number),
+                timerStorage.getLong(Path.tick(p, campaign, number)) + 1
         );
     }
 
     public static Long getTick(Player p, Campaign campaign, Integer number) {
-        return timerStorage.getLong(Path.timer(p, campaign, number));
+        return timerStorage.getLong(Path.tick(p, campaign, number));
     }
 
     public static void saveLastTick(Player p) {
@@ -38,8 +38,11 @@ public class PlayerTimer {
         FileUtils.saveTicks();
     }
 
-    public static Long getLastTick(Player p) {
-        return FileUtils.ticks.getLong(Path.lastTick(p));
+    public static Long takeLastTick(Player p) {
+        var result = FileUtils.ticks.getLong(Path.lastTick(p));
+        FileUtils.ticks.set(Path.lastTick(p), null);
+        FileUtils.saveTicks();
+        return result;
     }
 
     public static void saveTicks(Player p, Campaign campaign) {
@@ -99,7 +102,7 @@ public class PlayerTimer {
 
     public static void reset(Player p, Campaign campaign) {
         renewTimer(p);
-        timerStorage.set(p.getName() + "." + campaign.getName(), null);
+        timerStorage.set(Path.ticks(p, campaign), null);
     }
 }
 

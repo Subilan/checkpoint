@@ -11,7 +11,7 @@ public class Path {
         return "paused." + p.getName() + "." + campaign.getName();
     }
 
-    public static String timer(Player p, Campaign campaign, Integer number) {
+    public static String tick(Player p, Campaign campaign, Integer number) {
         return p.getName() + "." + campaign.getName() + "." + number.toString();
     }
 

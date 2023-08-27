@@ -23,7 +23,7 @@ public class DedicatedPlayerTimer {
         if (this.isLocked) return;
         PlayerTimer.renewTimer(p);
         PlayerTimer.timerStorage.set(
-                Path.timer(p, campaign, pt.number),
+                Path.tick(p, campaign, pt.number),
                 initialValue
         );
         PlayerTimer.getTimer(p).scheduleAtFixedRate(new TimerTask() {

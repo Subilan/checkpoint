@@ -221,7 +221,7 @@ public class Logic {
         if (Config.getDisallowTimerWorkingOffline()) {
             PlayerTimer.retrieveTicks(p, running);
             PlayerTimer.getDedicated(p).startTimerFor(
-                    p, running, pt, PlayerTimer.getLastTick(p)
+                    p, running, pt, PlayerTimer.takeLastTick(p)
             );
         }
         SoundUtils.playSoundA(p);
